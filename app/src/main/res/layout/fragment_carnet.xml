@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6">
+
+    <!-- ScrollView para el contenido de lectura -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <!-- FOTO Y DATOS (Se queda igual) -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_perfil_mascota_carnet"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:background="#E0E0E0"
+                android:padding="4dp"
+                android:src="@drawable/ic_huella"
+                android:scaleType="centerInside"
+                app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
+                app:strokeColor="@color/Azulito"
+                app:strokeWidth="4dp"
+                android:layout_marginTop="32dp"/>
+
+            <TextView
+                android:id="@+id/tv_nombre_mascota_carnet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de tu Mascota"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/negrito"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_detalles_mascota_carnet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raza • Edad • Peso"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- TARJETA DE VACUNAS (MODO LECTURA) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Historial de Vacunación"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Información de solo lectura -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="✅ Rabia: 12/05/2026"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="❌ Parvovirus: Sin registro"
+                        android:textSize="16sp"
+                        android:textColor="#999999"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="✅ Desparasitación: 01/01/2026"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de Contacto"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="👤 Dueño: Nicolas"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="📞 Tel: 555-123-4567"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🏠 Dirección: CDMX, México"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTÓN FLOTANTE PARA EDITAR -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_editar_carnet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:src="@android:drawable/ic_menu_edit"
+        app:backgroundTint="@color/amarillo"
+        app:tint="@color/negrito"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

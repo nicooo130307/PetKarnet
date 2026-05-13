@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_inicio_vet"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/nav_pacientes"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Pacientes" />
+
+    <item
+        android:id="@+id/nav_agenda"
+        android:icon="@drawable/ic_hospital"
+        android:title="Agenda" />
+
+    <item
+        android:id="@+id/nav_perfil_vet"
+        android:icon="@drawable/ic_perfil"
+        android:title="Clínica" />
+
+</menu>

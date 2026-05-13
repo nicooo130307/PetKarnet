@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".Registro">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <!-- Título -->
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crea tu cuenta"
+            android:textAlignment="center"
+            android:textColor="@color/negrito"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Únete a PetKarnet"
+            android:textAlignment="center"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Campo: Nombre -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/til_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Nombre Completo"
+            android:fontFamily="@font/roboto"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Correo Electrónico -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/til_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Correo Electrónico"
+            android:fontFamily="@font/roboto"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/roboto"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Contraseña -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/til_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="Contraseña"
+            android:fontFamily="@font/roboto"
+            app:passwordToggleEnabled="true"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:fontFamily="@font/roboto"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Confirmar Contraseña -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_confirmar_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="Confirmar Contraseña"
+            android:fontFamily="@font/roboto"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_confirmar_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:fontFamily="@font/roboto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Selección de Rol -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Qué tipo de usuario eres?"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rg_tipo_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <RadioButton
+                android:id="@+id/rb_dueno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dueño"
+                app:buttonTint="@color/Azulito"
+                android:checked="true"
+                /> <!-- Marcado por defecto -->
+
+            <RadioButton
+                android:id="@+id/rb_veterinario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:buttonTint="@color/Azulito"
+                android:text="Veterinario" />
+        </RadioGroup>
+
+        <!-- Botón de Registro -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_registrar_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Registrarse"
+            android:textColor="@color/negrito"
+            android:textSize="20sp"
+            app:cornerRadius="50dp"
+            app:backgroundTint="@color/amarillo" />
+
+    </LinearLayout>
+</ScrollView>

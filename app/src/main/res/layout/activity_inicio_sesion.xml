@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".Inicio_Sesion">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <!-- Título -->
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bienvenido de nuevo"
+            android:textAlignment="center"
+            android:textColor="@color/negrito"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingresa a tu cuenta de PetKarnet"
+            android:textAlignment="center"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:layout_marginBottom="48dp" />
+
+        <!-- Campo: Correo Electrónico -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_login_correo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Correo Electrónico"
+            android:fontFamily="@font/roboto"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/roboto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Contraseña -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_login_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:hint="Contraseña"
+            android:fontFamily="@font/roboto"
+            app:passwordToggleEnabled="true"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:fontFamily="@font/roboto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botón de Inicio de Sesión -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ingresar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Ingresar"
+            android:textSize="20sp"
+            app:cornerRadius="50dp"
+            android:textColor="@color/negrito"
+            app:backgroundTint="@color/amarillo" />
+
+
+        <ImageView
+            android:layout_marginTop="25dp"
+            android:id="@+id/imageView2"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/pelusino" />
+
+    </LinearLayout>
+</ScrollView>

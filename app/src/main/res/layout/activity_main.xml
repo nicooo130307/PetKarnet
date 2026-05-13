@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Blanquito"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_marginTop="50dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/petkarnet_logo_texto_png" />
+
+    <Button
+        android:id="@+id/btn_registrarse"
+        android:layout_width="343dp"
+        android:layout_height="79dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/amarillo"
+        android:text="Registrarse"
+        android:textColor="@color/negrito"
+        android:textSize="25sp" />
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="343dp"
+        android:layout_height="79dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/Blanquito"
+        android:text="Iniciar Sesión"
+        android:textColor="@color/Azulito"
+        android:textSize="25sp"
+        app:strokeColor="@color/Azulito"
+        app:strokeWidth="2dp"
+        app:cornerRadius="50dp" />
+
+
+
+
+
+
+
+</LinearLayout>

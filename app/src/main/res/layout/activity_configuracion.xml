@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#F3F4F6">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Configuración"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/negrito"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="32dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PREFERENCIAS"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🌙 Modo Oscuro"
+                            android:textSize="16sp"
+                            android:textColor="@color/negrito"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_modo_oscuro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/Azulito"
+                            app:trackTint="#8000A8E8"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/btn_idioma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🌐 Idioma"
+                            android:textSize="16sp"
+                            android:textColor="@color/negrito"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Español >"
+                            android:textSize="14sp"
+                            android:textColor="#999999"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NOTIFICACIONES"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🏥 Recordatorios Médicos"
+                            android:textSize="16sp"
+                            android:textColor="@color/negrito"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_recordatorios"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            app:thumbTint="@color/Azulito"
+                            app:trackTint="#8000A8E8"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🛍️ Alertas de la Tienda"
+                            android:textSize="16sp"
+                            android:textColor="@color/negrito"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_promociones"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/Azulito"
+                            app:trackTint="#8000A8E8"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CUENTA"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/btn_privacidad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="📄 Aviso de Privacidad (LFPDPPP)"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+
+                    <TextView
+                        android:id="@+id/btn_eliminar_cuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🗑️ Eliminar mi cuenta"
+                        android:textSize="16sp"
+                        android:textColor="#D32F2F"
+                        android:textStyle="bold"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

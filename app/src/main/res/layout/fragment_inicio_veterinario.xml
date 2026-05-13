@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:layout_marginTop="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hola, Dr. Nicolas"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/negrito"
+                       />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Veterinaria Pets Norte"
+                        android:textSize="16sp"
+                        android:textColor="#666666"/>
+                </LinearLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="#E0E0E0"
+                    android:padding="4dp"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:scaleType="centerInside"
+                    app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
+                    app:strokeColor="@color/Azulito"
+                    app:strokeWidth="4dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5" android:textSize="24sp" android:textStyle="bold" android:textColor="@color/Azulito"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Citas Hoy" android:textSize="14sp" android:textColor="#666666"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12" android:textSize="24sp" android:textStyle="bold" android:textColor="@color/amarillo"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pacientes" android:textSize="14sp" android:textColor="#666666"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="24sp" android:textStyle="bold" android:textColor="#D32F2F"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Urgencias" android:textSize="14sp" android:textColor="#666666"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Buscar paciente..."
+                        app:hintTextColor="#999999"
+                        app:startIconDrawable="@android:drawable/ic_menu_search"
+                        app:startIconTint="@color/Azulito"
+                        app:boxStrokeColor="@color/Azulito"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_buscar_paciente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="40dp"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/negrito"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_escanear_qr"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="Escanear Código QR"
+                        android:textSize="16sp"
+                        app:icon="@android:drawable/ic_menu_camera"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/negrito"
+                        app:cornerRadius="12dp"
+                        android:textColor="@color/negrito"
+                        app:backgroundTint="@color/amarillo"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRÓXIMAS CITAS"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10:00\nAM"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/Azulito"
+                            android:gravity="center"
+                            android:layout_marginEnd="16dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Vacuna Múltiple"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/negrito"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Paciente: Max (Golden Retriever)"
+                                android:textSize="14sp"
+                                android:textColor="#666666"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="11:30\nAM"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/Azulito"
+                            android:gravity="center"
+                            android:layout_marginEnd="16dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Consulta General"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/negrito"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Paciente: Luna (Gato Siamés)"
+                                android:textSize="14sp"
+                                android:textColor="#666666"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#E3F2FD"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/Azulito"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="📩 Tienes 2 solicitudes de cita nuevas por revisar."
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/Azulito"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="VER"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/negrito"
+                        android:padding="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
