@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6"> <!-- Fondo gris clarito para que resalten las tarjetas -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 1: CABECERA DEL PACIENTE           -->
+        <!-- ========================================== -->
+
+        <!-- Foto Circular de la Mascota -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_perfil_mascota_carnet"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="#E0E0E0"
+            android:padding="4dp"
+            android:src="@drawable/ic_huella"
+            android:scaleType="centerInside"
+            app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
+            app:strokeColor="@color/Azulito"
+            app:strokeWidth="4dp"
+            android:layout_marginTop="52dp"/>
+
+        <!-- Nombre y Datos Rápidos -->
+        <TextView
+            android:id="@+id/tv_nombre_mascota_carnet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre de tu Mascota"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/negrito"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_detalles_mascota_carnet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Raza • Edad • Peso"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 2: TARJETA DE VACUNAS              -->
+        <!-- ========================================== -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Historial de Vacunación"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Vacuna 1: Rabia -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <CheckBox
+                        android:id="@+id/cb_vacuna_rabia"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Rabia"
+                        android:buttonTint="@color/Azulito"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"/>
+
+                    <!-- Se oculta por defecto con visibility="gone" -->
+                    <EditText
+                        android:id="@+id/et_fecha_rabia"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:hint="DD/MM/AAAA"
+                        android:inputType="date"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:clickable="true"/>
+                </LinearLayout>
+
+                <!-- Vacuna 2: Parvovirus -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <CheckBox
+                        android:id="@+id/cb_vacuna_parvo"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Parvovirus"
+                        android:buttonTint="@color/Azulito"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"/>
+
+                    <EditText
+                        android:id="@+id/et_fecha_parvo"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:hint="DD/MM/AAAA"
+                        android:inputType="date"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:clickable="true"/>
+                </LinearLayout>
+
+                <!-- Vacuna 3: Desparasitación -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/cb_desparasitacion"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Desparasitación"
+                        android:buttonTint="@color/Azulito"
+                        android:textSize="16sp"
+                        android:textColor="@color/negrito"/>
+
+                    <EditText
+                        android:id="@+id/et_fecha_despara"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:hint="DD/MM/AAAA"
+                        android:inputType="date"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:clickable="true"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 1.5: DATOS DE CONTACTO (EDICIÓN)   -->
+        <!-- ========================================== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Datos de Contacto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Campo para el Nombre del Dueño -->
+                <EditText
+                    android:id="@+id/et_nombre_dueno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del Propietario"
+                    android:inputType="textPersonName"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Campo para el Teléfono -->
+                <EditText
+                    android:id="@+id/et_telefono_dueno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Teléfono de Emergencia"
+                    android:inputType="phone"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Campo para la Dirección -->
+                <EditText
+                    android:id="@+id/et_direccion_dueno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Dirección Completa"
+                    android:inputType="textPostalAddress"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
+        <!-- Botón de Guardar Cambios -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_guardar_carnet"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Actualizar Carnet"
+            android:textSize="18sp"
+            android:textColor="@color/negrito"
+            app:cornerRadius="50dp"
+            app:backgroundTint="@color/amarillo"
+            android:layout_marginBottom="32dp"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Rojito">#FF0000</color>
+    <color name="Azulito">#4FC3F7  </color>
+    <color name="amarillo">#FFD54F</color>
+    <color name="negrito">#424242</color>
+    <color name="Blanquito">#FCFDFD</color>
+    <color name="AzulOscuro">#162456</color>
+    <color name="AzulitoClaro">#E1F5FE</color> <!-- Es un tono azul muy tenue -->
+</resources>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".RegistroMascota">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center_horizontal">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Agrega a tu amigo canino!"
+            android:textAlignment="center"
+            android:textColor="@color/negrito"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crea su primer carnet de vacunación digital"
+            android:textAlignment="center"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_foto_mascota"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/Azulito"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:scaleType="centerInside"
+            app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
+            app:strokeColor="@color/AzulOscuro"
+            app:strokeWidth="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toca para subir una foto"
+            android:textColor="@color/negrito"
+            android:textSize="14sp"
+            android:layout_marginBottom="42dp" />
+
+        <!-- Campo: Nombre de la Mascota -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nombre_mascota"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Nombre de la Mascota"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nombre_mascota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                 />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Selección de Especie -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Qué especie es?"
+            android:textColor="@color/negrito"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rg_especie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rb_perro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Perro"
+                android:checked="true"
+                app:buttonTint="@color/Azulito"/>
+
+            <RadioButton
+                android:id="@+id/rb_gato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Gato"
+                app:buttonTint="@color/Azulito"/>
+        </RadioGroup>
+
+
+        <!-- Campo: Raza (Menú Desplegable) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_raza"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Raza"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <AutoCompleteTextView
+                android:id="@+id/et_raza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:popupBackground="@android:color/white"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+        <!-- Campo: Sexo (Menú Desplegable) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_sexo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Sexo"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <AutoCompleteTextView
+                android:id="@+id/et_sexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:popupBackground="@android:color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_color"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Color o señas particulares (Ej. Blanco con manchas)"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+             />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_edad"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Edad Aproximada (Ej 3 años, 2 meses)"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_edad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Campo: Peso -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_peso"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:hint="Peso actual en Kg (Ej. 4.5)"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_peso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+          />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN: DATOS DE CONTACTO DEL DUEÑO       -->
+        <!-- ========================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Datos de Contacto (Responsable)"
+            android:textColor="@color/negrito"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Campo: Nombre del Dueño -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nombre_dueno"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Nombre Completo del Dueño"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nombre_dueno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Número de Teléfono -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_telefono_dueno"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Número de Teléfono"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <!-- inputType="phone" abrirá el teclado numérico directamente -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_telefono_dueno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Dirección -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_direccion_dueno"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:hint="Dirección Completa"
+            app:boxStrokeColor="@color/Azulito"
+            app:hintTextColor="@color/negrito">
+
+            <!-- textPostalAddress le dice al teclado que vas a escribir una dirección -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_direccion_dueno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <!-- Botón de Guardar -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_guardar_mascota"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Crear Perfil"
+            android:textSize="20sp"
+            android:textColor="@color/negrito"
+            app:cornerRadius="50dp"
+            app:backgroundTint="@color/amarillo"
+            android:layout_marginBottom="40dp"/>
+
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>

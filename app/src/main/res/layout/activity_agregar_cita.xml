@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Programar Nueva Cita"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/negrito"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- SECCIÓN: MOTIVO -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Cuál es el motivo?"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="8dp"/>
+
+                <CheckBox
+                    android:id="@+id/cb_motivo_vacuna"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="💉 Vacunación o Desparasitación"
+                    app:buttonTint="@color/Azulito"/>
+
+                <CheckBox
+                    android:id="@+id/cb_motivo_estetica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🛁 Estética y Baño"
+                    app:buttonTint="@color/Azulito"/>
+
+                <CheckBox
+                    android:id="@+id/cb_motivo_consulta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🩺 Consulta Médica General"
+                    app:buttonTint="@color/Azulito"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- SECCIÓN: FECHA Y HORA -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <!-- Campo de Fecha -->
+            <EditText
+                android:id="@+id/et_fecha_cita"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="55dp"
+                android:background="@android:color/white"
+                android:hint="📅 Fecha"
+                android:padding="12dp"
+                android:focusable="false"
+                android:clickable="true"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Campo de Hora -->
+            <EditText
+                android:id="@+id/et_hora_cita"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="55dp"
+                android:background="@android:color/white"
+                android:hint="🕒 Hora"
+                android:padding="12dp"
+                android:focusable="false"
+                android:clickable="true"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- SECCIÓN: NOTAS -->
+        <EditText
+            android:id="@+id/et_notas_cita"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@android:color/white"
+            android:hint="📝 Notas adicionales (ej. Dirección del veterinario)"
+            android:gravity="top|start"
+            android:padding="12dp"
+            android:inputType="textMultiLine"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- BOTÓN GUARDAR -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_guardar_cita"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Guardar Cita"
+            android:textSize="18sp"
+            app:cornerRadius="50dp"
+            app:backgroundTint="@color/amarillo"
+            android:textColor="@color/negrito"/>
+
+    </LinearLayout>
+</ScrollView>

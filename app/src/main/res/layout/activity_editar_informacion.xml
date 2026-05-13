@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Editar Perfil"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/negrito"
+            android:layout_marginTop="32dp"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_perfil_mascota_carnet"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:background="#E0E0E0"
+                android:padding="4dp"
+                android:src="@android:drawable/ic_menu_camera"
+                android:scaleType="centerInside"
+                app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
+                app:strokeColor="@color/Azulito"
+                app:strokeWidth="4dp"
+                android:layout_marginTop="22dp"/>
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@android:drawable/ic_menu_edit"
+                app:fabCustomSize="36dp"
+                app:tint="@color/negrito"
+                app:backgroundTint="@color/amarillo"
+                app:elevation="2dp"
+                android:layout_marginEnd="-5dp"
+                android:layout_marginBottom="-5dp"/>
+        </FrameLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu Información:"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Campo para el Nombre del Dueño -->
+                <EditText
+                    android:id="@+id/et_nombre_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre"
+                    android:inputType="textPersonName"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Campo para el Teléfono -->
+
+
+                <EditText
+                    android:id="@+id/et_correo_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Correo Electrónico"
+                    android:inputType="textEmailAddress"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:id="@+id/et_contrasena_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:textSize="16sp"
+                  />
+
+
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
+
+
+
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_guardar_cambios"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Guardar Cambios"
+            android:textSize="18sp"
+            android:textColor="@color/negrito"
+            app:cornerRadius="50dp"
+            app:elevation="4dp"
+            app:backgroundTint="@color/amarillo"/>
+
+    </LinearLayout>
+</ScrollView>
