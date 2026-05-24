@@ -1,15 +1,17 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+# Dependencias (esta carpeta es gigante, no se sube nunca)
+node_modules/
+
+# Variables de entorno (aquí están nuestras contraseñas, es el archivo más importante de proteger)
+.env
+
+# Archivos de registro (logs)
+logs
+*.log
+
+# Archivos del sistema operativo (basura)
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+Thumbs.db
+.gradle/
+.idea/caches/
+*.iml
 local.properties

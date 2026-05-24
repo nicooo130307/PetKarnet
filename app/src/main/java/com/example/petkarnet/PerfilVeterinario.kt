@@ -102,9 +102,6 @@ class PerfilVeterinario : AppCompatActivity() {
             // 4. Si todo está correcto, avanzamos al Dashboard
             if (formularioValido) {
                 println("¡Perfil de veterinario creado: $nombre!")
-
-            val intent = Intent(this, MenuVeterinario::class.java)
-            startActivity(intent)
             }
         }
     }

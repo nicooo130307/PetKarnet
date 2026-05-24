@@ -47,4 +47,18 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    // Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
+
+    // Firebase Cloud Messaging notificaciones
+    implementation("com.google.firebase:firebase-messaging-ktx")
+
+    // Firebase Storage para subir fotos de perros, comprobantes
+    implementation("com.google.firebase:firebase-storage-ktx")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    // Convertidor de JSON (Gson)
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // Interceptor para ver logs en consola
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

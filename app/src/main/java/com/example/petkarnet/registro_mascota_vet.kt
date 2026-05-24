@@ -205,8 +205,6 @@ class registro_mascota_vet : AppCompatActivity() {
 
             if (formularioValido) {
                 Toast.makeText(this, "¡Expediente médico de $nombre creado con éxito!", Toast.LENGTH_LONG).show()
-                val intent = Intent(this, Tipo_consulta::class.java)
-                startActivity(intent)
                 finish()
             }
         }
