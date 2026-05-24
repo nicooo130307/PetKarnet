@@ -14,11 +14,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Programar Nueva Cita"
+            android:text="Selecciona el motivo de la consulta"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/negrito"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="32dp"/>
 
         <!-- SECCIÓN: MOTIVO -->
         <com.google.android.material.card.MaterialCardView
@@ -44,85 +45,49 @@
                     android:textColor="@color/negrito"
                     android:layout_marginBottom="8dp"/>
 
-                <CheckBox
+                <RadioGroup
+                    android:id="@+id/rb_motivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <RadioButton
                     android:id="@+id/rb_motivo_vacuna"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="💉 Vacunación o Desparasitación"
                     app:buttonTint="@color/Azulito"/>
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/rb_motivo_estetica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🛁 Estética y Baño"
                     app:buttonTint="@color/Azulito"/>
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/rb_motivo_consulta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🩺 Consulta Médica General"
                     app:buttonTint="@color/Azulito"/>
+
+                </RadioGroup>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- SECCIÓN: FECHA Y HORA -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <!-- Campo de Fecha -->
-            <EditText
-                android:id="@+id/et_fecha_cita"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="55dp"
-                android:background="@android:color/white"
-                android:hint="📅 Fecha"
-                android:padding="12dp"
-                android:focusable="false"
-                android:clickable="true"
-                android:layout_marginEnd="8dp"/>
-
-            <!-- Campo de Hora -->
-            <EditText
-                android:id="@+id/et_hora_cita"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="55dp"
-                android:background="@android:color/white"
-                android:hint="🕒 Hora"
-                android:padding="12dp"
-                android:focusable="false"
-                android:clickable="true"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
-
-        <!-- SECCIÓN: NOTAS -->
-        <EditText
-            android:id="@+id/et_notas_cita"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@android:color/white"
-            android:hint="📝 Notas adicionales (ej. Dirección del veterinario)"
-            android:gravity="top|start"
-            android:padding="12dp"
-            android:inputType="textMultiLine"
-            android:layout_marginBottom="32dp"/>
 
         <!-- BOTÓN GUARDAR -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_guardar_cita"
+            android:id="@+id/btn_aceptar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Guardar Cita"
-            android:textSize="18sp"
+            android:text="Aceptar"
+            android:textSize="25sp"
             app:cornerRadius="50dp"
             app:backgroundTint="@color/amarillo"
-            android:textColor="@color/negrito"/>
+            android:textColor="@color/negrito"
+            android:layout_marginTop="25dp"/>
 
     </LinearLayout>
 </ScrollView>

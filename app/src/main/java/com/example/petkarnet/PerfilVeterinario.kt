@@ -1,5 +1,6 @@
 package com.example.petkarnet
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
@@ -101,7 +102,9 @@ class PerfilVeterinario : AppCompatActivity() {
             // 4. Si todo está correcto, avanzamos al Dashboard
             if (formularioValido) {
                 println("¡Perfil de veterinario creado: $nombre!")
-                // Aquí iría el Intent para mandarlo a su pantalla principal
+
+            val intent = Intent(this, MenuVeterinario::class.java)
+            startActivity(intent)
             }
         }
     }

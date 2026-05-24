@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -13,6 +14,7 @@ class Configuracion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion)
+        enableEdgeToEdge()
 
         // 1. Enlazamos las vistas
         val switchModoOscuro = findViewById<SwitchMaterial>(R.id.switch_modo_oscuro)

@@ -10,7 +10,10 @@
         android:id="@+id/nav_pacientes"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="Pacientes" />
-
+    <item
+        android:id="@+id/nav_consulta"
+        android:icon="@drawable/consulta"
+        android:title="Consulta" />
     <item
         android:id="@+id/nav_agenda"
         android:icon="@drawable/ic_hospital"
@@ -20,5 +23,6 @@
         android:id="@+id/nav_perfil_vet"
         android:icon="@drawable/ic_perfil"
         android:title="Clínica" />
+
 
 </menu>

@@ -32,9 +32,7 @@ class PerfilFragment : Fragment() {
         val btnCerrarSesion = view.findViewById<MaterialButton>(R.id.btn_cerrar_sesion)
 
         // 2. Lógica de "Mi Información"
-        opcionInfo.setOnClickListener {
-            Toast.makeText(requireContext(), "Abriendo edición de perfil...", Toast.LENGTH_SHORT).show()
-        }
+
 
         opcionInfo.setOnClickListener {
             val intent = Intent(requireContext(), mi_informacion::class.java)
@@ -67,6 +65,7 @@ class PerfilFragment : Fragment() {
         // 6. Lógica de "Cerrar Sesión" (Abre ventana de confirmación)
         btnCerrarSesion.setOnClickListener {
             mostrarDialogoCerrarSesion()
+
         }
     }
 
@@ -88,8 +87,11 @@ class PerfilFragment : Fragment() {
             .setTitle("Cerrar Sesión")
             .setMessage("¿Estás seguro de que deseas salir de tu cuenta, Nicolas?")
             .setPositiveButton("Sí, salir") { dialog, _ ->
-                // Aquí en el futuro borraremos los datos de sesión y regresaremos al Login
+
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
                 Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
+                requireActivity().finish()
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.dismiss()

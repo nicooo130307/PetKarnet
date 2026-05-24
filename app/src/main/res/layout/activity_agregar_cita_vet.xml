@@ -18,7 +18,8 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/negrito"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="32dp"/>
 
         <!-- SECCIÓN: MOTIVO -->
         <com.google.android.material.card.MaterialCardView
@@ -45,21 +46,21 @@
                     android:layout_marginBottom="8dp"/>
 
                 <CheckBox
-                    android:id="@+id/rb_motivo_vacuna"
+                    android:id="@+id/cb_motivo_vacuna"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="💉 Vacunación o Desparasitación"
                     app:buttonTint="@color/Azulito"/>
 
                 <CheckBox
-                    android:id="@+id/rb_motivo_estetica"
+                    android:id="@+id/cb_motivo_estetica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🛁 Estética y Baño"
                     app:buttonTint="@color/Azulito"/>
 
                 <CheckBox
-                    android:id="@+id/rb_motivo_consulta"
+                    android:id="@+id/cb_motivo_consulta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🩺 Consulta Médica General"
@@ -107,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@android:color/white"
-            android:hint="📝 Notas adicionales (ej. Dirección del veterinario)"
+            android:hint="📝 Notas adicionales (ej. Dirección del paciente)"
             android:gravity="top|start"
             android:padding="12dp"
             android:inputType="textMultiLine"

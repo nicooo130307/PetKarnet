@@ -14,10 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetKarnet">
         <activity
+            android:name=".Estetica"
+            android:exported="false" />
+        <activity
+            android:name=".Vacuna"
+            android:exported="false" />
+        <activity
+            android:name=".Consulta"
+            android:exported="false" />
+        <activity
+            android:name=".Tipo_consulta"
+            android:exported="false" />
+        <activity
+            android:name=".AgregarCitaVet"
+            android:exported="false" />
+        <activity
             android:name=".registro_mascota_vet"
             android:exported="false" />
         <activity
-            android:name=".MenuDueno"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Configuracion"
@@ -38,7 +53,7 @@
             android:name=".EditarCarnet"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MenuDueno"
             android:exported="false" />
         <activity
             android:name=".PerfilVeterinario"

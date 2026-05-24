@@ -201,6 +201,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cerrar_sesion"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Cerrar Sesión"
@@ -209,7 +210,9 @@
             app:strokeColor="#D32F2F"
             app:strokeWidth="1dp"
             app:cornerRadius="50dp"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 </ScrollView>

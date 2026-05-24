@@ -30,6 +30,12 @@ class MenuVeterinario : AppCompatActivity() {
                     reemplazarFragmento(PacientesFragment())
                     true
                 }
+
+                R.id.nav_consulta -> {
+                    // Aquí iría el fragmento de la consulta
+                    reemplazarFragmento(ConsultaFragment())
+                    true
+                }
                 R.id.nav_agenda -> {
                     // Aquí iría el fragmento del calendario
                     reemplazarFragmento(AgendaFragment())

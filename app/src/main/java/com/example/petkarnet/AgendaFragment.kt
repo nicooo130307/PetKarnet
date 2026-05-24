@@ -1,59 +1,65 @@
 package com.example.petkarnet
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AgendaFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AgendaFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_agenda, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AgendaFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AgendaFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 1. Enlazamos las vistas
+        val calendarAgenda = view.findViewById<CalendarView>(R.id.calendar_agenda)
+        val cardCita1 = view.findViewById<MaterialCardView>(R.id.card_cita_1)
+        val cardCita2 = view.findViewById<MaterialCardView>(R.id.card_cita_2)
+        val cardCita3 = view.findViewById<MaterialCardView>(R.id.card_cita_3)
+        val fabNuevaCita = view.findViewById<FloatingActionButton>(R.id.fab_nueva_cita)
+
+        // 2. Lógica del Calendario: Detectar cuando el doctor cambia de día
+        calendarAgenda.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            // Nota: En Java/Kotlin, los meses van del 0 al 11 (Enero es 0, Diciembre es 11).
+            // Por eso le sumamos 1 al mes para mostrarlo correctamente al usuario.
+            val mesReal = month + 1
+            Toast.makeText(requireContext(), "Cargando citas del $dayOfMonth/$mesReal/$year...", Toast.LENGTH_SHORT).show()
+
+            // En el futuro, aquí consultarás tu base de datos MySQL para traer las citas de esa fecha exacta
+        }
+
+        // 3. Lógica de las Tarjetas de Citas
+        cardCita1.setOnClickListener {
+            Toast.makeText(requireContext(), "Viendo detalles de cita: Max", Toast.LENGTH_SHORT).show()
+        }
+
+        cardCita2.setOnClickListener {
+            Toast.makeText(requireContext(), "Viendo detalles de cita: Luna", Toast.LENGTH_SHORT).show()
+        }
+
+        cardCita3.setOnClickListener {
+            Toast.makeText(requireContext(), "Viendo detalles de cirugía: Rocky", Toast.LENGTH_SHORT).show()
+        }
+
+        // 4. Lógica del Botón "+" (Agendar)
+        fabNuevaCita.setOnClickListener {
+            Toast.makeText(requireContext(), "Abriendo formulario para agendar cita...", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(requireContext(), AgregarCitaVet::class.java)
+            startActivity(intent)
+
+        }
     }
 }
