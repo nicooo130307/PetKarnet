@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 import android.content.Context
 
 object RetrofitClient {
-    private const val BASE_URL = "http://10.0.2.2:3000/"  //  localhost x el momentp
+    private const val BASE_URL =  "https://petkarnet.onrender.com/"  //  localhost x el momentp
 
     fun create(context: Context): ApiService {
         val logging = HttpLoggingInterceptor().apply {
