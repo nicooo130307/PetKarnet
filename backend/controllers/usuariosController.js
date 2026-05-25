@@ -93,6 +93,13 @@ exports.perfil = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
+        const usuario = usuarios[0];
+
+        // Convertir explícitamente los campos TINYINT(1) a booleanos
+        usuario.verificado = usuario.verificado === 1;
+        usuario.activo = usuario.activo === 1;
+
+
     res.json(usuarios[0]);
   } catch (error) {
     console.error('Error al obtener perfil:', error);

@@ -1,6 +1,6 @@
 package com.example.petkarnet
 
-
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,16 @@ import com.google.android.material.button.MaterialButton
 
 class PerfilFragment : Fragment() {
 
+
+    private lateinit var tvNombreUsuario: TextView
+    private lateinit var tvRolUsuario: TextView
+    private lateinit var tvContadorMascotas: TextView
+    private lateinit var tvContadorVacunas: TextView
+    private lateinit var tvContadorCitas: TextView
+
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,12 +34,24 @@ class PerfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Buscamos todos los elementos de la vista por su ID
+        tvNombreUsuario = view.findViewById(R.id.tv_nombre_usuario)
+        tvRolUsuario = view.findViewById(R.id.tv_rol_usuario)
+        tvContadorMascotas = view.findViewById(R.id.tv_contador_mascotas)
+        tvContadorVacunas = view.findViewById(R.id.tv_contador_vacunas)
+        tvContadorCitas = view.findViewById(R.id.tv_contador_citas)
+
+
+
         val opcionInfo = view.findViewById<TextView>(R.id.opcion_info)
         val opcionMascotas = view.findViewById<TextView>(R.id.opcion_mascotas)
         val opcionAcerca = view.findViewById<TextView>(R.id.opcion_acerca)
         val opcionConfig = view.findViewById<TextView>(R.id.opcion_configuracion)
         val btnCerrarSesion = view.findViewById<MaterialButton>(R.id.btn_cerrar_sesion)
+
+
+        cargarDatosUsuario()
+
+
 
         // 2. Lógica de "Mi Información"
         opcionInfo.setOnClickListener {
@@ -71,6 +93,28 @@ class PerfilFragment : Fragment() {
         }
     }
 
+
+    private fun cargarDatosUsuario() {
+        val prefs = requireContext().getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
+        val nombre = prefs.getString("usuario_nombre", "Usuario") ?: "Usuario"
+        val rol = prefs.getString("usuario_rol", "dueño") ?: "dueño"
+
+        // Mostrar nombre
+        tvNombreUsuario.text = nombre
+
+        // Mostrar rol de forma amigable
+        tvRolUsuario.text = when (rol) {
+            "veterinario" -> "Veterinario"
+            "admin" -> "Administrador"
+            else -> "Dueño Propietario"
+        }
+
+        // (Opcional) Aquí podrías llamar a la API para obtener los contadores reales
+        // cargarContadores()
+    }
+
+
+
     // --- FUNCIONES PARA CREAR LAS VENTANAS EMERGENTES ---
 
     private fun mostrarDialogoAcercaDe() {
@@ -85,20 +129,24 @@ class PerfilFragment : Fragment() {
     }
 
     private fun mostrarDialogoCerrarSesion() {
+        val prefs = requireContext().getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
+        val nombre = prefs.getString("usuario_nombre", "Usuario") ?: "Usuario"
+
         AlertDialog.Builder(requireContext())
             .setTitle("Cerrar Sesión")
-            .setMessage("¿Estás seguro de que deseas salir de tu cuenta, Nicolas?")
+            .setMessage("¿Estás seguro de que deseas salir de tu cuenta, $nombre?")
             .setPositiveButton("Sí, salir") { dialog, _ ->
+                // Limpiar SharedPreferences
+                prefs.edit().clear().apply()
 
+                // Redirigir al login (MainActivity u otra)
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-                Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
                 requireActivity().finish()
-
+                Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancelar") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 }
