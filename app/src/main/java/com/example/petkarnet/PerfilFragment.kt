@@ -89,7 +89,12 @@ class PerfilFragment : Fragment() {
             .setTitle("Cerrar Sesión")
             .setMessage("¿Estás seguro de que deseas salir de tu cuenta, Nicolas?")
             .setPositiveButton("Sí, salir") { dialog, _ ->
+
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
                 Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
+                requireActivity().finish()
+
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.dismiss()

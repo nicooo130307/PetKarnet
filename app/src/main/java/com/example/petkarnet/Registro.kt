@@ -1,19 +1,32 @@
 package com.example.petkarnet
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.*
+import androidx.lifecycle.lifecycleScope
+import com.example.petkarnet.data.model.RegistroRequest
+import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import android.util.Patterns
-import android.content.Intent
+import kotlinx.coroutines.launch
+import com.example.petkarnet.data.model.LoginRequest
+
 
 class Registro : AppCompatActivity() {
+
+    // Declarar el ProgressBar como variable de clase
+    private lateinit var progressBar: ProgressBar
+    private lateinit var btnRegistrar: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro)
+
         val tilNombre = findViewById<TextInputLayout>(R.id.til_nombre)
         val etNombre = findViewById<TextInputEditText>(R.id.et_nombre)
 
@@ -26,17 +39,18 @@ class Registro : AppCompatActivity() {
         val tilConfirmar = findViewById<TextInputLayout>(R.id.til_confirmar_password)
         val etConfirmar = findViewById<TextInputEditText>(R.id.et_confirmar_password)
 
-        val btnRegistrar = findViewById<Button>(R.id.btn_registrar_usuario)
+        val rgTipoUsuario = findViewById<RadioGroup>(R.id.rg_tipo_usuario)
 
-        // 2. Escuchamos el clic del botón
+        btnRegistrar = findViewById<Button>(R.id.btn_registrar_usuario)
+        progressBar = findViewById<ProgressBar>(R.id.progress_bar)
+
         btnRegistrar.setOnClickListener {
-
-            // Limpiamos los errores anteriores antes de volver a validar
+            // Limpiar errores anteriores
             tilNombre.error = null
             tilCorreo.error = null
             tilPassword.error = null
             tilConfirmar.error = null
-            // Extraemos lo que el usuario escribió (quitando espacios en blanco a los lados)
+
             val nombre = etNombre.text.toString().trim()
             val correo = etCorreo.text.toString().trim()
             val password = etPassword.text.toString().trim()
@@ -44,13 +58,12 @@ class Registro : AppCompatActivity() {
 
             var formularioValido = true
 
-            // 3. Validamos el Nombre
+            // Validaciones (tus mismas validaciones de antes)
             if (nombre.isEmpty()) {
                 tilNombre.error = "Por favor, ingresa tu nombre completo"
                 formularioValido = false
             }
 
-            // 4. Validamos el Correo (Que no esté vacío y tenga formato de email)
             if (correo.isEmpty()) {
                 tilCorreo.error = "El correo es obligatorio"
                 formularioValido = false
@@ -59,7 +72,6 @@ class Registro : AppCompatActivity() {
                 formularioValido = false
             }
 
-            // 5. Validamos la Contraseña (Que no esté vacía y tenga mínimo 6 caracteres)
             if (password.isEmpty()) {
                 tilPassword.error = "La contraseña es obligatoria"
                 formularioValido = false
@@ -76,34 +88,94 @@ class Registro : AppCompatActivity() {
                 tilPassword.error = "Las contraseñas no coinciden"
                 formularioValido = false
             }
-            // 6. Si todo está perfecto, avanzamos
+
+            if (rgTipoUsuario.checkedRadioButtonId == -1) {
+                Toast.makeText(this, "Selecciona si eres dueño o veterinario", Toast.LENGTH_SHORT).show()
+                formularioValido = false
+            }
+
             if (formularioValido) {
-
-                println("¡Todo correcto! Listo para registrar a $nombre")
-                val rgTipoUsuario = findViewById<RadioGroup>(R.id.rg_tipo_usuario)
-
-                // Verificamos cuál de los dos botones está seleccionado
-                if (rgTipoUsuario.checkedRadioButtonId == R.id.rb_dueno) {
-
-                    // Viaje para el DUEÑO
-                    val intentDueno = Intent(this@Registro, RegistroMascota::class.java)
-                    startActivity(intentDueno)
-                    finish() // Cerramos la pantalla de registro para que no pueda volver atrás con el botón del celular
-
-                } else if (rgTipoUsuario.checkedRadioButtonId == R.id.rb_veterinario) {
-
-                    // Viaje para el VETERINARIO
-                    val intentVeterinario = Intent(this@Registro, PerfilVeterinario::class.java)
-                    startActivity(intentVeterinario)
-                    finish()
+                val rol = when (rgTipoUsuario.checkedRadioButtonId) {
+                    R.id.rb_dueno -> "dueño"
+                    R.id.rb_veterinario -> "veterinario"
+                    else -> "dueño"
                 }
 
+                // Llamar al backend con indicador de carga
+                registrarUsuario(nombre, correo, password, rol)
             }
         }
     }
+
+    private fun registrarUsuario(nombre: String, email: String, password: String, rol: String) {
+        mostrarCarga(true)
+
+        val request = RegistroRequest(nombre, email, password, rol)
+
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.create(this@Registro)
+                val respuestaRegistro = api.registro(request)
+
+                if (respuestaRegistro.isSuccessful) {
+                    // Registro exitoso, ahora hacemos login automático
+                    val respuestaLogin = api.login(LoginRequest(email, password))
+
+                    if (respuestaLogin.isSuccessful) {
+                        val body = respuestaLogin.body()
+                        if (body != null) {
+                            // Guardar token y datos del usuario
+                            val prefs = getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
+                            prefs.edit().putString("jwt_token", body.token).apply()
+                            prefs.edit().putInt("usuario_id", body.usuario.id).apply()
+                            prefs.edit().putString("usuario_rol", body.usuario.rol).apply()
+                            prefs.edit().putString("usuario_nombre", body.usuario.nombre).apply()
+
+                            mostrarCarga(false)
+                            Toast.makeText(this@Registro, "¡Registro exitoso!", Toast.LENGTH_SHORT).show()
+
+                            // Navegar según el rol
+                            val intent = when (rol) {
+                                "dueño" -> Intent(this@Registro, RegistroMascota::class.java)
+                                "veterinario" -> Intent(this@Registro, PerfilVeterinario::class.java)
+                                else -> Intent(this@Registro, Inicio_Sesion::class.java)
+                            }
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            mostrarCarga(false)
+                            mostrarError("Error al obtener los datos del usuario")
+                        }
+                    } else {
+                        mostrarCarga(false)
+                        mostrarError("Error al iniciar sesión automáticamente: ${respuestaLogin.code()}")
+                    }
+                } else {
+                    mostrarCarga(false)
+                    val errorBody = respuestaRegistro.errorBody()?.string()
+                    mostrarError("Error al registrarse: $errorBody")
+                }
+            } catch (e: Exception) {
+                mostrarCarga(false)
+                mostrarError("Error de conexión: ${e.message}")
+            }
+        }
+    }
+
+    // Función para mostrar u ocultar el ProgressBar y controlar el botón
+    private fun mostrarCarga(mostrar: Boolean) {
+        if (mostrar) {
+            progressBar.visibility = android.view.View.VISIBLE   // Mostrar círculo
+            btnRegistrar.isEnabled = false                      // Deshabilitar botón
+            btnRegistrar.text = "Registrando..."                // Cambiar texto
+        } else {
+            progressBar.visibility = android.view.View.GONE     // Ocultar círculo
+            btnRegistrar.isEnabled = true                       // Habilitar botón
+            btnRegistrar.text = "Registrar"                     // Restaurar texto
+        }
+    }
+
+    private fun mostrarError(mensaje: String) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+    }
 }
-
-
-
-
-

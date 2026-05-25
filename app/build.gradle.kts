@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.petkarnet"
-    compileSdk = 34
+    compileSdk = 36
 
 
     defaultConfig {
@@ -47,12 +47,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     // Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 
-    // Firebase Cloud Messaging notificaciones
+    // 2. Declarar las librerías SIN versión (el BoM se encarga de asignarlas)
     implementation("com.google.firebase:firebase-messaging-ktx")
-
-    // Firebase Storage para subir fotos de perros, comprobantes
     implementation("com.google.firebase:firebase-storage-ktx")
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
@@ -60,4 +58,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     // Interceptor para ver logs en consola
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 }

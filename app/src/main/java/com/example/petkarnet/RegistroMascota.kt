@@ -1,6 +1,7 @@
 package com.example.petkarnet
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,66 +9,55 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputLayout
 import androidx.activity.result.contract.ActivityResultContracts
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.petkarnet.data.model.MascotaRequest
+import com.example.petkarnet.data.network.RetrofitClient
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.launch
 
 data class RazaMascota(val nombre: String, val imagenAId: Int) {
-    // Sobrescribimos el toString para que al seleccionar, solo ponga el nombre en la caja
     override fun toString(): String {
         return nombre
     }
 }
 
-
 class RegistroMascota : AppCompatActivity() {
 
     private var uriFotoSeleccionada: Uri? = null
+    private lateinit var progressBar: ProgressBar
+    private lateinit var btnGuardar: com.google.android.material.button.MaterialButton
 
     private val abrirGaleria = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
-            // Si el usuario sí eligió una foto, la guardamos
             uriFotoSeleccionada = uri
-
-            // Enlazamos la imagen y se la asignamos
             val ivFotoMascota = findViewById<com.google.android.material.imageview.ShapeableImageView>(R.id.iv_foto_mascota)
             ivFotoMascota.setImageURI(uri)
-
-            // Pro-Tip: Cambiamos cómo se ajusta la imagen para que llene el cuadro
             ivFotoMascota.scaleType = ImageView.ScaleType.CENTER_CROP
         }
-
-        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro_mascota)
         enableEdgeToEdge()
-
+        setContentView(R.layout.activity_registro_mascota)
 
         val ivFotoMascota = findViewById<ImageView>(R.id.iv_foto_mascota)
-
         ivFotoMascota.setOnClickListener {
-            // Lanzamos el contrato pidiendo específicamente imágenes
             abrirGaleria.launch("image/*")
         }
 
-
-        // 1. Enlazamos las vistas
-        val autoCompleteRaza = findViewById<AutoCompleteTextView>(R.id.et_raza)
-        val rgEspecie = findViewById<RadioGroup>(R.id.rg_especie)
-
+        progressBar = findViewById(R.id.progress_bar)
+        btnGuardar = findViewById(R.id.btn_guardar_mascota)
 
         val tilNombre = findViewById<TextInputLayout>(R.id.til_nombre_mascota)
         val etNombre = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_mascota)
 
         val tilRaza = findViewById<TextInputLayout>(R.id.til_raza)
-        // OJO AQUÍ: Raza ahora es un AutoCompleteTextView
         val etRaza = findViewById<AutoCompleteTextView>(R.id.et_raza)
 
         val tilSexo = findViewById<TextInputLayout>(R.id.til_sexo)
-        // OJO AQUÍ: Sexo también es un AutoCompleteTextView
         val etSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo)
 
         val tilColor = findViewById<TextInputLayout>(R.id.til_color)
@@ -79,7 +69,6 @@ class RegistroMascota : AppCompatActivity() {
         val tilPeso = findViewById<TextInputLayout>(R.id.til_peso)
         val etPeso = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso)
 
-
         val tilNombreDueno = findViewById<TextInputLayout>(R.id.til_nombre_dueno)
         val etNombreDueno = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_dueno)
 
@@ -89,14 +78,8 @@ class RegistroMascota : AppCompatActivity() {
         val tilDireccion = findViewById<TextInputLayout>(R.id.til_direccion_dueno)
         val etDireccion = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_dueno)
 
-
-        val btnGuardar = findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_guardar_mascota)
-
-
-
         btnGuardar.setOnClickListener {
-
-            // Limpiamos los mensajes de error previos
+            // Limpiar errores previos
             tilNombre.error = null
             tilRaza.error = null
             tilSexo.error = null
@@ -107,8 +90,6 @@ class RegistroMascota : AppCompatActivity() {
             tilTelefono.error = null
             tilDireccion.error = null
 
-
-            // Extraemos lo que el usuario escribió o seleccionó
             val nombre = etNombre.text.toString().trim()
             val raza = etRaza.text.toString().trim()
             val sexo = etSexo.text.toString().trim()
@@ -121,7 +102,6 @@ class RegistroMascota : AppCompatActivity() {
 
             var formularioValido = true
 
-            // 3. Validaciones individuales
             if (nombre.isEmpty()) {
                 tilNombre.error = "Ingresa el nombre de la mascota"
                 formularioValido = false
@@ -152,7 +132,6 @@ class RegistroMascota : AppCompatActivity() {
                 formularioValido = false
             }
 
-
             if (nombreDueno.isEmpty()) {
                 tilNombreDueno.error = "Ingresa el nombre del responsable"
                 formularioValido = false
@@ -168,25 +147,21 @@ class RegistroMascota : AppCompatActivity() {
                 formularioValido = false
             }
 
-
             if (formularioValido) {
-                // Aquí en el futuro enviaremos esto a la base de datos
-                println("¡Perfil creado con éxito para $nombre!")
-                println("Datos: $raza, $sexo, $color, $edad, $peso Kg")
+                // Determinar especie
+                val rgEspecie = findViewById<RadioGroup>(R.id.rg_especie)
+                val especie = when (rgEspecie.checkedRadioButtonId) {
+                    R.id.rb_perro -> "perro"
+                    R.id.rb_gato -> "gato"
+                    else -> "otro"
+                }
 
-                val intent = android.content.Intent(this, MenuDueno::class.java)
-
-                // 2. Iniciamos el viaje
-                startActivity(intent)
-
-                // 3. (Pro-Tip) Destruimos la pantalla de registro
-                finish()
+                // Llamar al backend
+                guardarMascota(nombre, especie, raza, edad)
             }
         }
 
-
-
-        // 2. Creamos nuestras listas de razas
+        // Configurar razas
         val razasPerro = listOf(
             RazaMascota("Mestizo (Sin raza específica)", R.drawable.mestizo),
             RazaMascota("Pug", R.drawable.pug),
@@ -200,12 +175,12 @@ class RegistroMascota : AppCompatActivity() {
             RazaMascota("Schnauzer", R.drawable.schnauzer),
             RazaMascota("Pitbull", R.drawable.pitbull),
             RazaMascota("Yorkshire Terrier", R.drawable.terrier),
-            RazaMascota( "Otro...", R.drawable.otro)
+            RazaMascota("Otro...", R.drawable.otro)
         )
 
         val razasGato = listOf(
             RazaMascota("Mestizo (Sin raza específica)", R.drawable.mestizon),
-            RazaMascota("Siamés",R.drawable.siames),
+            RazaMascota("Siamés", R.drawable.siames),
             RazaMascota("Persa", R.drawable.persa),
             RazaMascota("Maine Coon", R.drawable.maine_coon),
             RazaMascota("Bengala", R.drawable.bengala),
@@ -216,41 +191,20 @@ class RegistroMascota : AppCompatActivity() {
             RazaMascota("British Shorthair", R.drawable.british_shorthair),
             RazaMascota("Gato Europeo", R.drawable.gato_europeo),
             RazaMascota("Munchkin", R.drawable.munchkin),
-            RazaMascota( "Otro...", R.drawable.otron)
-
+            RazaMascota("Otro...", R.drawable.otron)
         )
 
+        val autoCompleteRaza = findViewById<AutoCompleteTextView>(R.id.et_raza)
+        val rgEspecie = findViewById<RadioGroup>(R.id.rg_especie)
 
-        // 1. Enlazamos la vista del Sexo
-        val autoCompleteSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo)
-
-        // 2. Creamos las opciones estandarizadas
-        val opcionesSexo = arrayOf("Macho", "Hembra")
-
-        // 3. Creamos un adaptador simple de texto (nativa de Android)
-        val adapterSexo = android.widget.ArrayAdapter(
-            this,
-            android.R.layout.simple_dropdown_item_1line,
-            opcionesSexo
-        )
-
-        // 4. Se lo conectamos a la caja de texto
-        autoCompleteSexo.setAdapter(adapterSexo)
-
-
-
-
-        // 3. Función auxiliar para cambiar el adaptador del menú
         fun actualizarMenuRazas(razas: List<RazaMascota>) {
             val adapter = RazaAdapter(this, razas)
             autoCompleteRaza.setAdapter(adapter)
             autoCompleteRaza.setText(razas[0].nombre, false)
         }
 
-        // 4. Inicializamos el menú con Perros (porque en tu XML rb_perro es checked="true")
         actualizarMenuRazas(razasPerro)
 
-        // 5. Escuchamos si el usuario cambia entre Perro y Gato
         rgEspecie.setOnCheckedChangeListener { _, checkedId ->
             if (checkedId == R.id.rb_perro) {
                 actualizarMenuRazas(razasPerro)
@@ -258,6 +212,63 @@ class RegistroMascota : AppCompatActivity() {
                 actualizarMenuRazas(razasGato)
             }
         }
+
+        // Configurar sexo
+        val autoCompleteSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo)
+        val opcionesSexo = arrayOf("Macho", "Hembra")
+        val adapterSexo = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesSexo)
+        autoCompleteSexo.setAdapter(adapterSexo)
+    }
+
+    private fun guardarMascota(nombre: String, especie: String, raza: String, edad: String) {
+        mostrarCarga(true)
+
+        val request = MascotaRequest(
+            nombre = nombre,
+            especie = especie,
+            raza = raza,
+            fecha_nacimiento = null, // Opcional, podrías calcularlo de la edad
+            foto = null              // Opcional, luego subimos la foto a Firebase
+        )
+
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.create(this@RegistroMascota)
+                val respuesta = api.crearMascota(request)
+
+                mostrarCarga(false)
+
+                if (respuesta.isSuccessful) {
+                    Toast.makeText(this@RegistroMascota, "¡Mascota registrada exitosamente!", Toast.LENGTH_LONG).show()
+
+                    val intent = Intent(this@RegistroMascota, MenuDueno::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val errorBody = respuesta.errorBody()?.string()
+                    mostrarError("Error al guardar: $errorBody")
+                }
+            } catch (e: Exception) {
+                mostrarCarga(false)
+                mostrarError("Error de conexión: ${e.message}")
+            }
+        }
+    }
+
+    private fun mostrarCarga(mostrar: Boolean) {
+        if (mostrar) {
+            progressBar.visibility = android.view.View.VISIBLE
+            btnGuardar.isEnabled = false
+            btnGuardar.text = "Guardando..."
+        } else {
+            progressBar.visibility = android.view.View.GONE
+            btnGuardar.isEnabled = true
+            btnGuardar.text = "Crear Perfil"
+        }
+    }
+
+    private fun mostrarError(mensaje: String) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
     }
 }
 
@@ -287,5 +298,3 @@ class RazaAdapter(context: Context, private val razas: List<RazaMascota>) :
         return fila
     }
 }
-
-
