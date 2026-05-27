@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.UploadCallback
+import com.cloudinary.android.callback.ErrorInfo
 import java.io.File
 import java.io.FileOutputStream
-import com.cloudinary.android.callback.ErrorInfo
 
 object CloudinaryManager {
 
@@ -17,7 +17,12 @@ object CloudinaryManager {
             "cloud_name" to CLOUD_NAME,
             "upload_preset" to "petkarnet_preset"
         )
-        MediaManager.init(context, config)
+        // Evita inicializar el MediaManager más de una vez si ya está listo
+        try {
+            MediaManager.init(context, config)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     // Subir imagen desde un File
@@ -26,6 +31,17 @@ object CloudinaryManager {
             .unsigned("petkarnet_preset")
             .option("folder", "petkarnet_app")
             .callback(object : UploadCallback {
+
+                // --- MÉTODOS AÑADIDOS PARA CORREGIR EL ERROR ---
+
+                override fun onStart(requestId: String) {
+                    // Se llama cuando comienza la subida
+                }
+
+                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                    // Se llama durante el progreso de la subida
+                }
+
                 override fun onSuccess(requestId: String, resultData: Map<*, *>) {
                     val url = resultData["secure_url"] as? String
                     callback(url)
@@ -34,6 +50,12 @@ object CloudinaryManager {
                 override fun onError(requestId: String, error: ErrorInfo) {
                     callback(null)
                 }
+
+                override fun onReschedule(requestId: String, error: ErrorInfo) {
+                    // Se llama si la subida se pausa y se reprograma (ej. por falta de red)
+                }
+
+                // ----------------------------------------------
             })
             .dispatch()
     }
