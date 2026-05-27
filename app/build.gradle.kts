@@ -49,8 +49,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
-
-
+    implementation("com.onesignal:OneSignal:[5.0.0, 5.99.99]")
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     // Convertidor de JSON (Gson)
