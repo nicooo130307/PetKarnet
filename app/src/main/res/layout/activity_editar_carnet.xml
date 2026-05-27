@@ -71,102 +71,320 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Historial de Vacunación"
+                    android:text="💉 Historial de Vacunación"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/negrito"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"/>
 
-                <!-- Vacuna 1: Rabia -->
                 <LinearLayout
+                    android:id="@+id/ll_lista_vacunas_guardadas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:orientation="vertical"
                     android:layout_marginBottom="12dp">
 
-                    <CheckBox
-                        android:id="@+id/cb_vacuna_rabia"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Rabia"
-                        android:buttonTint="@color/Azulito"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"/>
-
-                    <!-- Se oculta por defecto con visibility="gone" -->
-                    <EditText
-                        android:id="@+id/et_fecha_rabia"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:hint="DD/MM/AAAA"
-                        android:inputType="date"
+                        android:text="• Parvovirus (Aplicada: 10/Ene/25)"
                         android:textSize="14sp"
-                        android:visibility="gone"
-                        android:focusable="false"
-                        android:clickable="true"/>
+                        android:textColor="#666666"
+                        android:paddingBottom="8dp"/>
                 </LinearLayout>
 
-                <!-- Vacuna 2: Parvovirus -->
-                <LinearLayout
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_abrir_form_vacuna"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:text="+ Añadir Nueva Vacuna"
+                    android:textColor="@color/Azulito"
+                    app:strokeColor="@color/Azulito"
+                    app:cornerRadius="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_formulario_vacuna_dueno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombre de la Vacuna"
+                        app:boxStrokeColor="@color/Azulito"
+                        android:layout_marginBottom="16dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/et_nombre_vacuna_dueno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:popupBackground="@android:color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fotografía de la Etiqueta / Lote"
+                        android:textStyle="bold"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_foto_vacuna_dueno"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/Azulito"
+                        android:padding="20dp"
+                        android:src="@drawable/agrega_foto"
+                        android:scaleType="centerInside"
+                        app:shapeAppearanceOverlay="@style/EstiloFotoCircular" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:hint="Aplicación">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_fecha_app_vacuna"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:inputType="none"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:hint="Próxima">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_fecha_prox_vacuna"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:inputType="none"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Comentarios / Observaciones"
+                        app:boxStrokeColor="@color/Azulito"
+                        app:hintTextColor="@color/Azulito"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_comentarios_vacuna"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:lines="3"
+                            android:gravity="top"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_guardar_vacuna_individual"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Guardar Vacuna"
+                        app:backgroundTint="@color/amarillo"
+                        android:textColor="@color/negrito"
+                        app:cornerRadius="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💊 Historial de Desparasitación"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="16dp"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_lista_desp_guardadas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_marginBottom="12dp">
 
-                    <CheckBox
-                        android:id="@+id/cb_vacuna_parvo"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Parvovirus"
-                        android:buttonTint="@color/Azulito"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"/>
-
-                    <EditText
-                        android:id="@+id/et_fecha_parvo"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:hint="DD/MM/AAAA"
-                        android:inputType="date"
+                        android:text="• NexGard Spectra (Aplicada: 05/Mar/26)"
                         android:textSize="14sp"
-                        android:visibility="gone"
-                        android:focusable="false"
-                        android:clickable="true"/>
+                        android:textColor="#666666"
+                        android:paddingBottom="8dp"/>
                 </LinearLayout>
 
-                <!-- Vacuna 3: Desparasitación -->
-                <LinearLayout
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_abrir_form_desp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:text="+ Añadir Nuevo Producto"
+                    android:textColor="@color/Azulito"
+                    app:strokeColor="@color/Azulito"
+                    app:cornerRadius="8dp"
+                    android:layout_marginBottom="8dp"/>
 
-                    <CheckBox
-                        android:id="@+id/cb_desparasitacion"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                <LinearLayout
+                    android:id="@+id/ll_formulario_desp_dueno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Desparasitación"
-                        android:buttonTint="@color/Azulito"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"/>
+                        android:hint="Nombre del Producto"
+                        app:boxStrokeColor="@color/Azulito"
+                        android:layout_marginBottom="16dp">
 
-                    <EditText
-                        android:id="@+id/et_fecha_despara"
+                        <AutoCompleteTextView
+                            android:id="@+id/et_nombre_desp_dueno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:popupBackground="@android:color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fotografía de la Caja / Ampolleta"
+                        android:textStyle="bold"
+                        android:textColor="@color/negrito"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_foto_desp_dueno"
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:hint="DD/MM/AAAA"
-                        android:inputType="date"
-                        android:textSize="14sp"
-                        android:visibility="gone"
-                        android:focusable="false"
-                        android:clickable="true"/>
-                </LinearLayout>
+                        android:layout_height="120dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/Azulito"
+                        android:padding="20dp"
+                        android:src="@drawable/agrega_foto"
+                        android:scaleType="centerInside"
+                        app:shapeAppearanceOverlay="@style/EstiloFotoCircular" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:hint="Aplicación">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_fecha_app_desp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:inputType="none"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:hint="Próxima">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_fecha_prox_desp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:inputType="none"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Comentarios / Observaciones"
+                        app:boxStrokeColor="@color/Azulito"
+                        app:hintTextColor="@color/Azulito"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_comentarios_desp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:lines="3"
+                            android:gravity="top"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_guardar_desp_individual"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Guardar Desparasitación"
+                        app:backgroundTint="@color/amarillo"
+                        android:textColor="@color/negrito"
+                        app:cornerRadius="8dp"/>
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

@@ -16,26 +16,19 @@
         <activity
             android:name=".MenuAdmin"
             android:exported="false" />
-        <activity
-            android:name=".Estetica"
-            android:exported="false" />
-        <activity
-            android:name=".Vacuna"
-            android:exported="false" />
+
         <activity
             android:name=".Consulta"
             android:exported="false" />
-        <activity
-            android:name=".Tipo_consulta"
-            android:exported="false" />
+
         <activity
             android:name=".AgregarCitaVet"
             android:exported="false" />
         <activity
-            android:name=".registro_mascota_vet"
+            android:name=".RegistroMascota"
             android:exported="false" />
         <activity
-            android:name=".MenuVeterinario"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Configuracion"
@@ -56,13 +49,13 @@
             android:name=".EditarCarnet"
             android:exported="false" />
         <activity
-            android:name=".MenuDueno"
+            android:name=".MenuVeterinario"
             android:exported="false" />
         <activity
             android:name=".PerfilVeterinario"
             android:exported="false" />
         <activity
-            android:name=".RegistroMascota"
+            android:name=".registro_mascota_vet"
             android:exported="false" />
         <activity
             android:name=".Inicio_Sesion"
@@ -71,7 +64,7 @@
             android:name=".Registro"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MenuDueno"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

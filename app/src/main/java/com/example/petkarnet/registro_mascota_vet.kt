@@ -1,5 +1,6 @@
 package com.example.petkarnet
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -26,14 +27,16 @@ class registro_mascota_vet : AppCompatActivity() {
 
     private var uriFotoSeleccionada: Uri? = null
 
-    private val abrirGaleria = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            uriFotoSeleccionada = uri
-            val ivFotoPaciente = findViewById<com.google.android.material.imageview.ShapeableImageView>(R.id.iv_foto_paciente)
-            ivFotoPaciente.setImageURI(uri)
-            ivFotoPaciente.scaleType = ImageView.ScaleType.CENTER_CROP
+    private val abrirGaleria =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                uriFotoSeleccionada = uri
+                val ivFotoPaciente =
+                    findViewById<com.google.android.material.imageview.ShapeableImageView>(R.id.iv_foto_paciente)
+                ivFotoPaciente.setImageURI(uri)
+                ivFotoPaciente.scaleType = ImageView.ScaleType.CENTER_CROP
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,8 @@ class registro_mascota_vet : AppCompatActivity() {
         val rgEspecie = findViewById<RadioGroup>(R.id.rg_especie_paciente)
 
         val tilNombre = findViewById<TextInputLayout>(R.id.til_nombre_paciente)
-        val etNombre = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_paciente)
+        val etNombre =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_paciente)
 
         val tilRaza = findViewById<TextInputLayout>(R.id.til_raza_paciente)
         val etRaza = findViewById<AutoCompleteTextView>(R.id.et_raza_paciente)
@@ -61,22 +65,39 @@ class registro_mascota_vet : AppCompatActivity() {
         val etSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo_paciente)
 
         val tilColor = findViewById<TextInputLayout>(R.id.til_color_paciente)
-        val etColor = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_color_paciente)
+        val etColor =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_color_paciente)
 
         val tilEdad = findViewById<TextInputLayout>(R.id.til_edad_paciente)
-        val etEdad = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad_paciente)
+        val etEdad =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad_paciente)
 
         val tilPeso = findViewById<TextInputLayout>(R.id.til_peso_paciente)
-        val etPeso = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso_paciente)
+        val etPeso =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso_paciente)
 
         // 3. Enlazamos las vistas del Propietario
         val tilNombrePropietario = findViewById<TextInputLayout>(R.id.til_nombre_propietario)
         val tilTelefonoPropietario = findViewById<TextInputLayout>(R.id.til_telefono_propietario)
-        val etNombrePropietario = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_propietario)
-        val etTelefonoPropietario = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_telefono_propietario)
-        val etDireccionPropietario = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_propietario)
+        val etNombrePropietario =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_propietario)
+        val etTelefonoPropietario =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_telefono_propietario)
+        val etDireccionPropietario =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_propietario)
 
-        val btnCrearExpediente = findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_crear_expediente)
+
+        val etLadaTelefono = findViewById<AutoCompleteTextView>(R.id.et_lada_telefono)
+
+        val opcionesLada = arrayOf(
+            "🇲🇽 +52", "🇺🇸 +1", "🇨🇴 +57", "🇦🇷 +54", "🇪🇸 +34", "🇨🇱 +56", "🇵🇪 +51"
+        )
+        val adapterLada = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesLada)
+        etLadaTelefono.setAdapter(adapterLada)
+        etLadaTelefono.setText(opcionesLada[0], false)
+
+        val btnCrearExpediente =
+            findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_crear_expediente)
 
         // ==============================================================
         // CONFIGURACIÓN DE LISTAS Y ADAPTADORES (Igual que en Dueño)
@@ -118,7 +139,8 @@ class registro_mascota_vet : AppCompatActivity() {
         val autoCompleteSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo_paciente)
 
         val opcionesSexo = arrayOf("Macho", "Hembra")
-        val adapterSexo = ArrayAdapter(this,
+        val adapterSexo = ArrayAdapter(
+            this,
             android.R.layout.simple_dropdown_item_1line,
             opcionesSexo
         )
@@ -203,38 +225,55 @@ class registro_mascota_vet : AppCompatActivity() {
                 formularioValido = false
             }
 
+
             if (formularioValido) {
-                Toast.makeText(this, "¡Expediente médico de $nombre creado con éxito!", Toast.LENGTH_LONG).show()
+                val resultIntent = Intent()
+                resultIntent.putExtra(
+                    "nombre_mascota",
+                    nombre
+                ) // Mandamos el nombre que escribió el doctor
+
+                // Le decimos a Android que el resultado fue exitoso
+                setResult(Activity.RESULT_OK, resultIntent)
+
+                Toast.makeText(
+                    this,
+                    "¡Expediente médico de $nombre creado con éxito!",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                // Cerramos la pantalla y volvemos automáticamente a la consulta
                 finish()
             }
         }
     }
-}
 
-// Adaptador para el menú desplegable de razas
-class RazaVetAdapter(context: Context, private val razas: List<RazaMascotaVet>) :
-    ArrayAdapter<RazaMascotaVet>(context, 0, razas) {
+    // Adaptador para el menú desplegable de razas
+    class RazaVetAdapter(context: Context, private val razas: List<RazaMascotaVet>) :
+        ArrayAdapter<RazaMascotaVet>(context, 0, razas) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return crearFila(position, convertView, parent)
-    }
-
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return crearFila(position, convertView, parent)
-    }
-
-    private fun crearFila(position: Int, convertView: View?, parent: ViewGroup): View {
-        val fila = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_raza, parent, false)
-
-        val razaActual = getItem(position)
-        val ivFoto = fila.findViewById<ImageView>(R.id.iv_raza_foto)
-        val tvNombre = fila.findViewById<TextView>(R.id.tv_raza_nombre)
-
-        razaActual?.let {
-            ivFoto.setImageResource(it.imagenAId)
-            tvNombre.text = it.nombre
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            return crearFila(position, convertView, parent)
         }
 
-        return fila
+        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+            return crearFila(position, convertView, parent)
+        }
+
+        private fun crearFila(position: Int, convertView: View?, parent: ViewGroup): View {
+            val fila = convertView ?: LayoutInflater.from(context)
+                .inflate(R.layout.item_raza, parent, false)
+
+            val razaActual = getItem(position)
+            val ivFoto = fila.findViewById<ImageView>(R.id.iv_raza_foto)
+            val tvNombre = fila.findViewById<TextView>(R.id.tv_raza_nombre)
+
+            razaActual?.let {
+                ivFoto.setImageResource(it.imagenAId)
+                tvNombre.text = it.nombre
+            }
+
+            return fila
+        }
     }
 }

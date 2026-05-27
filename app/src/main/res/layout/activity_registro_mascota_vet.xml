@@ -66,7 +66,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@color/Azulito"
                     android:padding="20dp"
-                    android:src="@android:drawable/ic_menu_camera"
+                    android:src="@drawable/agrega_foto"
                     android:scaleType="centerInside"
                     app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
                     app:strokeColor="@color/AzulOscuro"
@@ -263,24 +263,49 @@
                         android:inputType="textCapWords" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_telefono_propietario"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_marginBottom="16dp"
-                    android:hint="Teléfono de Contacto"
-                    app:startIconDrawable="@android:drawable/ic_menu_call"
-                    app:startIconTint="#999999"
-                    app:boxStrokeColor="@color/Azulito"
-                    app:hintTextColor="@color/Azulito">
+                    android:baselineAligned="false">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_telefono_propietario"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_weight="3.5"
                         android:layout_height="wrap_content"
-                        android:inputType="phone" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginEnd="8dp"
+                        app:boxStrokeColor="@color/Azulito">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/et_lada_telefono"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="4dp"
+                            android:popupBackground="@android:color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_telefono_propietario"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_height="wrap_content"
+                        android:hint="Número de Teléfono"
+                        app:boxStrokeColor="@color/Azulito"
+                        app:hintTextColor="@color/negrito">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_telefono_propietario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_direccion_propietario"

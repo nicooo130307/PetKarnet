@@ -41,7 +41,7 @@
             android:layout_marginBottom="8dp"
             android:background="@color/Azulito"
             android:padding="4dp"
-            android:src="@android:drawable/ic_menu_camera"
+            android:src="@drawable/agrega_foto"
             android:scaleType="centerInside"
             app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
             app:strokeColor="@color/AzulOscuro"
@@ -240,23 +240,49 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo: Número de Teléfono -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_telefono_dueno"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginBottom="16dp"
-            android:hint="Número de Teléfono"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
+            android:baselineAligned="false">
 
-            <!-- inputType="phone" abrirá el teclado numérico directamente -->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_telefono_dueno"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_weight="3.5"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="8dp"
+                app:boxStrokeColor="@color/Azulito">
+
+                <AutoCompleteTextView
+                    android:id="@+id/et_lada_telefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="4dp"
+                    android:popupBackground="@android:color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_telefono_dueno"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_height="wrap_content"
+                android:hint="Número de Teléfono"
+                app:boxStrokeColor="@color/Azulito"
+                app:hintTextColor="@color/negrito">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_telefono_dueno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <!-- Campo: Dirección -->
         <com.google.android.material.textfield.TextInputLayout

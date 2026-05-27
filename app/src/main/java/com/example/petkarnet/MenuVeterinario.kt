@@ -33,7 +33,7 @@ class MenuVeterinario : AppCompatActivity() {
 
                 R.id.nav_consulta -> {
                     // Aquí iría el fragmento de la consulta
-                    reemplazarFragmento(ConsultaFragment())
+                    reemplazarFragmento(Consulta())
                     true
                 }
                 R.id.nav_agenda -> {

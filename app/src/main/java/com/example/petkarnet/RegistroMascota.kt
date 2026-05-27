@@ -83,6 +83,15 @@ class RegistroMascota : AppCompatActivity() {
         val tilDireccion = findViewById<TextInputLayout>(R.id.til_direccion_dueno)
         val etDireccion = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_dueno)
 
+        val etLadaTelefono = findViewById<AutoCompleteTextView>(R.id.et_lada_telefono)
+
+        val opcionesLada = arrayOf(
+            "🇲🇽 +52", "🇺🇸 +1", "🇨🇴 +57", "🇦🇷 +54", "🇪🇸 +34", "🇨🇱 +56", "🇵🇪 +51"
+        )
+        val adapterLada = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesLada)
+        etLadaTelefono.setAdapter(adapterLada)
+        etLadaTelefono.setText(opcionesLada[0], false)
+
         btnGuardar.setOnClickListener {
             // Limpiar errores previos
             tilNombre.error = null
