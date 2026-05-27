@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")   // ← Debe estar sin "apply false"
+
 
 }
 
@@ -48,12 +48,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    // Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 
-    // 2. Declarar las librerías SIN versión (el BoM se encarga de asignarlas)
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-storage")
+
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
@@ -65,5 +61,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    //cloudinary para imagenes
+    implementation("com.cloudinary:cloudinary-android:3.0.2")
 
 }

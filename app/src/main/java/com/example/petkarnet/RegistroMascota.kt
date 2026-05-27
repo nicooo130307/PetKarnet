@@ -16,9 +16,11 @@ import com.example.petkarnet.data.model.MascotaRequest
 import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.example.petkarnet.util.CloudinaryManager
+import java.io.File
+import com.cloudinary.android.callback.ErrorInfo
 import java.util.UUID
+
 
 
 
@@ -34,14 +36,16 @@ class RegistroMascota : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var btnGuardar: com.google.android.material.button.MaterialButton
 
-    private val abrirGaleria = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            uriFotoSeleccionada = uri
-            val ivFotoMascota = findViewById<com.google.android.material.imageview.ShapeableImageView>(R.id.iv_foto_mascota)
-            ivFotoMascota.setImageURI(uri)
-            ivFotoMascota.scaleType = ImageView.ScaleType.CENTER_CROP
+    private val abrirGaleria =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                uriFotoSeleccionada = uri
+                val ivFotoMascota =
+                    findViewById<com.google.android.material.imageview.ShapeableImageView>(R.id.iv_foto_mascota)
+                ivFotoMascota.setImageURI(uri)
+                ivFotoMascota.scaleType = ImageView.ScaleType.CENTER_CROP
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +61,8 @@ class RegistroMascota : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btn_guardar_mascota)
 
         val tilNombre = findViewById<TextInputLayout>(R.id.til_nombre_mascota)
-        val etNombre = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_mascota)
+        val etNombre =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_mascota)
 
         val tilRaza = findViewById<TextInputLayout>(R.id.til_raza)
         val etRaza = findViewById<AutoCompleteTextView>(R.id.et_raza)
@@ -66,22 +71,28 @@ class RegistroMascota : AppCompatActivity() {
         val etSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo)
 
         val tilColor = findViewById<TextInputLayout>(R.id.til_color)
-        val etColor = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_color)
+        val etColor =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_color)
 
         val tilEdad = findViewById<TextInputLayout>(R.id.til_edad)
-        val etEdad = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad)
+        val etEdad =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad)
 
         val tilPeso = findViewById<TextInputLayout>(R.id.til_peso)
-        val etPeso = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso)
+        val etPeso =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso)
 
         val tilNombreDueno = findViewById<TextInputLayout>(R.id.til_nombre_dueno)
-        val etNombreDueno = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_dueno)
+        val etNombreDueno =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_dueno)
 
         val tilTelefono = findViewById<TextInputLayout>(R.id.til_telefono_dueno)
-        val etTelefono = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_telefono_dueno)
+        val etTelefono =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_telefono_dueno)
 
         val tilDireccion = findViewById<TextInputLayout>(R.id.til_direccion_dueno)
-        val etDireccion = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_dueno)
+        val etDireccion =
+            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_dueno)
 
         val etLadaTelefono = findViewById<AutoCompleteTextView>(R.id.et_lada_telefono)
 
@@ -236,11 +247,18 @@ class RegistroMascota : AppCompatActivity() {
         // Configurar sexo
         val autoCompleteSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo)
         val opcionesSexo = arrayOf("Macho", "Hembra")
-        val adapterSexo = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesSexo)
+        val adapterSexo =
+            ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesSexo)
         autoCompleteSexo.setAdapter(adapterSexo)
     }
 
-    private fun guardarMascotaConFoto(nombre: String, especie: String, raza: String, edad: String, urlFoto: String?) {
+    private fun guardarMascotaConFoto(
+        nombre: String,
+        especie: String,
+        raza: String,
+        edad: String,
+        urlFoto: String?
+    ) {
         val request = MascotaRequest(
             nombre = nombre,
             especie = especie,
@@ -257,7 +275,11 @@ class RegistroMascota : AppCompatActivity() {
                 mostrarCarga(false)
 
                 if (respuesta.isSuccessful) {
-                    Toast.makeText(this@RegistroMascota, "¡Mascota registrada exitosamente!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@RegistroMascota,
+                        "¡Mascota registrada exitosamente!",
+                        Toast.LENGTH_LONG
+                    ).show()
                     val intent = Intent(this@RegistroMascota, MenuDueno::class.java)
                     startActivity(intent)
                     finish()
@@ -288,62 +310,61 @@ class RegistroMascota : AppCompatActivity() {
         Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
     }
 
-    private fun subirFotoYGuardar(uri: Uri, nombre: String, especie: String, raza: String, edad: String) {
-        val storageRef = FirebaseStorage.getInstance().reference
-        val fotoRef = storageRef.child("mascotas/${UUID.randomUUID()}.jpg")
+    private fun subirFotoYGuardar(
+        uri: Uri,
+        nombre: String,
+        especie: String,
+        raza: String,
+        edad: String
+    ) {
 
-        // Mostrar progreso mientras se sube
-        mostrarCarga(true)
-
-        fotoRef.putFile(uri)
-            .addOnSuccessListener { taskSnapshot ->
-                // Obtener URL de descarga
-                fotoRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                    val urlFoto = downloadUrl.toString()
-                    // Ya tenemos la URL, ahora guardar la mascota con esa foto
-                    guardarMascotaConFoto(nombre, especie, raza, edad, urlFoto)
-                }.addOnFailureListener {
-                    mostrarCarga(false)
-                    mostrarError("Error al obtener URL de la foto")
-                }
-            }
-            .addOnFailureListener {
-                mostrarCarga(false)
-                mostrarError("Error al subir la foto")
-            }
-            .addOnProgressListener { taskSnapshot ->
-                // Opcional: mostrar porcentaje de subida
-                val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount)
-                // Podrías poner un ProgressBar con progreso, pero el indeterminado sirve.
-            }
-    }
-
-
-}
-
-class RazaAdapter(context: Context, private val razas: List<RazaMascota>) :
-    ArrayAdapter<RazaMascota>(context, 0, razas) {
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return crearFila(position, convertView, parent)
-    }
-
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return crearFila(position, convertView, parent)
-    }
-
-    private fun crearFila(position: Int, convertView: View?, parent: ViewGroup): View {
-        val fila = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_raza, parent, false)
-
-        val razaActual = getItem(position)
-        val ivFoto = fila.findViewById<ImageView>(R.id.iv_raza_foto)
-        val tvNombre = fila.findViewById<TextView>(R.id.tv_raza_nombre)
-
-        razaActual?.let {
-            ivFoto.setImageResource(it.imagenAId)
-            tvNombre.text = it.nombre
+        val imageFile = CloudinaryManager.getFileFromUri(this, uri)
+        if (imageFile == null) {
+            mostrarError("No se pudo acceder a la imagen")
+            return
         }
 
-        return fila
+
+        mostrarCarga(true)
+
+        // subir la imagen con cloudinary
+        CloudinaryManager.uploadImage(imageFile) { url ->
+            mostrarCarga(false) // ocultar la carga cuando termine (éxito o error)
+            if (url != null) {
+                // Se obtuvo la URL de la foto, ahora guardar la mascota con esa URL
+                guardarMascotaConFoto(nombre, especie, raza, edad, url)
+            } else {
+                mostrarError("Error al subir la foto")
+            }
+        }
+    }
+
+    class RazaAdapter(context: Context, private val razas: List<RazaMascota>) :
+        ArrayAdapter<RazaMascota>(context, 0, razas) {
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            return crearFila(position, convertView, parent)
+        }
+
+        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+            return crearFila(position, convertView, parent)
+        }
+
+        private fun crearFila(position: Int, convertView: View?, parent: ViewGroup): View {
+            val fila =
+                convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.item_raza, parent, false)
+
+            val razaActual = getItem(position)
+            val ivFoto = fila.findViewById<ImageView>(R.id.iv_raza_foto)
+            val tvNombre = fila.findViewById<TextView>(R.id.tv_raza_nombre)
+
+            razaActual?.let {
+                ivFoto.setImageResource(it.imagenAId)
+                tvNombre.text = it.nombre
+            }
+
+            return fila
+        }
     }
 }
