@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services")   // ← Debe estar sin "apply false"
+
 }
 
 android {
@@ -50,8 +52,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 
     // 2. Declarar las librerías SIN versión (el BoM se encarga de asignarlas)
-    implementation("com.google.firebase:firebase-messaging-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-storage")
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     // Convertidor de JSON (Gson)
@@ -60,4 +63,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 }

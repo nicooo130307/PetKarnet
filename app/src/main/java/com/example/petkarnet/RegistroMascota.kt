@@ -16,6 +16,11 @@ import com.example.petkarnet.data.model.MascotaRequest
 import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.util.UUID
+
+
 
 data class RazaMascota(val nombre: String, val imagenAId: Int) {
     override fun toString(): String {
@@ -156,8 +161,14 @@ class RegistroMascota : AppCompatActivity() {
                     else -> "otro"
                 }
 
+                if (uriFotoSeleccionada != null) {
+                    subirFotoYGuardar(uriFotoSeleccionada!!, nombre, especie, raza, edad)
+                } else {
+                    // Si no hay foto, guardar directamente con foto = null (o vacío)
+                    guardarMascotaConFoto(nombre, especie, raza, edad, null)
+                }
+
                 // Llamar al backend
-                guardarMascota(nombre, especie, raza, edad)
             }
         }
 
@@ -220,15 +231,13 @@ class RegistroMascota : AppCompatActivity() {
         autoCompleteSexo.setAdapter(adapterSexo)
     }
 
-    private fun guardarMascota(nombre: String, especie: String, raza: String, edad: String) {
-        mostrarCarga(true)
-
+    private fun guardarMascotaConFoto(nombre: String, especie: String, raza: String, edad: String, urlFoto: String?) {
         val request = MascotaRequest(
             nombre = nombre,
             especie = especie,
             raza = raza,
-            fecha_nacimiento = null, // Opcional, podrías calcularlo de la edad
-            foto = null              // Opcional, luego subimos la foto a Firebase
+            fecha_nacimiento = edad, // Estás usando el campo edad como fecha de nacimiento
+            foto = urlFoto
         )
 
         lifecycleScope.launch {
@@ -240,7 +249,6 @@ class RegistroMascota : AppCompatActivity() {
 
                 if (respuesta.isSuccessful) {
                     Toast.makeText(this@RegistroMascota, "¡Mascota registrada exitosamente!", Toast.LENGTH_LONG).show()
-
                     val intent = Intent(this@RegistroMascota, MenuDueno::class.java)
                     startActivity(intent)
                     finish()
@@ -270,6 +278,38 @@ class RegistroMascota : AppCompatActivity() {
     private fun mostrarError(mensaje: String) {
         Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
     }
+
+    private fun subirFotoYGuardar(uri: Uri, nombre: String, especie: String, raza: String, edad: String) {
+        val storageRef = FirebaseStorage.getInstance().reference
+        val fotoRef = storageRef.child("mascotas/${UUID.randomUUID()}.jpg")
+
+        // Mostrar progreso mientras se sube
+        mostrarCarga(true)
+
+        fotoRef.putFile(uri)
+            .addOnSuccessListener { taskSnapshot ->
+                // Obtener URL de descarga
+                fotoRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                    val urlFoto = downloadUrl.toString()
+                    // Ya tenemos la URL, ahora guardar la mascota con esa foto
+                    guardarMascotaConFoto(nombre, especie, raza, edad, urlFoto)
+                }.addOnFailureListener {
+                    mostrarCarga(false)
+                    mostrarError("Error al obtener URL de la foto")
+                }
+            }
+            .addOnFailureListener {
+                mostrarCarga(false)
+                mostrarError("Error al subir la foto")
+            }
+            .addOnProgressListener { taskSnapshot ->
+                // Opcional: mostrar porcentaje de subida
+                val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount)
+                // Podrías poner un ProgressBar con progreso, pero el indeterminado sirve.
+            }
+    }
+
+
 }
 
 class RazaAdapter(context: Context, private val razas: List<RazaMascota>) :

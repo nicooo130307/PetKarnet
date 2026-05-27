@@ -129,6 +129,7 @@
                         android:layout_marginBottom="16dp"/>
 
                     <TextView
+                        android:id="@+id/tv_dueno_carnet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="👤 Dueño: Nicolas"
@@ -137,6 +138,7 @@
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
+                        android:id="@+id/tv_telefono_carnet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="📞 Tel: 555-123-4567"
@@ -145,6 +147,7 @@
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
+                        android:id="@+id/tv_direccion_carnet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="🏠 Dirección: CDMX, México"
@@ -169,5 +172,18 @@
         app:tint="@color/negrito"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_carnet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminate="true" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
