@@ -28,7 +28,7 @@
             android:name=".RegistroMascota"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MenuVeterinario"
             android:exported="false" />
         <activity
             android:name=".Configuracion"
@@ -49,7 +49,7 @@
             android:name=".EditarCarnet"
             android:exported="false" />
         <activity
-            android:name=".MenuVeterinario"
+            android:name=".MenuDueno"
             android:exported="false" />
         <activity
             android:name=".PerfilVeterinario"
@@ -64,7 +64,7 @@
             android:name=".Registro"
             android:exported="false" />
         <activity
-            android:name=".MenuDueno"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

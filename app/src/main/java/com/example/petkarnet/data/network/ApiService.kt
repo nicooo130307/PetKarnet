@@ -59,6 +59,9 @@ interface ApiService {
     @POST("api/dispositivos")
     suspend fun registrarDispositivo(@Body body: TokenFCMRequest): Response<MensajeResponse>
 
+    @GET("api/usuarios/veterinarios")
+    suspend fun listarVeterinarios(): Response<List<Usuario>>
+
     //ubicacion del veterinario
     @GET("api/ubicaciones")
     suspend fun listarUbicaciones(): Response<List<Ubicacion>>

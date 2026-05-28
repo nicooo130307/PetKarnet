@@ -175,7 +175,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Fecha de Nacimiento Aproximada"
+            android:hint="Fecha de Nacimiento (Ej.2023-05-19 )"
             app:boxStrokeColor="@color/Azulito"
             app:hintTextColor="@color/negrito">
 

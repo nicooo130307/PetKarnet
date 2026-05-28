@@ -106,3 +106,18 @@ exports.perfil = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+
+
+exports.listarVeterinarios = async (req, res) => {
+  try {
+    const [vets] = await db.promise().query(
+      'SELECT id, nombre FROM usuarios WHERE rol = ? AND activo = TRUE',
+      ['veterinario']
+    );
+    res.json(vets);
+  } catch (error) {
+    console.error('Error al listar veterinarios:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

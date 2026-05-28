@@ -20,6 +20,9 @@
             android:textColor="@color/negrito"
             android:layout_marginBottom="24dp"/>
 
+
+
+
         <!-- SECCIÓN: MOTIVO -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -35,6 +38,43 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+
+                <!-- SECCIÓN: SELECCIONAR MASCOTA -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona la mascota:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <Spinner
+                    android:id="@+id/sp_mascota"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:padding="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona al veterinario:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="8dp"/>
+
+                <Spinner
+                    android:id="@+id/sp_veterinario"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:padding="12dp"
+                    android:layout_marginBottom="24dp"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,26 +84,32 @@
                     android:textColor="@color/negrito"
                     android:layout_marginBottom="8dp"/>
 
-                <CheckBox
+                <RadioGroup
+                    android:id="@+id/rg_motivo_cita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <RadioButton
                     android:id="@+id/rb_motivo_vacuna"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="💉 Vacunación o Desparasitación"
                     app:buttonTint="@color/Azulito"/>
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/rb_motivo_estetica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🛁 Estética y Baño"
                     app:buttonTint="@color/Azulito"/>
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/rb_motivo_consulta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🩺 Consulta Médica General"
                     app:buttonTint="@color/Azulito"/>
+                </RadioGroup>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -122,7 +168,18 @@
             android:textSize="18sp"
             app:cornerRadius="50dp"
             app:backgroundTint="@color/amarillo"
-            android:textColor="@color/negrito"/>
+            android:textColor="@color/negrito"
+            android:layout_marginBottom="35dp"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginTop="16dp"/>
+
 
     </LinearLayout>
 </ScrollView>

@@ -74,9 +74,6 @@ class RegistroMascota : AppCompatActivity() {
         val etColor =
             findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_color)
 
-        val tilEdad = findViewById<TextInputLayout>(R.id.til_edad)
-        val etEdad =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad)
 
         val tilPeso = findViewById<TextInputLayout>(R.id.til_peso)
         val etPeso =
@@ -93,6 +90,31 @@ class RegistroMascota : AppCompatActivity() {
         val tilDireccion = findViewById<TextInputLayout>(R.id.til_direccion_dueno)
         val etDireccion =
             findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_dueno)
+
+        val tilEdad = findViewById<TextInputLayout>(R.id.til_edad)
+        val etEdad = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad)
+
+
+        etEdad.isFocusable = false // Evita que se abra el teclado numérico
+        etEdad.isClickable = true
+        etEdad.setOnClickListener {
+            val calendario = java.util.Calendar.getInstance()
+            val anio = calendario.get(java.util.Calendar.YEAR)
+            val mes = calendario.get(java.util.Calendar.MONTH)
+            val dia = calendario.get(java.util.Calendar.DAY_OF_MONTH)
+
+            android.app.DatePickerDialog(this,
+                R.style.TemaCalendarioPet,
+                { _, yearSeleccionado, monthSeleccionado, daySeleccionado ->
+                // String.format("%02d", numero) asegura que si eligen el mes 5, se escriba "05"
+                val mesFormateado = String.format("%02d", monthSeleccionado + 1)
+                val diaFormateado = String.format("%02d", daySeleccionado)
+
+                // Imprime exactamente: 2024-05-09
+                etEdad.setText("$yearSeleccionado-$mesFormateado-$diaFormateado")
+            }, anio, mes, dia).show()
+        }
+
 
         val etLadaTelefono = findViewById<AutoCompleteTextView>(R.id.et_lada_telefono)
 
@@ -147,10 +169,6 @@ class RegistroMascota : AppCompatActivity() {
                 formularioValido = false
             }
 
-            if (edad.isEmpty()) {
-                tilEdad.error = "Ingresa la edad aproximada"
-                formularioValido = false
-            }
 
             if (peso.isEmpty()) {
                 tilPeso.error = "El peso es obligatorio para dosis médicas"
@@ -169,6 +187,18 @@ class RegistroMascota : AppCompatActivity() {
 
             if (direccion.isEmpty()) {
                 tilDireccion.error = "La dirección es necesaria para emergencias"
+                formularioValido = false
+            }
+
+
+            val formatoFechaRegex = "^\\d{4}-\\d{2}-\\d{2}$".toRegex()
+
+            if (edad.isEmpty()) {
+                tilEdad.error = "Ingresa la fecha de nacimiento aproximada"
+                formularioValido = false
+            } else if (!edad.matches(formatoFechaRegex)) {
+                // Si el usuario intentó escribir a mano y lo puso mal, lo bloqueamos
+                tilEdad.error = "El formato debe ser AAAA-MM-DD (Ej. 2023-05-24)"
                 formularioValido = false
             }
 
