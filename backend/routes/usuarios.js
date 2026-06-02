@@ -10,4 +10,6 @@ router.get('/perfil', auth, usuariosController.perfil);
 router.post('/recuperar', recuperacionController.solicitar);
 router.get('/recuperar/:token', recuperacionController.restablecer);
 
+router.get('/veterinarios', usuariosController.listarVeterinarios);
+
 module.exports = router;

@@ -16,6 +16,10 @@ interface ApiService {
     @GET("api/usuarios/perfil")
     suspend fun perfil(): Response<Usuario>
 
+    @GET("api/usuarios/veterinarios")
+    suspend fun obtenerVeterinarios(): Response<List<Usuario>> // Asegúrate de tener el modelo Usuario
+
+
     @PATCH("api/usuarios/{id}/verificar")
     suspend fun verificarVeterinario(@Path("id") id: Int): Response<MensajeResponse>
     //para borrar la cuenta
