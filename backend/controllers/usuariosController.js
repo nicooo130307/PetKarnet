@@ -107,15 +107,20 @@ exports.perfil = async (req, res) => {
   }
 };
 
-
-
+// Obtener lista de veterinarios
 exports.listarVeterinarios = async (req, res) => {
   try {
-    const [vets] = await db.promise().query(
-      'SELECT id, nombre, email, telefono, direccion, foto_perfil, verificado FROM usuarios WHERE rol = ? AND activo = TRUE',
-      ['veterinario']
+    const [veterinarios] = await db.promise().query(
+      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado FROM usuarios WHERE rol = "veterinario" AND activo = 1'
     );
-    res.json(vets);
+
+    // Convertir verificado a booleano para cada veterinario
+    const resultado = veterinarios.map(v => ({
+      ...v,
+      verificado: v.verificado === 1
+    }));
+
+    res.json(resultado);
   } catch (error) {
     console.error('Error al listar veterinarios:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
