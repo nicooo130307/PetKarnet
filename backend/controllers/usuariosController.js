@@ -112,7 +112,7 @@ exports.perfil = async (req, res) => {
 exports.listarVeterinarios = async (req, res) => {
   try {
     const [vets] = await db.promise().query(
-      'SELECT id, nombre FROM usuarios WHERE rol = ? AND activo = TRUE',
+      'SELECT id, nombre, email, telefono, direccion, foto_perfil, verificado FROM usuarios WHERE rol = ? AND activo = TRUE',
       ['veterinario']
     );
     res.json(vets);
