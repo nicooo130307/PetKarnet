@@ -16,7 +16,7 @@ exports.crear = async (req, res) => {
 
   try {
     const [resultado] = await db.promise().query(
-      'INSERT INTO mascotas (id_usuario, nombre, especie, raza, fecha_nacimiento, foto, sexo, peso) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO mascotas (id_usuario, nombre, especie, raza, fecha_nacimiento, foto, sexo, peso) VALUES (?, ?, ?, ?, ?, ?,?,?)',
       [id_usuario, nombre, especie, raza || null, fecha_nacimiento || null, foto || null, sexo, peso]
     );
 
