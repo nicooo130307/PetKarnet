@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#F3F4F6">
 
-    <!-- 1. ESTADO VACÍO (Mensaje de que todo está bien) -->
     <LinearLayout
         android:id="@+id/layout_estado_vacio"
         android:layout_width="wrap_content"
@@ -41,18 +40,32 @@
             android:textColor="#666666"/>
     </LinearLayout>
 
-    <!-- 2. LA LISTA DE CITAS (Oculta por defecto) -->
+    <TextView
+        android:id="@+id/tv_titulo_mis_citas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mis Citas"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/negrito"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="50dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_citas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="80dp"
         android:paddingTop="16dp"
         android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo_mis_citas"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_cita" />
 
-    <!-- 3. BOTÓN FLOTANTE PARA AGREGAR (+) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_agregar_cita"
         android:layout_width="wrap_content"

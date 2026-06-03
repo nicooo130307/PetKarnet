@@ -9,8 +9,9 @@ data class Cita(
     val fecha_hora: String,
     val estado: String,
     val notas: String?,
-    val recordatorio_enviado: Boolean?,
+    val recordatorio_enviado: Any?,
     val mascota_nombre: String?,
     val veterinario_nombre: String?,
     val dueno_nombre: String?
 )
+

@@ -8,7 +8,19 @@ data class Usuario(
     val telefono: String?,
     val direccion: String?,
     val foto_perfil: String?,
-    val verificado: Boolean,
+    val verificado: Any?,
     val activo: Boolean,
     val fecha_registro: String?
 )
+{
+
+
+    fun isVerificado(): Boolean {
+        return when (verificado) {
+            is Boolean -> verificado
+            is Number -> verificado.toInt() == 1
+            is String -> verificado == "1" || verificado.lowercase() == "true"
+            else -> false
+        }
+    }
+}

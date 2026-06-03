@@ -14,13 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetKarnet">
         <activity
+            android:name=".CitaAdapter"
+            android:exported="false" />
+        <activity
             android:name=".MenuAdmin"
             android:exported="false" />
-
         <activity
             android:name=".Consulta"
             android:exported="false" />
-
         <activity
             android:name=".AgregarCitaVet"
             android:exported="false" />

@@ -1,11 +1,11 @@
 package com.example.petkarnet
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -16,8 +16,8 @@ import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.launch
-class CarnetFragment : Fragment() {
 
+class CarnetFragment : Fragment() {
 
     private lateinit var ivFoto: ShapeableImageView
     private lateinit var tvNombre: TextView
@@ -27,19 +27,18 @@ class CarnetFragment : Fragment() {
     private lateinit var tvDireccion: TextView
     private lateinit var progressBar: ProgressBar
 
-
+    // Añadimos una referencia al icono de verificado si lo tienes en tu XML
+    private var ivIconoVerificado: ImageView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Dibujamos el nuevo carnet en modo lectura
         return inflater.inflate(R.layout.fragment_carnet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         ivFoto = view.findViewById(R.id.iv_perfil_mascota_carnet)
         tvNombre = view.findViewById(R.id.tv_nombre_mascota_carnet)
@@ -49,21 +48,17 @@ class CarnetFragment : Fragment() {
         tvDireccion = view.findViewById(R.id.tv_direccion_carnet)
         progressBar = view.findViewById(R.id.progress_bar_carnet)
 
+        // Si tienes un icono de "check" en tu layout, enlázalo aquí
+        // ivIconoVerificado = view.findViewById(R.id.iv_verificado_dueno)
 
-
-
-
-        // Buscamos el botón flotante
         val fabEditar = view.findViewById<FloatingActionButton>(R.id.fab_editar_carnet)
-        // Al tocarlo, abrimos la pantalla de edición que creaste antes
         fabEditar.setOnClickListener {
             val intent = Intent(requireContext(), EditarCarnet::class.java)
             startActivity(intent)
         }
+
         cargarCarnet()
-
     }
-
 
     private fun cargarCarnet() {
         progressBar.visibility = View.VISIBLE
@@ -72,7 +67,7 @@ class CarnetFragment : Fragment() {
             try {
                 val api = RetrofitClient.create(requireContext())
 
-                // 1. Obtener la lista de mascotas del dueño
+                // 1. Obtener la lista de mascotas
                 val respuestaMascotas = api.listarMascotas()
                 if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
                     progressBar.visibility = View.GONE
@@ -80,20 +75,19 @@ class CarnetFragment : Fragment() {
                     return@launch
                 }
 
-                // Tomar la primera mascota (o podrías elegir una específica)
                 val mascota = respuestaMascotas.body()!!.first()
 
-                // 2. Obtener el perfil del dueño para teléfono y dirección
+                // 2. Obtener el perfil del dueño
+                // Gracias al cambio a 'Any?' en Usuario.kt, esto ya no lanzará IllegalStateException
                 val respuestaPerfil = api.perfil()
                 val dueno = if (respuestaPerfil.isSuccessful) respuestaPerfil.body() else null
 
                 progressBar.visibility = View.GONE
 
-                // 3. Actualizar UI
+                // 3. Actualizar UI de la Mascota
                 tvNombre.text = mascota.nombre
                 tvDetalles.text = "${mascota.raza ?: "Sin raza"} • ${mascota.fecha_nacimiento ?: "Edad desconocida"}"
 
-                // Foto (cargar con Glide si hay URL, sino imagen por defecto)
                 if (!mascota.foto.isNullOrBlank()) {
                     Glide.with(this@CarnetFragment)
                         .load(mascota.foto)
@@ -103,22 +97,30 @@ class CarnetFragment : Fragment() {
                     ivFoto.setImageResource(R.drawable.ic_huella)
                 }
 
-                // Datos del dueño
+                // 4. Datos del dueño y Verificación
                 val nombreDueno = dueno?.nombre ?: "No registrado"
                 val telefono = dueno?.telefono ?: "Sin teléfono"
                 val direccion = dueno?.direccion ?: "Sin dirección"
 
-                tvDueno.text = "👤 Dueño: $nombreDueno"
+                // AQUI ESTÁ EL CAMBIO IMPORTANTE:
+                // Usamos la función isVerificado() que creamos en el modelo
+                if (dueno != null && dueno.isVerificado()) {
+                    tvDueno.text = "👤 Dueño: $nombreDueno ✓ (Verificado)"
+                    // Si tienes un icono, podrías mostrarlo:
+                    ivIconoVerificado?.visibility = View.VISIBLE
+                } else {
+                    tvDueno.text = "👤 Dueño: $nombreDueno"
+                    ivIconoVerificado?.visibility = View.GONE
+                }
+
                 tvTelefono.text = "📞 Tel: $telefono"
                 tvDireccion.text = "🏠 Dirección: $direccion"
 
             } catch (e: Exception) {
                 progressBar.visibility = View.GONE
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Si el error persiste, aquí lo capturamos sin que la App se cierre
+                Toast.makeText(requireContext(), "Error de datos: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
-
-
-
 }
