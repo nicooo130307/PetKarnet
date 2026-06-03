@@ -20,15 +20,21 @@ import kotlinx.coroutines.launch
 class CarnetFragment : Fragment() {
 
     private lateinit var ivFoto: ShapeableImageView
+
+    // Variables para la mascota
     private lateinit var tvNombre: TextView
-    private lateinit var tvDetalles: TextView
+    private lateinit var tvEdad: TextView
+    private lateinit var tvEspecie: TextView
+    private lateinit var tvRaza: TextView
+    private lateinit var tvSexo: TextView
+    private lateinit var tvPeso: TextView
+
+    // Variables para el dueño
     private lateinit var tvDueno: TextView
     private lateinit var tvTelefono: TextView
     private lateinit var tvDireccion: TextView
-    private lateinit var progressBar: ProgressBar
 
-    // Añadimos una referencia al icono de verificado si lo tienes en tu XML
-    private var ivIconoVerificado: ImageView? = null
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,16 +46,21 @@ class CarnetFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Enlace de la UI de Mascota
         ivFoto = view.findViewById(R.id.iv_perfil_mascota_carnet)
         tvNombre = view.findViewById(R.id.tv_nombre_mascota_carnet)
-        tvDetalles = view.findViewById(R.id.tv_detalles_mascota_carnet)
+        tvEdad = view.findViewById(R.id.tv_edad_carnet)
+        tvEspecie = view.findViewById(R.id.tv_especie_carnet)
+        tvRaza = view.findViewById(R.id.tv_raza_carnet)
+        tvSexo = view.findViewById(R.id.tv_sexo_carnet)
+        tvPeso = view.findViewById(R.id.tv_peso_carnet)
+
+        // Enlace de la UI del Dueño
         tvDueno = view.findViewById(R.id.tv_dueno_carnet)
         tvTelefono = view.findViewById(R.id.tv_telefono_carnet)
         tvDireccion = view.findViewById(R.id.tv_direccion_carnet)
-        progressBar = view.findViewById(R.id.progress_bar_carnet)
 
-        // Si tienes un icono de "check" en tu layout, enlázalo aquí
-        // ivIconoVerificado = view.findViewById(R.id.iv_verificado_dueno)
+        progressBar = view.findViewById(R.id.progress_bar_carnet)
 
         val fabEditar = view.findViewById<FloatingActionButton>(R.id.fab_editar_carnet)
         fabEditar.setOnClickListener {
@@ -78,16 +89,26 @@ class CarnetFragment : Fragment() {
                 val mascota = respuestaMascotas.body()!!.first()
 
                 // 2. Obtener el perfil del dueño
-                // Gracias al cambio a 'Any?' en Usuario.kt, esto ya no lanzará IllegalStateException
                 val respuestaPerfil = api.perfil()
                 val dueno = if (respuestaPerfil.isSuccessful) respuestaPerfil.body() else null
 
                 progressBar.visibility = View.GONE
 
                 // 3. Actualizar UI de la Mascota
-                tvNombre.text = mascota.nombre
-                tvDetalles.text = "${mascota.raza ?: "Sin raza"} • ${mascota.fecha_nacimiento ?: "Edad desconocida"}"
+                // Nota: Asegúrate de que tu modelo 'Mascota' tenga las variables especie, sexo y peso escritas así.
+                tvNombre.text = mascota.nombre ?: "Falta registrar"
+                tvEdad.text = mascota.fecha_nacimiento ?: "Falta registrar"
+                tvEspecie.text = mascota.especie ?: "Falta registrar"
+                tvRaza.text = mascota.raza ?: "Falta registrar"
+                tvSexo.text = mascota.sexo ?: "Falta registrar"
 
+                if (mascota.peso != null) {
+                    tvPeso.text = "${mascota.peso} kg"
+                } else {
+                    tvPeso.text = "Falta registrar"
+                }
+
+                // Cargar imagen con Glide
                 if (!mascota.foto.isNullOrBlank()) {
                     Glide.with(this@CarnetFragment)
                         .load(mascota.foto)
@@ -98,27 +119,20 @@ class CarnetFragment : Fragment() {
                 }
 
                 // 4. Datos del dueño y Verificación
-                val nombreDueno = dueno?.nombre ?: "No registrado"
-                val telefono = dueno?.telefono ?: "Sin teléfono"
-                val direccion = dueno?.direccion ?: "Sin dirección"
+                val nombreDueno = dueno?.nombre ?: "Falta registrar"
 
-                // AQUI ESTÁ EL CAMBIO IMPORTANTE:
-                // Usamos la función isVerificado() que creamos en el modelo
                 if (dueno != null && dueno.isVerificado()) {
-                    tvDueno.text = "👤 Dueño: $nombreDueno ✓ (Verificado)"
-                    // Si tienes un icono, podrías mostrarlo:
-                    ivIconoVerificado?.visibility = View.VISIBLE
+                    tvDueno.text = "$nombreDueno ✓ (Verificado)"
                 } else {
-                    tvDueno.text = "👤 Dueño: $nombreDueno"
-                    ivIconoVerificado?.visibility = View.GONE
+                    tvDueno.text = nombreDueno
                 }
 
-                tvTelefono.text = "📞 Tel: $telefono"
-                tvDireccion.text = "🏠 Dirección: $direccion"
+                tvTelefono.text = dueno?.telefono ?: "Falta registrar"
+                tvDireccion.text = dueno?.direccion ?: "Falta registrar"
 
             } catch (e: Exception) {
                 progressBar.visibility = View.GONE
-                // Si el error persiste, aquí lo capturamos sin que la App se cierre
+                // Capturamos error de red
                 Toast.makeText(requireContext(), "Error de datos: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }

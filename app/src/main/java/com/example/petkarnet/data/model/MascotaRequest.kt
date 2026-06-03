@@ -5,5 +5,7 @@ data class MascotaRequest(
     val especie: String,
     val raza: String?,
     val fecha_nacimiento: String?,
-    val foto: String?
+    val foto: String?,
+    val sexo : String,
+    val peso : String
 )

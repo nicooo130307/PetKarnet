@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 // crea una mascota (requiere dueño autenticado)
 exports.crear = async (req, res) => {
-  const { nombre, especie, raza, fecha_nacimiento, foto } = req.body;
+  const { nombre, especie, raza, fecha_nacimiento, foto, sexo, peso } = req.body;
   const id_usuario = req.usuario.id; // del token JWT
 
   if (!nombre || !especie) {
@@ -16,8 +16,8 @@ exports.crear = async (req, res) => {
 
   try {
     const [resultado] = await db.promise().query(
-      'INSERT INTO mascotas (id_usuario, nombre, especie, raza, fecha_nacimiento, foto) VALUES (?, ?, ?, ?, ?, ?)',
-      [id_usuario, nombre, especie, raza || null, fecha_nacimiento || null, foto || null]
+      'INSERT INTO mascotas (id_usuario, nombre, especie, raza, fecha_nacimiento, foto, sexo, peso) VALUES (?, ?, ?, ?, ?, ?)',
+      [id_usuario, nombre, especie, raza || null, fecha_nacimiento || null, foto || null, sexo, peso]
     );
 
     res.status(201).json({ mensaje: 'Mascota registrada exitosamente', id: resultado.insertId });
@@ -69,7 +69,7 @@ exports.obtenerPorId = async (req, res) => {
 exports.actualizar = async (req, res) => {
   const { id } = req.params;
   const id_usuario = req.usuario.id;
-  const { nombre, especie, raza, fecha_nacimiento, foto } = req.body;
+  const { nombre, especie, raza, fecha_nacimiento, foto, sexo, peso } = req.body;
 
   try {
     // verifica que la mascota pertenezca al dueño

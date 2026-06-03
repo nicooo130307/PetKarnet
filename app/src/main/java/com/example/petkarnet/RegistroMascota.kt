@@ -212,10 +212,10 @@ class RegistroMascota : AppCompatActivity() {
                 }
 
                 if (uriFotoSeleccionada != null) {
-                    subirFotoYGuardar(uriFotoSeleccionada!!, nombre, especie, raza, edad)
+                    subirFotoYGuardar(uriFotoSeleccionada!!, nombre, especie, raza, edad, sexo, peso)
                 } else {
                     // Si no hay foto, guardar directamente con foto = null (o vacío)
-                    guardarMascotaConFoto(nombre, especie, raza, edad, null)
+                    guardarMascotaConFoto(nombre, especie, raza, edad, null, sexo, peso)
                 }
 
                 // Llamar al backend
@@ -287,14 +287,18 @@ class RegistroMascota : AppCompatActivity() {
         especie: String,
         raza: String,
         edad: String,
-        urlFoto: String?
+        urlFoto: String?,
+        sexo : String,
+        peso : String
     ) {
         val request = MascotaRequest(
             nombre = nombre,
             especie = especie,
             raza = raza,
             fecha_nacimiento = edad, // Estás usando el campo edad como fecha de nacimiento
-            foto = urlFoto
+            foto = urlFoto,
+            sexo = sexo,
+            peso = peso
         )
 
         lifecycleScope.launch {
@@ -345,7 +349,9 @@ class RegistroMascota : AppCompatActivity() {
         nombre: String,
         especie: String,
         raza: String,
-        edad: String
+        edad: String,
+        sexo : String,
+        peso : String
     ) {
 
         val imageFile = CloudinaryManager.getFileFromUri(this, uri)
@@ -362,7 +368,7 @@ class RegistroMascota : AppCompatActivity() {
             mostrarCarga(false) // ocultar la carga cuando termine (éxito o error)
             if (url != null) {
                 // Se obtuvo la URL de la foto, ahora guardar la mascota con esa URL
-                guardarMascotaConFoto(nombre, especie, raza, edad, url)
+                guardarMascotaConFoto(nombre, especie, raza, edad, url, sexo , peso)
             } else {
                 mostrarError("Error al subir la foto")
             }

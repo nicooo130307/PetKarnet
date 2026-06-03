@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F3F4F6">
 
-    <!-- ScrollView para el contenido de lectura -->
+    <!-- ScrollView para el contenido -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,147 +16,355 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
+            android:padding="16dp"
             android:gravity="center_horizontal">
 
-            <!-- FOTO Y DATOS (Se queda igual) -->
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_perfil_mascota_carnet"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="#E0E0E0"
-                android:padding="4dp"
-                android:src="@drawable/ic_huella"
-                android:scaleType="centerInside"
-                app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
-                app:strokeColor="@color/Azulito"
-                app:strokeWidth="4dp"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
-                android:id="@+id/tv_nombre_mascota_carnet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre de tu Mascota"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:textColor="@color/negrito"
-                android:layout_marginTop="16dp"/>
-
-            <TextView
-                android:id="@+id/tv_detalles_mascota_carnet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Raza • Edad • Peso"
-                android:textSize="16sp"
-                android:textColor="#666666"
-                android:layout_marginBottom="32dp"/>
-
-            <!-- TARJETA DE VACUNAS (MODO LECTURA) -->
+            <!-- TARJETA 1: CARNET FÍSICO (ESTILO LIBRETA) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="4dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Historial de Vacunación"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/negrito"
-                        android:layout_marginBottom="16dp"/>
+                    <!-- Cinta decorativa superior (estilo encuadernado) -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:background="@color/Azulito" />
 
-                    <!-- Información de solo lectura -->
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="✅ Rabia: 12/05/2026"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"
-                        android:layout_marginBottom="12dp"/>
+                        android:padding="20dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="❌ Parvovirus: Sin registro"
-                        android:textSize="16sp"
-                        android:textColor="#999999"
-                        android:layout_marginBottom="12dp"/>
+                        <!-- Título Oficial -->
+                        <TextView
+                            android:id="@+id/tv_titulo_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="INFORMACIÓN\nDE LA MASCOTA"
+                            android:textSize="22sp"
+                            android:textColor="@color/Azulito"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_perfil_mascota_carnet"
+                            android:layout_marginEnd="16dp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="✅ Desparasitación: 01/01/2026"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"/>
+                        <!-- Foto (Estilo recuadro impreso) -->
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_perfil_mascota_carnet"
+                            android:layout_width="100dp"
+                            android:layout_height="110dp"
+                            android:background="#F9F9F9"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_huella"
+                            android:scaleType="centerCrop"
+                            app:strokeColor="#BDBDBD"
+                            app:strokeWidth="1dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
 
+                        <!-- CONTENEDOR DE CAMPOS (Renglones) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toBottomOf="@+id/iv_perfil_mascota_carnet"
+                            android:layout_marginTop="24dp">
+
+                            <!-- Campo Nombre -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nombre"
+                                android:textColor="#666666"
+                                android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/tv_nombre_mascota_carnet"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Falta registrar"
+                                android:textColor="@color/negrito"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#BDBDBD"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginBottom="16dp"/>
+
+                            <!-- Campo Edad / Fecha -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Edad / Fecha de Nacimiento"
+                                android:textColor="#666666"
+                                android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/tv_edad_carnet"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Falta registrar"
+                                android:textColor="@color/negrito"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#BDBDBD"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginBottom="16dp"/>
+
+                            <!-- Especie y Raza en la misma fila -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:baselineAligned="false">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginEnd="8dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Especie"
+                                        android:textColor="#666666"
+                                        android:textSize="14sp"/>
+                                    <TextView
+                                        android:id="@+id/tv_especie_carnet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Falta registrar"
+                                        android:textColor="@color/negrito"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:background="#BDBDBD"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginBottom="16dp"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginStart="8dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Raza"
+                                        android:textColor="#666666"
+                                        android:textSize="14sp"/>
+                                    <TextView
+                                        android:id="@+id/tv_raza_carnet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Falta registrar"
+                                        android:textColor="@color/negrito"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:background="#BDBDBD"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginBottom="16dp"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Campo Sexo y Peso -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:baselineAligned="false">
+
+                                <!-- Sexo en Texto -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1.3"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginEnd="8dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Sexo"
+                                        android:textColor="#666666"
+                                        android:textSize="14sp"/>
+
+                                    <TextView
+                                        android:id="@+id/tv_sexo_carnet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Falta registrar"
+                                        android:textColor="@color/negrito"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"
+                                        android:layout_marginTop="8dp"/>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:background="#BDBDBD"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginBottom="16dp"/>
+                                </LinearLayout>
+
+                                <!-- Peso -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.7"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginStart="8dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Peso"
+                                        android:textColor="#666666"
+                                        android:textSize="14sp"/>
+                                    <TextView
+                                        android:id="@+id/tv_peso_carnet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg"
+                                        android:textColor="@color/negrito"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"
+                                        android:layout_marginTop="8dp"/>
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:background="#BDBDBD"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginBottom="16dp"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
-
+            <!-- TARJETA 2: DATOS DEL PROPIETARIO (MISMO ESTILO LIBRETA) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="4dp"
                 android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Datos de Contacto"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/negrito"
-                        android:layout_marginBottom="16dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:background="@color/amarillo" />
 
-                    <TextView
-                        android:id="@+id/tv_dueno_carnet"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="👤 Dueño: Nicolas"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"
-                        android:layout_marginBottom="8dp"/>
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/tv_telefono_carnet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="📞 Tel: 555-123-4567"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"
-                        android:layout_marginBottom="8dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DATOS DEL PROPIETARIO"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/amarillo"
+                            android:layout_marginBottom="24dp"/>
 
-                    <TextView
-                        android:id="@+id/tv_direccion_carnet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="🏠 Dirección: CDMX, México"
-                        android:textSize="16sp"
-                        android:textColor="@color/negrito"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre del dueño"
+                            android:textColor="#666666"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:id="@+id/tv_dueno_carnet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Falta registrar"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/negrito"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#BDBDBD"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="16dp"/>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Teléfono de contacto"
+                            android:textColor="#666666"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:id="@+id/tv_telefono_carnet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Falta registrar"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/negrito"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#BDBDBD"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="16dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dirección"
+                            android:textColor="#666666"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:id="@+id/tv_direccion_carnet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Falta registrar"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/negrito"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#BDBDBD"
+                            android:layout_marginTop="4dp"/>
+
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
 
         </LinearLayout>
     </ScrollView>
@@ -183,7 +391,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:indeterminate="true" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
