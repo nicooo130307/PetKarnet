@@ -61,6 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:text="Cancelar Cita"
+        app:backgroundTint="#FFEBEE"
         android:textColor="#D32F2F"
         app:strokeColor="#D32F2F"
         app:cornerRadius="12dp"

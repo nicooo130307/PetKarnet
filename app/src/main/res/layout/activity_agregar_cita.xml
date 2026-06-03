@@ -62,7 +62,8 @@
                         android:hint="Elige una mascota"
                         android:inputType="none"
                         android:padding="16dp"
-                        android:textColor="@color/negrito"/>
+                        android:textColor="@color/negrito"
+                        android:popupBackground="@android:color/white"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- SECCIÓN: SELECCIONAR VETERINARIO -->
@@ -90,7 +91,8 @@
                         android:hint="Elige un veterinario"
                         android:inputType="none"
                         android:padding="16dp"
-                        android:textColor="@color/negrito"/>
+                        android:textColor="@color/negrito"
+                        android:popupBackground="@android:color/white"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
