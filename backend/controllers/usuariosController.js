@@ -111,7 +111,8 @@ exports.perfil = async (req, res) => {
 exports.listarVeterinarios = async (req, res) => {
   try {
     const [veterinarios] = await db.promise().query(
-      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado FROM usuarios WHERE rol = "veterinario" AND activo = 1'
+      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado FROM usuarios WHERE rol = ? AND activo = ?',
+      ['veterinario', true]
     );
 
     // Convertir verificado a booleano para cada veterinario
@@ -123,6 +124,6 @@ exports.listarVeterinarios = async (req, res) => {
     res.json(resultado);
   } catch (error) {
     console.error('Error al listar veterinarios:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
   }
 };
