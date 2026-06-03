@@ -7,7 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.petkarnet.data.model.Cita
 
-class CitaAdapter(private val citas: List<Cita>) : RecyclerView.Adapter<CitaAdapter.CitaViewHolder>() {
+class CitaAdapter(private val citas: List<Cita>, private val onCitaClick: (Cita) -> Unit) : RecyclerView.Adapter<CitaAdapter.CitaViewHolder>() {
+
+
 
     class CitaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Usamos los IDs exactos de tu item_cita.xml
@@ -34,6 +36,10 @@ class CitaAdapter(private val citas: List<Cita>) : RecyclerView.Adapter<CitaAdap
         // 3. Nombre de la mascota
         // Asegúrate de que el objeto Cita traiga el nombre (o usa el ID si no lo tienes)
         holder.tvMascota.text = cita.mascota_nombre ?: "Mascota ID: ${cita.id_mascota}"
+        holder.itemView.setOnClickListener {
+            onCitaClick(cita)
+        }
+
     }
 
     override fun getItemCount() = citas.size

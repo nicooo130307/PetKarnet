@@ -61,29 +61,27 @@ exports.listar = async (req, res) => {
 
   try {
     let citas = [];
-    if (rol === 'dueño') {
-      [citas] = await db.promise().query(
-        `SELECT c.*, m.nombre as mascota_nombre, u.nombre as veterinario_nombre
-         FROM citas c
-         JOIN mascotas m ON c.id_mascota = m.id
-         JOIN usuarios u ON c.id_veterinario = u.id
-         WHERE c.id_dueno = ?
-         ORDER BY c.fecha_hora DESC`,
-        [userId]
-      );
-    } else if (rol === 'veterinario') {
-      [citas] = await db.promise().query(
-        `SELECT c.*, m.nombre as mascota_nombre, u.nombre as dueno_nombre
-         FROM citas c
-         JOIN mascotas m ON c.id_mascota = m.id
-         JOIN usuarios u ON c.id_dueno = u.id
-         WHERE c.id_veterinario = ?
-         ORDER BY c.fecha_hora DESC`,
-        [userId]
-      );
-    } else {
-      return res.status(403).json({ error: 'Rol no autorizado para listar citas' });
-    }
+ if (rol === 'dueño') {
+   [citas] = await db.promise().query(
+     `SELECT c.*, m.nombre as mascota_nombre, u.nombre as veterinario_nombre
+      FROM citas c
+      JOIN mascotas m ON c.id_mascota = m.id
+      JOIN usuarios u ON c.id_veterinario = u.id
+      WHERE c.id_dueno = ? AND c.estado IN ('pendiente', 'confirmada')
+      ORDER BY c.fecha_hora DESC`,
+     [userId]
+   );
+ } else if (rol === 'veterinario') {
+   [citas] = await db.promise().query(
+     `SELECT c.*, m.nombre as mascota_nombre, u.nombre as dueno_nombre
+      FROM citas c
+      JOIN mascotas m ON c.id_mascota = m.id
+      JOIN usuarios u ON c.id_dueno = u.id
+      WHERE c.id_veterinario = ? AND c.estado IN ('pendiente', 'confirmada')
+      ORDER BY c.fecha_hora DESC`,
+     [userId]
+   );
+ }
 
     res.json(citas);
   } catch (error) {

@@ -57,7 +57,7 @@ interface ApiService {
     suspend fun listarCitas(): Response<List<Cita>>
 
     @PATCH("api/citas/{id}/estado")
-    suspend fun cambiarEstadoCita(@Path("id") id: Int, @Body body: EstadoCitaRequest): Response<MensajeResponse>
+    suspend fun cancelarCita(@Path("id") id: Int, @Body body: EstadoCitaRequest): Response<Void>
 
     // dispositivos
     @POST("api/dispositivos")
