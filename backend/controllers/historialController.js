@@ -27,3 +27,34 @@ exports.agregarVacuna = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+
+// Endpoint para obtener el historial de vacunas de una mascota
+exports.obtenerHistorial = async (req, res) => {
+  const { idMascota } = req.params;
+
+  try {
+    // Usamos LEFT JOIN para que traiga la vacuna aunque el id_veterinario sea NULL
+    const [historial] = await db.promise().query(`
+      SELECT
+        h.id,
+        h.id_mascota,
+        h.id_veterinario,
+        h.tipo_vacuna,
+        DATE_FORMAT(h.fecha_aplicacion, '%d/%m/%Y') as fecha_aplicacion,
+        DATE_FORMAT(h.proxima_dosis, '%d/%m/%Y') as proxima_dosis,
+        h.foto_comprobante,
+        h.notas,
+        u.nombre as nombre_veterinario
+      FROM historial_vacunacion h
+      LEFT JOIN usuarios u ON h.id_veterinario = u.id
+      WHERE h.id_mascota = ?
+      ORDER BY h.fecha_aplicacion DESC
+    `, [idMascota]);
+
+    res.status(200).json(historial);
+  } catch (error) {
+    console.error('Error al obtener el historial:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

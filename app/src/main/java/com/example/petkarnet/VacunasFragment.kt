@@ -20,6 +20,9 @@ class VacunasFragment : Fragment() {
     private lateinit var rvVacunas: RecyclerView
     private lateinit var progressBar: ProgressBar
 
+    // Variable global para guardar el ID y que el botón lo pueda usar
+    private var idMascotaActual: Int = -1
+
     // 1. EL ÁLBUM IDEAL: Esta es la lista de las vacunas base que queremos que el usuario complete
     private val vacunasBase = listOf(
         "Rabia",
@@ -29,6 +32,12 @@ class VacunasFragment : Fragment() {
         "Adenovirus",
         "Desparasitación"
     )
+
+    override fun onResume() {
+        super.onResume()
+        // onResume se ejecuta CADA VEZ que la pantalla vuelve a ser visible para el usuario
+        cargarAlbumVacunas()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +55,17 @@ class VacunasFragment : Fragment() {
         // Reforzamos el formato de cuadrícula de 2 columnas
         rvVacunas.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        cargarAlbumVacunas()
+        // PRO-TIP: El botón se inicializa una sola vez al crear la vista
+        val fabAgregar = view.findViewById<FloatingActionButton>(R.id.fab_agregar_vacuna)
+        fabAgregar.setOnClickListener {
+            if (idMascotaActual != -1) {
+                val intent = Intent(requireContext(), Agregar_Vacuna::class.java)
+                intent.putExtra("ID_MASCOTA", idMascotaActual)
+                startActivity(intent)
+            } else {
+                Toast.makeText(requireContext(), "Cargando datos de la mascota...", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun cargarAlbumVacunas() {
@@ -56,7 +75,7 @@ class VacunasFragment : Fragment() {
             try {
                 val api = RetrofitClient.create(requireContext())
 
-                // 2. Primero obtenemos a la mascota (Usamos la misma lógica que en CarnetFragment)
+                // 2. Primero obtenemos a la mascota
                 val respuestaMascotas = api.listarMascotas()
                 if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
                     progressBar.visibility = View.GONE
@@ -66,13 +85,8 @@ class VacunasFragment : Fragment() {
 
                 val mascota = respuestaMascotas.body()!!.first()
 
-
-                val fabAgregar = requireView().findViewById<FloatingActionButton>(R.id.fab_agregar_vacuna)
-                fabAgregar.setOnClickListener {
-                    val intent = Intent(requireContext(), Agregar_Vacuna::class.java)
-                    intent.putExtra("ID_MASCOTA", mascota.id) // Le mandamos el ID por debajo del agua
-                    startActivity(intent)
-                }
+                // Actualizamos nuestra variable global con el ID real
+                idMascotaActual = mascota.id
 
                 // 3. Obtenemos el historial real desde tu backend usando tu nuevo endpoint
                 val respuestaHistorial = api.obtenerHistorial(mascota.id)
@@ -80,14 +94,9 @@ class VacunasFragment : Fragment() {
 
                 // 4. LA MAGIA: Cruzamos la lista ideal con el historial real
                 val listaSellos = vacunasBase.map { nombreIdeal ->
-
-                    // Buscamos si en la base de datos hay una vacuna que se llame igual
-                    // (Usamos ignoreCase = true por si en tu BD guardaron "rabia" en minúsculas)
                     val registroEncontrado = historialReal.find {
                         it.tipo_vacuna.equals(nombreIdeal, ignoreCase = true)
                     }
-
-                    // Empaquetamos ambos datos. Si no la encontró, "registroEncontrado" valdrá null
                     SelloVacuna(nombreIdeal, registroEncontrado)
                 }
 
