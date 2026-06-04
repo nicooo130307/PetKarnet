@@ -6,6 +6,8 @@ const auth = require('../middleware/auth');
 // registro de vacunas (solo veterinarios)
 router.post('/', auth, historialController.agregarVacuna);
 
+router.get('/:idMascota', historialController.obtenerHistorial);
+
 // ver historial de una mascota router.get('/:id_mascota', auth, historialController.obtenerHistorial);
 
 module.exports = router;
