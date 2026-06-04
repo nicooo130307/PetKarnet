@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrar Vacuna"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/negrito"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="32dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de Vacuna:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/negrito"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="@color/Azulito"
+                    app:hintEnabled="false">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_tipo_vacuna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Selecciona una vacuna"
+                        android:inputType="none"
+                        android:padding="16dp"
+                        android:textColor="@color/negrito"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <EditText
+                    android:id="@+id/et_fecha_aplicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_bottom_sheet"
+                    android:backgroundTint="#F5F5F5"
+                    android:hint="📅 Fecha de aplicación"
+                    android:padding="12dp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:layout_marginBottom="16dp"/>
+
+                <EditText
+                    android:id="@+id/et_proxima_dosis"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_bottom_sheet"
+                    android:backgroundTint="#F5F5F5"
+                    android:hint="🔄 Próxima dosis (Opcional)"
+                    android:padding="12dp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:layout_marginBottom="16dp"/>
+
+                <EditText
+                    android:id="@+id/et_notas_vacuna"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/bg_bottom_sheet"
+                    android:backgroundTint="#F5F5F5"
+                    android:hint="📝 Notas (Ej. Marca de la vacuna, lote...)"
+                    android:gravity="top|start"
+                    android:padding="12dp"
+                    android:inputType="textMultiLine"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_guardar_vacuna"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Guardar Registro"
+            android:textSize="18sp"
+            app:cornerRadius="50dp"
+            app:backgroundTint="@color/amarillo"
+            android:textColor="@color/negrito"
+            android:layout_marginBottom="16dp"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginBottom="32dp"/>
+
+    </LinearLayout>
+</ScrollView>

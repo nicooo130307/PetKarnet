@@ -7,9 +7,16 @@
         android:title="Carnet" />
 
     <item
+        android:id="@+id/nav_vacunas"
+        android:icon="@drawable/vacunas"
+        android:title="Vacunas" />
+
+
+    <item
         android:id="@+id/nav_recordatorios"
         android:icon="@drawable/ic_calendario"
         android:title="Avisos" />
+
 
     <item
         android:id="@+id/nav_directorio"

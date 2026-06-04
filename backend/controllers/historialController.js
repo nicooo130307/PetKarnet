@@ -1,23 +1,21 @@
 const db = require('../config/db');
 
-// agregue vacunas (solo veterinarios autenticados)
+// Registro de vacunas (Adaptado para que el dueño también pueda registrar)
 exports.agregarVacuna = async (req, res) => {
-  // verifica que el usuario autenticado sea veterinario
-  if (req.usuario.rol !== 'veterinario') {
-    return res.status(403).json({ error: 'Solo los veterinarios pueden registrar vacunas' });
-  }
-
   const { id_mascota, tipo_vacuna, fecha_aplicacion, proxima_dosis, foto_comprobante, notas } = req.body;
-  const id_veterinario = req.usuario.id;
+
+  // Si el usuario es veterinario, guardamos su ID para "certificar" la vacuna.
+  // Si es el dueño, se guarda como null (auto-reportada).
+  const id_veterinario = req.usuario.rol === 'veterinario' ? req.usuario.id : null;
 
   if (!id_mascota || !tipo_vacuna || !fecha_aplicacion) {
     return res.status(400).json({ error: 'Mascota, tipo de vacuna y fecha de aplicación son obligatorios' });
   }
 
   try {
-    //  registro
+    // Ejecutamos el registro en la base de datos
     const [resultado] = await db.promise().query(
-      `INSERT INTO historial_vacunacion 
+      `INSERT INTO historial_vacunacion
        (id_mascota, id_veterinario, tipo_vacuna, fecha_aplicacion, proxima_dosis, foto_comprobante, notas)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [id_mascota, id_veterinario, tipo_vacuna, fecha_aplicacion, proxima_dosis || null, foto_comprobante || null, notas || null]

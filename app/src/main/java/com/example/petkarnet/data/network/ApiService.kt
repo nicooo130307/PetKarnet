@@ -42,11 +42,14 @@ interface ApiService {
     suspend fun eliminarMascota(@Path("id") id: Int): Response<MensajeResponse>
 
     // historiales
-    @POST("api/historial")
-    suspend fun agregarVacuna(@Body body: VacunaRequest): Response<MensajeIdResponse>
+
 
     @GET("api/historial/{idMascota}")
     suspend fun obtenerHistorial(@Path("idMascota") idMascota: Int): Response<List<HistorialEntry>>
+
+
+    @POST("api/historial")
+    suspend fun registrarVacuna(@Body request: VacunaRequest): Response<MensajeIdResponse>
 
     // citas
     @POST("api/citas")

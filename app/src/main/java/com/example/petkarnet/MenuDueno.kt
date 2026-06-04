@@ -28,6 +28,11 @@ class MenuDueno : AppCompatActivity() {
                     reemplazarFragmento(CarnetFragment())
                     true
                 }
+
+                R.id.nav_vacunas -> {
+                    reemplazarFragmento(VacunasFragment())
+                    true
+                }
                 R.id.nav_recordatorios -> {
                     reemplazarFragmento(RecordatoriosFragment())
                     true
