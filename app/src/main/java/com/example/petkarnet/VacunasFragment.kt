@@ -95,7 +95,6 @@ class VacunasFragment : Fragment() {
                     Toast.makeText(requireContext(), "Error API: Código ${respuestaHistorial.code()}", Toast.LENGTH_LONG).show()
                 }
                 val historialReal = if (respuestaHistorial.isSuccessful) respuestaHistorial.body() ?: emptyList() else emptyList()
-                Toast.makeText(requireContext(), "Vacunas descargadas: ${historialReal.size}", Toast.LENGTH_LONG).show()
                 // 4. LA MAGIA: Cruzamos la lista ideal con el historial real
                 val listaSellos = vacunasBase.map { nombreIdeal ->
                     val registroEncontrado = historialReal.find {
