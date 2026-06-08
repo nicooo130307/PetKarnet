@@ -15,13 +15,9 @@
     <item
         android:id="@+id/nav_recordatorios"
         android:icon="@drawable/ic_calendario"
-        android:title="Avisos" />
+        android:title="Citas" />
 
 
-    <item
-        android:id="@+id/nav_directorio"
-        android:icon="@drawable/ic_hospital"
-        android:title="Directorio" />
 
     <item
         android:id="@+id/nav_perfil"

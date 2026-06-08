@@ -37,10 +37,7 @@ class MenuDueno : AppCompatActivity() {
                     reemplazarFragmento(RecordatoriosFragment())
                     true
                 }
-                R.id.nav_directorio -> {
-                    reemplazarFragmento(DirectorioFragment())
-                    true
-                }
+
                 R.id.nav_perfil -> {
                     reemplazarFragmento(PerfilFragment())
                     true
