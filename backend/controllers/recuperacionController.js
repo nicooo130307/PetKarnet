@@ -3,7 +3,15 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
 
-// solicita token de recuperación
+// Configurar el transporte de Gmail UNA SOLA VEZ (fuera de la función)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,      // Tu correo de Gmail
+    pass: process.env.EMAIL_PASS       // La contraseña de aplicación que generaste
+  }
+});
+
 exports.solicitar = async (req, res) => {
   const { email } = req.body;
 
@@ -30,29 +38,26 @@ exports.solicitar = async (req, res) => {
       [token, expiracion, usuario.id]
     );
 
-    // configurar transporte de correo (usamos Ethereal como ejemplo; después puedes cambiarlo por Gmail)
-    const testAccount = await nodemailer.createTestAccount();
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass
-      }
-    });
+    // Enlace real (ajusta la URL base según tu dominio final)
+    const enlace = `https://petkarnet.onrender.com/api/usuarios/recuperar/${token}`;
 
-    const enlace = `http://localhost:3000/api/usuarios/recuperar/${token}`;
-
+    // Enviar correo real
     await transporter.sendMail({
-      from: '"PetKarnet" <no-reply@petkarnet.com>',
+      from: `"PetKarnet" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'Recuperación de contraseña',
-      text: `Hola ${usuario.nombre},\n\nPara restablecer tu contraseña, haz clic en el siguiente enlace (válido por 30 minutos):\n${enlace}\n\nSi no solicitaste esto, ignora este mensaje.`
+      subject: 'Recuperación de contraseña - PetKarnet',
+      html: `
+        <h2>Hola ${usuario.nombre},</h2>
+        <p>Has solicitado restablecer tu contraseña en <strong>PetKarnet</strong>.</p>
+        <p>Haz clic en el siguiente enlace para crear una nueva contraseña (válido por 30 minutos):</p>
+        <p><a href="${enlace}" style="background-color:#4CAF50;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Restablecer contraseña</a></p>
+        <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+        <br/>
+        <p>Atentamente,<br/>El equipo de PetKarnet 🐾</p>
+      `
     });
 
-    console.log('Correo de prueba enviado a:', testAccount.user);
-    console.log('Enlace de recuperación:', enlace);
+    console.log(`Correo de recuperación enviado a ${email}`);
 
     res.json({ mensaje: 'Si el email está registrado, recibirás un enlace de recuperación.' });
   } catch (error) {

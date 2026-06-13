@@ -2,4 +2,7 @@
     <string name="app_name">PetKarnet</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="texto_subrayado"><u>Aqui</u></string>
+
 </resources>
