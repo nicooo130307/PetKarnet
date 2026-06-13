@@ -33,6 +33,32 @@ app.get('/', (req, res) => {
 });
 
 
+// En server.js, agrega esto temporalmente (antes de app.listen)
+app.get('/test-email', async (req, res) => {
+  const transporter = nodemailer.createTransport({
+    host: '74.125.200.109',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER, // enviar a ti mismo
+      subject: 'Test de conexión SMTP',
+      text: 'Si ves esto, la conexión SMTP funciona.'
+    });
+    res.json({ mensaje: 'Correo enviado exitosamente' });
+  } catch (error) {
+    console.error('Error en test-email:', error);
+    res.status(500).json({ error: error.message, code: error.code });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
