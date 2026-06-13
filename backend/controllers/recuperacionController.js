@@ -5,10 +5,12 @@ const db = require('../config/db');
 
 // Configurar el transporte de Gmail UNA SOLA VEZ (fuera de la función)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // usar SSL
   auth: {
-    user: process.env.EMAIL_USER,      // Tu correo de Gmail
-    pass: process.env.EMAIL_PASS       // La contraseña de aplicación que generaste
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
