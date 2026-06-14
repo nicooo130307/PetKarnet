@@ -1,22 +1,10 @@
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
+const { Resend } = require('resend');
 const db = require('../config/db');
 
-// Configurar el transporte de Gmail UNA SOLA VEZ (fuera de la función)
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  },
-  tls: {
-    // Forzar IPv4
-    family: 4
-  }
-});
+// Configurar Resend UNA SOLA VEZ
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.solicitar = async (req, res) => {
   const { email } = req.body;
@@ -44,13 +32,12 @@ exports.solicitar = async (req, res) => {
       [token, expiracion, usuario.id]
     );
 
-    // Enlace real (ajusta la URL base según tu dominio final)
     const enlace = `https://petkarnet.onrender.com/api/usuarios/recuperar/${token}`;
 
-    // Enviar correo real
-    await transporter.sendMail({
-      from: `"PetKarnet" <${process.env.EMAIL_USER}>`,
-      to: email,
+    // Enviar correo con Resend
+    const { data, error } = await resend.emails.send({
+      from: 'PetKarnet <onboarding@resend.dev>', // Remitente de prueba permitido por Resend
+      to: [email],
       subject: 'Recuperación de contraseña - PetKarnet',
       html: `
         <h2>Hola ${usuario.nombre},</h2>
@@ -63,7 +50,12 @@ exports.solicitar = async (req, res) => {
       `
     });
 
-    console.log(`Correo de recuperación enviado a ${email}`);
+    if (error) {
+      console.error('Error al enviar correo con Resend:', error);
+      return res.status(500).json({ error: 'Error al enviar el correo de recuperación' });
+    }
+
+    console.log(`Correo de recuperación enviado a ${email} (ID: ${data.id})`);
 
     res.json({ mensaje: 'Si el email está registrado, recibirás un enlace de recuperación.' });
   } catch (error) {
@@ -72,7 +64,7 @@ exports.solicitar = async (req, res) => {
   }
 };
 
-// restablecimiento de la contraseña (con  token)
+// La función restablecer se mantiene igual (sin cambios)
 exports.restablecer = async (req, res) => {
   const { token } = req.params;
   const { nueva_password } = req.body;
