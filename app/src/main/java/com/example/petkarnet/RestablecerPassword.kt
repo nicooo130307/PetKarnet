@@ -38,12 +38,9 @@ class RestablecerPassword : AppCompatActivity() {
 
         // Verificar si la actividad se abrió desde un Deep Link
         intent?.data?.let { uri ->
-            // Extraer el token de la URL
-            // Ejemplo: https://petkarnet.onrender.com/api/usuarios/recuperar/abc123...
-            val token = uri.lastPathSegment ?: ""
+            val token = uri.getQueryParameter("token") ?: ""
             if (token.isNotEmpty()) {
                 etToken.setText(token)
-                // Opcional: ocultar el campo del token porque ya lo tenemos
                 tilToken.visibility = View.GONE
             }
         }

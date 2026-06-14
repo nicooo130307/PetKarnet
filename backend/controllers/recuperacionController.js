@@ -32,7 +32,7 @@ exports.solicitar = async (req, res) => {
       [token, expiracion, usuario.id]
     );
 
-    const enlace = `https://petkarnet.onrender.com/api/usuarios/recuperar/${token}`;
+const enlace = `https://petkarnet.onrender.com/recuperar?token=${token}`;
 
     // Enviar correo con Resend
     const { data, error } = await resend.emails.send({

@@ -25,7 +25,7 @@
                 <data
                     android:scheme="https"
                     android:host="petkarnet.onrender.com"
-                    android:pathPrefix="/api/usuarios/recuperar/" />
+                    android:pathPrefix="/recuperar" />
             </intent-filter>
         </activity>
 
