@@ -36,6 +36,18 @@ class RestablecerPassword : AppCompatActivity() {
         btnRestablecer = findViewById(R.id.btn_restablecer)
         progressBar = findViewById(R.id.progress_bar)
 
+        // Verificar si la actividad se abrió desde un Deep Link
+        intent?.data?.let { uri ->
+            // Extraer el token de la URL
+            // Ejemplo: https://petkarnet.onrender.com/api/usuarios/recuperar/abc123...
+            val token = uri.lastPathSegment ?: ""
+            if (token.isNotEmpty()) {
+                etToken.setText(token)
+                // Opcional: ocultar el campo del token porque ya lo tenemos
+                tilToken.visibility = View.GONE
+            }
+        }
+
         btnRestablecer.setOnClickListener {
             val token = etToken.text.toString().trim()
             val nuevaPassword = etNuevaPassword.text.toString().trim()
@@ -77,6 +89,7 @@ class RestablecerPassword : AppCompatActivity() {
                     Toast.makeText(this@RestablecerPassword, "Contraseña restablecida exitosamente", Toast.LENGTH_LONG).show()
                     // Redirigir al login
                     val intent = Intent(this@RestablecerPassword, Inicio_Sesion::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()
                 } else {

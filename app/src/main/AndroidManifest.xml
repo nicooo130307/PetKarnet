@@ -14,6 +14,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetKarnet">
 
+
+        <activity
+            android:name=".RestablecerPassword"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="petkarnet.onrender.com"
+                    android:pathPrefix="/api/usuarios/recuperar/" />
+            </intent-filter>
+        </activity>
+
+
+
         <activity
             android:name=".RecuperarPassword"
             android:exported="false">
