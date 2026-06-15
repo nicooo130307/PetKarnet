@@ -147,6 +147,7 @@ class EditarCarnet : AppCompatActivity() {
     private fun actualizarMenuRazas(razas: List<RazaMascota>) {
         val adapter = RazaAdapter(this, razas)
         etRaza.setAdapter(adapter)
+        etRaza.setText(razas[0].nombre, false)
     }
 
     private fun formatearFechaParaEditar(fechaISO: String?): String {
@@ -268,7 +269,9 @@ class EditarCarnet : AppCompatActivity() {
 
                 val requestMascota = MascotaRequest(
                     nombre = nombre, especie = especie, raza = raza.ifBlank { null },
-                    fecha_nacimiento = edad.ifBlank { null }, foto = urlFoto, sexo = sexo, peso = peso
+                    fecha_nacimiento = edad.ifBlank { null }, foto = urlFoto,
+                    sexo = sexo.ifBlank { null },
+                    peso = peso.ifBlank { null }
                 )
 
                 val respuestaMascota = api.actualizarMascota(mascotaId, requestMascota)

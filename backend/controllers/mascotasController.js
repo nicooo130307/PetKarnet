@@ -83,14 +83,26 @@ exports.actualizar = async (req, res) => {
     }
 
     // query dinámica
+    // Preparar valores que respeten los originales si vienen vacíos o nulos
+    const nuevoSexo = (sexo != null && sexo.trim() !== '') ? sexo.trim() : mascotas[0].sexo;
+    let nuevoPeso;
+    if (peso != null && peso.trim() !== '') {
+      const parsed = parseFloat(peso);
+      nuevoPeso = isNaN(parsed) ? mascotas[0].peso : parsed;
+    } else {
+      nuevoPeso = mascotas[0].peso;
+    }
+
     await db.promise().query(
-      'UPDATE mascotas SET nombre = ?, especie = ?, raza = ?, fecha_nacimiento = ?, foto = ? WHERE id = ?',
+      'UPDATE mascotas SET nombre = ?, especie = ?, raza = ?, fecha_nacimiento = ?, foto = ?, sexo = ?, peso = ? WHERE id = ?',
       [
         nombre || mascotas[0].nombre,
         especie || mascotas[0].especie,
         raza !== undefined ? raza : mascotas[0].raza,
         fecha_nacimiento !== undefined ? fecha_nacimiento : mascotas[0].fecha_nacimiento,
         foto !== undefined ? foto : mascotas[0].foto,
+        nuevoSexo,
+        nuevoPeso,
         id
       ]
     );
