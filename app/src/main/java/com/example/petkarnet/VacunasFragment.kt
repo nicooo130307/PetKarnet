@@ -20,18 +20,9 @@ class VacunasFragment : Fragment() {
     private lateinit var rvVacunas: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    // Variable global para guardar el ID y que el botón lo pueda usar
+    // Variables globales para que el botón las pueda usar
     private var idMascotaActual: Int = -1
-
-    // 1. EL ÁLBUM IDEAL: Esta es la lista de las vacunas base que queremos que el usuario complete
-    private val vacunasBase = listOf(
-        "Rabia",
-        "Parvovirus",
-        "Moquillo",
-        "Leptospirosis",
-        "Adenovirus",
-        "Desparasitación"
-    )
+    private var especieMascotaActual: String = "" // <-- NUEVA VARIABLE
 
     override fun onResume() {
         super.onResume()
@@ -55,12 +46,12 @@ class VacunasFragment : Fragment() {
         // Reforzamos el formato de cuadrícula de 2 columnas
         rvVacunas.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // PRO-TIP: El botón se inicializa una sola vez al crear la vista
         val fabAgregar = view.findViewById<FloatingActionButton>(R.id.fab_agregar_vacuna)
         fabAgregar.setOnClickListener {
             if (idMascotaActual != -1) {
                 val intent = Intent(requireContext(), Agregar_Vacuna::class.java)
                 intent.putExtra("ID_MASCOTA", idMascotaActual)
+                intent.putExtra("ESPECIE_MASCOTA", especieMascotaActual) // <-- LE MANDAMOS LA ESPECIE A LA OTRA PANTALLA
                 startActivity(intent)
             } else {
                 Toast.makeText(requireContext(), "Cargando datos de la mascota...", Toast.LENGTH_SHORT).show()
@@ -75,7 +66,7 @@ class VacunasFragment : Fragment() {
             try {
                 val api = RetrofitClient.create(requireContext())
 
-                // 2. Primero obtenemos a la mascota
+                // 1. Primero obtenemos a la mascota
                 val respuestaMascotas = api.listarMascotas()
                 if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
                     progressBar.visibility = View.GONE
@@ -85,17 +76,40 @@ class VacunasFragment : Fragment() {
 
                 val mascota = respuestaMascotas.body()!!.first()
 
-                // Actualizamos nuestra variable global con el ID real
+                // Actualizamos nuestras variables globales con los datos reales
                 idMascotaActual = mascota.id
+                especieMascotaActual = mascota.especie ?: "Perro"
 
-                // 3. Obtenemos el historial real desde tu backend usando tu nuevo endpoint
+                // --- 2. EL ÁLBUM DINÁMICO (LA MAGIA DE LAS ESPECIES) ---
+                val vacunasBase = if (especieMascotaActual.equals("gato", ignoreCase = true)) {
+                    listOf(
+                        "Rabia",
+                        "Triple Felina",
+                        "Leucemia Felina",
+                        "Desparasitación"
+                    )
+                } else {
+                    // Por defecto, perros (o la categoría "otro")
+                    listOf(
+                        "Rabia",
+                        "Parvovirus",
+                        "Moquillo",
+                        "Leptospirosis",
+                        "Adenovirus",
+                        "Desparasitación"
+                    )
+                }
+
+                // 3. Obtenemos el historial real desde tu backend usando tu endpoint
                 val respuestaHistorial = api.obtenerHistorial(mascota.id)
 
                 if (!respuestaHistorial.isSuccessful) {
                     Toast.makeText(requireContext(), "Error API: Código ${respuestaHistorial.code()}", Toast.LENGTH_LONG).show()
                 }
+
                 val historialReal = if (respuestaHistorial.isSuccessful) respuestaHistorial.body() ?: emptyList() else emptyList()
-                // 4. LA MAGIA: Cruzamos la lista ideal con el historial real
+
+                // 4. Cruzamos la lista ideal elegida con el historial real
                 val listaSellos = vacunasBase.map { nombreIdeal ->
                     val registroEncontrado = historialReal.find {
                         it.tipo_vacuna.equals(nombreIdeal, ignoreCase = true)

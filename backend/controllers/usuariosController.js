@@ -127,3 +127,52 @@ exports.listarVeterinarios = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
   }
 };
+
+
+// Actualizar perfil del usuario autenticado
+exports.actualizarPerfil = async (req, res) => {
+  const userId = req.usuario.id;
+  const { telefono, direccion } = req.body;
+
+  try {
+    // Verificar que el usuario existe
+    const [usuarios] = await db.promise().query(
+      'SELECT id FROM usuarios WHERE id = ? AND activo = TRUE',
+      [userId]
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Actualizar solo los campos proporcionados
+    const updates = [];
+    const values = [];
+
+    if (telefono !== undefined) {
+      updates.push('telefono = ?');
+      values.push(telefono || null);
+    }
+
+    if (direccion !== undefined) {
+      updates.push('direccion = ?');
+      values.push(direccion || null);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'No se proporcionaron datos para actualizar' });
+    }
+
+    values.push(userId);
+
+    await db.promise().query(
+      `UPDATE usuarios SET ${updates.join(', ')} WHERE id = ?`,
+      values
+    );
+
+    res.json({ mensaje: 'Perfil actualizado exitosamente' });
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

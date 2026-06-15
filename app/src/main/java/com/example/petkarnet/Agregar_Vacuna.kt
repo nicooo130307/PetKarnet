@@ -25,24 +25,31 @@ class Agregar_Vacuna : AppCompatActivity() {
 
     private var idMascota: Int = -1
     private var tipoVacunaSeleccionada: String = ""
+    private var especieMascota: String = "" // <-- NUEVA VARIABLE
 
-    // La misma lista ideal del álbum
-    private val listaVacunas = listOf(
-        "Rabia", "Parvovirus", "Moquillo", "Leptospirosis", "Adenovirus", "Desparasitación"
-    )
+    // Ahora la lista está vacía al principio, se llenará dependiendo del animal
+    private lateinit var listaVacunas: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_agregar_vacuna)
 
-        // Recibimos el ID de la mascota desde el Fragment anterior
+        // 1. Recibimos los datos desde el Fragment anterior
         idMascota = intent.getIntExtra("ID_MASCOTA", -1)
+        especieMascota = intent.getStringExtra("ESPECIE_MASCOTA") ?: "Perro" // Si por algo falla, asume Perro
 
         if (idMascota == -1) {
             Toast.makeText(this, "Error al identificar la mascota", Toast.LENGTH_SHORT).show()
             finish()
             return
+        }
+
+        // 2. LA MAGIA: Elegimos la lista correcta según la especie
+        listaVacunas = if (especieMascota.equals("gato", ignoreCase = true)) {
+            listOf("Rabia", "Triple Felina", "Leucemia Felina", "Desparasitación")
+        } else {
+            listOf("Rabia", "Parvovirus", "Moquillo", "Leptospirosis", "Adenovirus", "Desparasitación")
         }
 
         actvTipoVacuna = findViewById(R.id.actv_tipo_vacuna)
@@ -63,6 +70,7 @@ class Agregar_Vacuna : AppCompatActivity() {
     }
 
     private fun configurarDropdown() {
+        // Al llegar aquí, "listaVacunas" ya tiene los datos correctos del Perro o Gato
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, listaVacunas)
         actvTipoVacuna.setAdapter(adapter)
 

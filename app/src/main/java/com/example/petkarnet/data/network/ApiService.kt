@@ -88,5 +88,8 @@ interface ApiService {
         @Body body: RestablecerRequest
     ): Response<MensajeResponse>
 
+    @PUT("api/usuarios/perfil")
+    suspend fun actualizarPerfil(@Body body: ActualizarPerfilRequest): Response<MensajeResponse>
+
 
 }
