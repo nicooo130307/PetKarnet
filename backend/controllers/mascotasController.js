@@ -9,7 +9,7 @@ exports.crear = async (req, res) => {
     return res.status(400).json({ error: 'Nombre y especie son obligatorios' });
   }
 
-  const especiesPermitidas = ['perro', 'gato', 'otro'];
+  const especiesPermitidas = ['perro', 'gato', 'otro', 'Perro', 'Gato', 'Otro'];
   if (!especiesPermitidas.includes(especie)) {
     return res.status(400).json({ error: 'Especie no válida' });
   }
