@@ -121,9 +121,9 @@ class EditarCarnet : AppCompatActivity() {
 
         // Lógica de los RadioButtons para actualizar la lista de razas
         rgEspecie.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rb_perro) {
+            if (checkedId == R.id.rb_perro_editar) {
                 actualizarMenuRazas(razasPerro)
-            } else if (checkedId == R.id.rb_gato) {
+            } else if (checkedId == R.id.rb_gato_editar) {
                 actualizarMenuRazas(razasGato)
             }
         }
