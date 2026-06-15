@@ -132,12 +132,12 @@ exports.listarVeterinarios = async (req, res) => {
 // Actualizar perfil del usuario autenticado
 exports.actualizarPerfil = async (req, res) => {
   const userId = req.usuario.id;
-  const { telefono, direccion } = req.body;
+  const { nombre, email, telefono, direccion } = req.body;
 
   try {
     // Verificar que el usuario existe
     const [usuarios] = await db.promise().query(
-      'SELECT id FROM usuarios WHERE id = ? AND activo = TRUE',
+      'SELECT id, email FROM usuarios WHERE id = ? AND activo = TRUE',
       [userId]
     );
 
@@ -145,9 +145,30 @@ exports.actualizarPerfil = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    // Actualizar solo los campos proporcionados
+    // Si se intenta cambiar el email, verificar que no exista ya
+    if (email && email !== usuarios[0].email) {
+      const [existeEmail] = await db.promise().query(
+        'SELECT id FROM usuarios WHERE email = ? AND id != ?',
+        [email, userId]
+      );
+      if (existeEmail.length > 0) {
+        return res.status(409).json({ error: 'El email ya está en uso por otro usuario' });
+      }
+    }
+
+    // Construir la consulta de actualización dinámicamente
     const updates = [];
     const values = [];
+
+    if (nombre !== undefined && nombre.trim() !== '') {
+      updates.push('nombre = ?');
+      values.push(nombre.trim());
+    }
+
+    if (email !== undefined && email.trim() !== '') {
+      updates.push('email = ?');
+      values.push(email.trim());
+    }
 
     if (telefono !== undefined) {
       updates.push('telefono = ?');
@@ -170,7 +191,16 @@ exports.actualizarPerfil = async (req, res) => {
       values
     );
 
-    res.json({ mensaje: 'Perfil actualizado exitosamente' });
+    // Obtener los datos actualizados para devolverlos
+    const [usuarioActualizado] = await db.promise().query(
+      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado, activo, fecha_registro FROM usuarios WHERE id = ?',
+      [userId]
+    );
+
+    res.json({
+      mensaje: 'Perfil actualizado exitosamente',
+      usuario: usuarioActualizado[0]
+    });
   } catch (error) {
     console.error('Error al actualizar perfil:', error);
     res.status(500).json({ error: 'Error interno del servidor' });

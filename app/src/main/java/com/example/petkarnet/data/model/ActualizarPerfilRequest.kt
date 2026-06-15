@@ -1,6 +1,8 @@
 package com.example.petkarnet.data.model
 
 data class ActualizarPerfilRequest(
-    val telefono: String?,
-    val direccion: String?
+    val nombre: String? = null,
+    val email: String? = null,
+    val telefono: String? = null,
+    val direccion: String? = null
 )
