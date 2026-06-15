@@ -20,6 +20,8 @@ class EditarInformacion : AppCompatActivity() {
     private lateinit var etContrasena: EditText
     private lateinit var btnGuardar: MaterialButton
     private lateinit var progressBar: ProgressBar
+    private var telefonoActual: String? = null
+    private var direccionActual: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +71,8 @@ class EditarInformacion : AppCompatActivity() {
                         etNombre.setText(it.nombre)
                         etCorreo.setText(it.email)
                         etContrasena.setText("••••••••••••") // Nunca mostramos la contraseña real
+                        telefonoActual = it.telefono
+                        direccionActual = it.direccion
                     }
                 } else {
                     Toast.makeText(this@EditarInformacion, "Error al cargar los datos", Toast.LENGTH_SHORT).show()
@@ -89,7 +93,10 @@ class EditarInformacion : AppCompatActivity() {
                 val api = RetrofitClient.create(this@EditarInformacion)
                 val request = ActualizarPerfilRequest(
                     nombre = nombre,
-                    email = email
+                    email = email,
+                    telefono = telefonoActual,
+                    direccion = direccionActual
+
                 )
                 val respuesta = api.actualizarPerfil(request)
 
@@ -98,10 +105,11 @@ class EditarInformacion : AppCompatActivity() {
 
                 if (respuesta.isSuccessful) {
                     val body = respuesta.body()
+
                     // Actualizar los datos guardados en SharedPreferences
+
                     val prefs = getSharedPreferences("petkarnet_prefs", MODE_PRIVATE)
                     prefs.edit().putString("usuario_nombre", nombre).apply()
-                    // También guardar el email si es necesario
                     prefs.edit().putString("usuario_email", email).apply()
 
                     Toast.makeText(this@EditarInformacion, "¡Información actualizada!", Toast.LENGTH_SHORT).show()
