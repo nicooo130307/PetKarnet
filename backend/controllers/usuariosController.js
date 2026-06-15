@@ -146,10 +146,10 @@ exports.actualizarPerfil = async (req, res) => {
     }
 
     // Si se intenta cambiar el email, verificar que no exista ya
-    if (email && email !== usuarios[0].email) {
+    if (email != null && email.trim() !== '' && email !== usuarios[0].email) {
       const [existeEmail] = await db.promise().query(
         'SELECT id FROM usuarios WHERE email = ? AND id != ?',
-        [email, userId]
+        [email.trim(), userId]
       );
       if (existeEmail.length > 0) {
         return res.status(409).json({ error: 'El email ya está en uso por otro usuario' });
@@ -160,24 +160,25 @@ exports.actualizarPerfil = async (req, res) => {
     const updates = [];
     const values = [];
 
-    if (nombre !== undefined && nombre.trim() !== '') {
+    // Solo actualizar campos que realmente vengan en la petición y no sean null/undefined/vacíos
+    if (nombre != null && nombre.trim() !== '') {
       updates.push('nombre = ?');
       values.push(nombre.trim());
     }
 
-    if (email !== undefined && email.trim() !== '') {
+    if (email != null && email.trim() !== '') {
       updates.push('email = ?');
       values.push(email.trim());
     }
 
     if (telefono !== undefined) {
       updates.push('telefono = ?');
-      values.push(telefono || null);
+      values.push(telefono != null && telefono.trim() !== '' ? telefono.trim() : null);
     }
 
     if (direccion !== undefined) {
       updates.push('direccion = ?');
-      values.push(direccion || null);
+      values.push(direccion != null && direccion.trim() !== '' ? direccion.trim() : null);
     }
 
     if (updates.length === 0) {
