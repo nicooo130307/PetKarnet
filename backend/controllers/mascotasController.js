@@ -129,9 +129,15 @@ exports.eliminar = async (req, res) => {
       return res.status(404).json({ error: 'Mascota no encontrada o no tienes permiso' });
     }
 
+    // --- NUEVO: Limpiamos las tablas dependientes primero ---
+    await db.promise().query('DELETE FROM historial_vacunacion WHERE id_mascota = ?', [id]);
+     await db.promise().query('DELETE FROM citas WHERE id_mascota = ?', [id]);
+    // --------------------------------------------------------
+
+    // Ahora sí, eliminamos a la mascota con seguridad
     await db.promise().query('DELETE FROM mascotas WHERE id = ?', [id]);
 
-    res.json({ mensaje: 'Mascota eliminada exitosamente' });
+    res.json({ mensaje: 'Mascota y su historial eliminados exitosamente' });
   } catch (error) {
     console.error('Error al eliminar mascota:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
