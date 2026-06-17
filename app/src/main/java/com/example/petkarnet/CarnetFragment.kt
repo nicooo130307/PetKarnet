@@ -20,9 +20,15 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.widget.ImageView
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.common.BitMatrix
 
 class CarnetFragment : Fragment() {
-
+    private lateinit var ivQR: ImageView
     private lateinit var ivFoto: ShapeableImageView
 
     // Variables para la mascota
@@ -64,6 +70,7 @@ class CarnetFragment : Fragment() {
         tvTelefono = view.findViewById(R.id.tv_telefono_carnet)
         tvDireccion = view.findViewById(R.id.tv_direccion_carnet)
 
+        ivQR = view.findViewById(R.id.iv_qr_carnet)
         progressBar = view.findViewById(R.id.progress_bar_carnet)
 
         val fabEditar = view.findViewById<FloatingActionButton>(R.id.fab_editar_carnet)
@@ -142,8 +149,15 @@ class CarnetFragment : Fragment() {
                     tvDueno.text = nombreDueno
                 }
 
+
                 tvTelefono.text = dueno?.telefono ?: "Falta registrar"
                 tvDireccion.text = dueno?.direccion ?: "Falta registrar"
+
+                // Generar QR para compartir
+                val urlPublica = "https://petkarnet.onrender.com/api/mascotas/${mascota.id}/publico"
+                val qrBitmap = generarQR(urlPublica)
+                ivQR.setImageBitmap(qrBitmap)
+
 
             } catch (e: Exception) {
                 progressBar.visibility = View.GONE
@@ -199,5 +213,20 @@ class CarnetFragment : Fragment() {
             // Si por alguna razón la fecha llega en otro formato y falla, la mostramos tal cual
             fechaISO
         }
+    }
+
+    private fun generarQR(contenido: String): Bitmap {
+        val writer = QRCodeWriter()
+        val bitMatrix: BitMatrix = writer.encode(contenido, BarcodeFormat.QR_CODE, 512, 512)
+        val width = bitMatrix.width
+        val height = bitMatrix.height
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 }

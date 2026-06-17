@@ -143,3 +143,58 @@ exports.eliminar = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+// Obtener información pública de una mascota (sin autenticación)
+exports.infoPublica = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [mascotas] = await db.promise().query(
+      `SELECT m.id, m.nombre, m.especie, m.raza, m.fecha_nacimiento, m.foto, m.sexo, m.peso,
+              u.nombre as dueno_nombre, u.telefono as dueno_telefono, u.direccion as dueno_direccion
+       FROM mascotas m
+       JOIN usuarios u ON m.id_usuario = u.id
+       WHERE m.id = ?`,
+      [id]
+    );
+
+    if (mascotas.length === 0) {
+      return res.status(404).json({ error: 'Mascota no encontrada' });
+    }
+
+    const mascota = mascotas[0];
+
+    // Obtener las últimas 3 vacunas
+    const [vacunas] = await db.promise().query(
+      `SELECT tipo_vacuna, fecha_aplicacion, proxima_dosis
+       FROM historial_vacunacion
+       WHERE id_mascota = ?
+       ORDER BY fecha_aplicacion DESC
+       LIMIT 3`,
+      [id]
+    );
+
+    // Respuesta pública (sin información sensible)
+    res.json({
+      mascota: {
+        id: mascota.id,
+        nombre: mascota.nombre,
+        especie: mascota.especie,
+        raza: mascota.raza,
+        fecha_nacimiento: mascota.fecha_nacimiento,
+        foto: mascota.foto,
+        sexo: mascota.sexo,
+        peso: mascota.peso
+      },
+      dueno: {
+        nombre: mascota.dueno_nombre,
+        telefono: mascota.dueno_telefono,
+        direccion: mascota.dueno_direccion
+      },
+      vacunas: vacunas
+    });
+  } catch (error) {
+    console.error('Error al obtener info pública de mascota:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

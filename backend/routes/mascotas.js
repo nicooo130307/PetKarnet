@@ -9,5 +9,5 @@ router.get('/', auth, mascotasController.listar);
 router.get('/:id', auth, mascotasController.obtenerPorId);
 router.put('/:id', auth, mascotasController.actualizar);
 router.delete('/:id', auth, mascotasController.eliminar);
-
+router.get('/:id/publico', mascotasController.infoPublica);
 module.exports = router;
