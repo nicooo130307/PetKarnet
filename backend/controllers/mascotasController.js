@@ -204,30 +204,18 @@ exports.infoPublica = async (req, res) => {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #F3F4F6; padding: 20px; }
     .card { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .header {
-    background: #2196F3;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-     }
-
+    .header { background: #2196F3; padding: 20px; text-align: center; }
     .header h1 { color: white; font-size: 24px; }
     .header .paw { font-size: 40px; }
     .content { padding: 20px; }
-
     .foto {
-  width: 120px;
+    width: 120px;
     height: 120px;
     border-radius: 50%;
     border: 4px solid #FFC107;
-    position: absolute;
-    bottom: -60px; /* sobresale hacia abajo */
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    object-fit: cover;}
-
-
+    margin: -60px auto 20px;
+    display: block;
+    background: white; object-fit: cover; }
     h2 { color: #333; margin-bottom: 16px; }
     .info { margin-bottom: 20px; }
     .info p { margin: 8px 0; color: #555; font-size: 16px; }
