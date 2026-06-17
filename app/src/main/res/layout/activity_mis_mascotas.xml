@@ -35,7 +35,17 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="80dp" />
-
+        <TextView
+            android:id="@+id/tv_sin_mascotas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Aún no tienes mascotas registradas.\n¡Toca el botón amarillo para agregar una!"
+            android:textColor="#999999"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
