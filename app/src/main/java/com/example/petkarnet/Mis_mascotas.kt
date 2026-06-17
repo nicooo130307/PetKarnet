@@ -1,5 +1,6 @@
 package com.example.petkarnet
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
@@ -77,7 +78,22 @@ class Mis_mascotas : AppCompatActivity() {
                         rvMascotas.visibility = View.VISIBLE
 
                         adapter = MascotaAdapter(listaMutable) { mascotaSeleccionada ->
-                            Toast.makeText(this@Mis_mascotas, "Abriendo perfil de ${mascotaSeleccionada.nombre}", Toast.LENGTH_SHORT).show()
+                            // 1. Abrimos la "caja fuerte" de SharedPreferences
+                            val sharedPref = getSharedPreferences("PetKarnetPrefs", Context.MODE_PRIVATE)
+
+                            // 2. Guardamos los datos de la mascota seleccionada
+                            with(sharedPref.edit()) {
+                                putInt("ID_MASCOTA_ACTIVA", mascotaSeleccionada.id)
+                                putString("ESPECIE_MASCOTA_ACTIVA", mascotaSeleccionada.especie)
+                                apply() // Guarda los cambios de forma invisible en segundo plano
+                            }
+
+                            Toast.makeText(this@Mis_mascotas, "Cargando perfil de ${mascotaSeleccionada.nombre}", Toast.LENGTH_SHORT).show()
+
+                            // 3. Redirigimos al menú principal donde están los fragmentos
+                            val intent = Intent(this@Mis_mascotas, MenuDueno::class.java)
+                            startActivity(intent)
+                            finish() // Cerramos esta pantalla para que no se quede acumulada en el historial
                         }
                         rvMascotas.adapter = adapter
                     }

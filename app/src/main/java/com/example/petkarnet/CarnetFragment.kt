@@ -1,5 +1,6 @@
 package com.example.petkarnet
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -82,6 +83,7 @@ class CarnetFragment : Fragment() {
                 val api = RetrofitClient.create(requireContext())
 
                 // 1. Obtener la lista de mascotas
+                // ... dentro de cargarCarnet(), justo después de obtener la lista de mascotas:
                 val respuestaMascotas = api.listarMascotas()
                 if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
                     progressBar.visibility = View.GONE
@@ -89,7 +91,11 @@ class CarnetFragment : Fragment() {
                     return@launch
                 }
 
-                val mascota = respuestaMascotas.body()!!.first()
+                val sharedPref = requireContext().getSharedPreferences("PetKarnetPrefs", Context.MODE_PRIVATE)
+                val idMascotaActiva = sharedPref.getInt("ID_MASCOTA_ACTIVA", -1)
+
+                val mascota = respuestaMascotas.body()!!.find { it.id == idMascotaActiva } ?: respuestaMascotas.body()!!.first()
+
 
                 // 2. Obtener el perfil del dueño
                 val respuestaPerfil = api.perfil()

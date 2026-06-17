@@ -1,5 +1,6 @@
 package com.example.petkarnet
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -66,42 +67,24 @@ class VacunasFragment : Fragment() {
             try {
                 val api = RetrofitClient.create(requireContext())
 
-                // 1. Primero obtenemos a la mascota
-                val respuestaMascotas = api.listarMascotas()
-                if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
+                val sharedPref = requireContext().getSharedPreferences("PetKarnetPrefs", Context.MODE_PRIVATE)
+                idMascotaActual = sharedPref.getInt("ID_MASCOTA_ACTIVA", -1)
+                especieMascotaActual = sharedPref.getString("ESPECIE_MASCOTA_ACTIVA", "Perro") ?: "Perro"
+
+                if (idMascotaActual == -1) {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), "No tienes mascotas registradas", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Por favor, selecciona una mascota primero", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 
-                val mascota = respuestaMascotas.body()!!.first()
-
-                // Actualizamos nuestras variables globales con los datos reales
-                idMascotaActual = mascota.id
-                especieMascotaActual = mascota.especie ?: "Perro"
-
-                // --- 2. EL ÁLBUM DINÁMICO (LA MAGIA DE LAS ESPECIES) ---
                 val vacunasBase = if (especieMascotaActual.equals("gato", ignoreCase = true)) {
-                    listOf(
-                        "Rabia",
-                        "Triple Felina",
-                        "Leucemia Felina",
-                        "Desparasitación"
-                    )
+                    listOf("Rabia", "Triple Felina", "Leucemia Felina", "Desparasitación")
                 } else {
-                    // Por defecto, perros (o la categoría "otro")
-                    listOf(
-                        "Rabia",
-                        "Parvovirus",
-                        "Moquillo",
-                        "Leptospirosis",
-                        "Adenovirus",
-                        "Desparasitación"
-                    )
+                    listOf("Rabia", "Parvovirus", "Moquillo", "Leptospirosis", "Adenovirus", "Desparasitación")
                 }
 
-                // 3. Obtenemos el historial real desde tu backend usando tu endpoint
-                val respuestaHistorial = api.obtenerHistorial(mascota.id)
+                val respuestaHistorial = api.obtenerHistorial(idMascotaActual)
+
 
                 if (!respuestaHistorial.isSuccessful) {
                     Toast.makeText(requireContext(), "Error API: Código ${respuestaHistorial.code()}", Toast.LENGTH_LONG).show()
