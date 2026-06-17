@@ -201,31 +201,24 @@ exports.infoPublica = async (req, res) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PetKarnet - ${mascota.nombre}</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #F3F4F6; padding: 20px; }
-    .card { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .header { background: #2196F3; padding: 20px; text-align: center; }
-    .header h1 { color: white; font-size: 24px; }
-    .header .paw { font-size: 40px; }
-    .content { padding: 20px; }
-    .foto {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 4px solid #FFC107;
-    margin: -60px auto 20px;
-    display: block;
-    background: white; object-fit: cover; }
-    h2 { color: #333; margin-bottom: 16px; }
-    .info { margin-bottom: 20px; }
-    .info p { margin: 8px 0; color: #555; font-size: 16px; }
-    .info strong { color: #333; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    th { background: #2196F3; color: white; padding: 10px; text-align: left; }
-    td { padding: 10px; border-bottom: 1px solid #ddd; }
-    .dueno { background: #FFF9C4; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-    .footer { text-align: center; color: #999; font-size: 14px; padding: 20px; }
-    .footer img { height: 30px; vertical-align: middle; }
+   * { margin: 0; padding: 0; box-sizing: border-box; }
+   body { font-family: Arial, sans-serif; background: #F3F4F6; padding: 20px; }
+   .card { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+   .header { background: #2196F3; padding: 30px 20px 20px; text-align: center; border-radius: 0 0 20px 20px; }
+   .header h1 { color: white; font-size: 28px; margin-bottom: 10px; }
+   .header .paw { font-size: 40px; }
+   .content { padding: 20px; }
+   .foto { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #FFC107; margin: 0 auto 20px; display: block; background: white; object-fit: cover; }
+   h2 { color: #333; margin-bottom: 16px; }
+   .info { margin-bottom: 20px; }
+   .info p { margin: 8px 0; color: #555; font-size: 16px; }
+   .info strong { color: #333; }
+   table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+   th { background: #2196F3; color: white; padding: 10px; text-align: left; }
+   td { padding: 10px; border-bottom: 1px solid #ddd; }
+   .dueno { background: #FFF9C4; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+   .footer { text-align: center; color: #999; font-size: 14px; padding: 20px; }
+   .footer img { height: 30px; vertical-align: middle; }
   </style>
 </head>
 <body>
