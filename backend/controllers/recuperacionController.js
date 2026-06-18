@@ -1,9 +1,11 @@
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
+const sgMail = require('@sendgrid/mail');
 
-// solicita token de recuperación
+// Configurar la API Key de SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 exports.solicitar = async (req, res) => {
   const { email } = req.body;
 
@@ -30,29 +32,26 @@ exports.solicitar = async (req, res) => {
       [token, expiracion, usuario.id]
     );
 
-    // configurar transporte de correo (usamos Ethereal como ejemplo; después puedes cambiarlo por Gmail)
-    const testAccount = await nodemailer.createTestAccount();
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass
-      }
-    });
+    const enlace = `https://petkarnet.onrender.com/recuperar?token=${token}`;
 
-    const enlace = `http://localhost:3000/api/usuarios/recuperar/${token}`;
+    // Enviar correo con SendGrid
+    const msg = {
+      to: email,                                 // ← Destinatario real
+      from: 'petkarnet.recuperacion@gmail.com',   // ← El correo que verificaste como remitente
+      subject: 'Recuperación de contraseña - PetKarnet',
+      html: `
+        <h2>Hola ${usuario.nombre},</h2>
+        <p>Has solicitado restablecer tu contraseña en <strong>PetKarnet</strong>.</p>
+        <p>Haz clic en el siguiente enlace para crear una nueva contraseña (válido por 30 minutos):</p>
+        <p><a href="${enlace}" style="background-color:#4CAF50;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Restablecer contraseña</a></p>
+        <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+        <br/>
+        <p>Atentamente,<br/>El equipo de PetKarnet 🐾</p>
+      `
+    };
 
-    await transporter.sendMail({
-      from: '"PetKarnet" <no-reply@petkarnet.com>',
-      to: email,
-      subject: 'Recuperación de contraseña',
-      text: `Hola ${usuario.nombre},\n\nPara restablecer tu contraseña, haz clic en el siguiente enlace (válido por 30 minutos):\n${enlace}\n\nSi no solicitaste esto, ignora este mensaje.`
-    });
-
-    console.log('Correo de prueba enviado a:', testAccount.user);
-    console.log('Enlace de recuperación:', enlace);
+    await sgMail.send(msg);
+    console.log(`Correo de recuperación enviado a ${email}`);
 
     res.json({ mensaje: 'Si el email está registrado, recibirás un enlace de recuperación.' });
   } catch (error) {
@@ -61,7 +60,7 @@ exports.solicitar = async (req, res) => {
   }
 };
 
-// restablecimiento de la contraseña (con  token)
+// La función restablecer se mantiene igual
 exports.restablecer = async (req, res) => {
   const { token } = req.params;
   const { nueva_password } = req.body;
