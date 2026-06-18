@@ -221,23 +221,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Campo: Nombre del Dueño -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_nombre_dueno"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Nombre Completo del Dueño"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_nombre_dueno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo: Número de Teléfono -->
         <LinearLayout

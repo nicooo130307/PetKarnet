@@ -1,11 +1,11 @@
 package com.example.petkarnet
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -16,9 +16,19 @@ import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.widget.ImageView
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.common.BitMatrix
 
 class CarnetFragment : Fragment() {
-
+    private lateinit var ivQR: ImageView
     private lateinit var ivFoto: ShapeableImageView
 
     // Variables para la mascota
@@ -60,6 +70,7 @@ class CarnetFragment : Fragment() {
         tvTelefono = view.findViewById(R.id.tv_telefono_carnet)
         tvDireccion = view.findViewById(R.id.tv_direccion_carnet)
 
+        ivQR = view.findViewById(R.id.iv_qr_carnet)
         progressBar = view.findViewById(R.id.progress_bar_carnet)
 
         val fabEditar = view.findViewById<FloatingActionButton>(R.id.fab_editar_carnet)
@@ -79,6 +90,7 @@ class CarnetFragment : Fragment() {
                 val api = RetrofitClient.create(requireContext())
 
                 // 1. Obtener la lista de mascotas
+                // ... dentro de cargarCarnet(), justo después de obtener la lista de mascotas:
                 val respuestaMascotas = api.listarMascotas()
                 if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
                     progressBar.visibility = View.GONE
@@ -86,7 +98,11 @@ class CarnetFragment : Fragment() {
                     return@launch
                 }
 
-                val mascota = respuestaMascotas.body()!!.first()
+                val sharedPref = requireContext().getSharedPreferences("PetKarnetPrefs", Context.MODE_PRIVATE)
+                val idMascotaActiva = sharedPref.getInt("ID_MASCOTA_ACTIVA", -1)
+
+                val mascota = respuestaMascotas.body()!!.find { it.id == idMascotaActiva } ?: respuestaMascotas.body()!!.first()
+
 
                 // 2. Obtener el perfil del dueño
                 val respuestaPerfil = api.perfil()
@@ -95,10 +111,16 @@ class CarnetFragment : Fragment() {
                 progressBar.visibility = View.GONE
 
                 // 3. Actualizar UI de la Mascota
-                // Nota: Asegúrate de que tu modelo 'Mascota' tenga las variables especie, sexo y peso escritas así.
                 tvNombre.text = mascota.nombre ?: "Falta registrar"
-                tvEdad.text = mascota.fecha_nacimiento ?: "Falta registrar"
-                tvEspecie.text = mascota.especie ?: "Falta registrar"
+
+                // --- MAGIA DE LA FECHA AQUÍ ---
+                if (!mascota.fecha_nacimiento.isNullOrBlank()) {
+                    tvEdad.text = calcularEdadYFormatearFecha(mascota.fecha_nacimiento)
+                } else {
+                    tvEdad.text = "Falta registrar"
+                }
+
+                tvEspecie.text = mascota.especie?.replaceFirstChar { it.uppercase() } ?: "Falta registrar"
                 tvRaza.text = mascota.raza ?: "Falta registrar"
                 tvSexo.text = mascota.sexo ?: "Falta registrar"
 
@@ -127,14 +149,84 @@ class CarnetFragment : Fragment() {
                     tvDueno.text = nombreDueno
                 }
 
+
                 tvTelefono.text = dueno?.telefono ?: "Falta registrar"
                 tvDireccion.text = dueno?.direccion ?: "Falta registrar"
 
+                // Generar QR para compartir
+                val urlPublica = "https://petkarnet.onrender.com/api/mascotas/${mascota.id}/publico"
+                val qrBitmap = generarQR(urlPublica)
+                ivQR.setImageBitmap(qrBitmap)
+
+
             } catch (e: Exception) {
                 progressBar.visibility = View.GONE
-                // Capturamos error de red
                 Toast.makeText(requireContext(), "Error de datos: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    // --- FUNCIÓN HELPER PARA LA FECHA Y EDAD ---
+    private fun calcularEdadYFormatearFecha(fechaISO: String): String {
+        return try {
+            // 1. Convertir el texto que manda Node.js a un objeto Date de Java
+            val formatoEntrada = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            formatoEntrada.timeZone = TimeZone.getTimeZone("UTC")
+            val fechaNacimiento = formatoEntrada.parse(fechaISO) ?: return fechaISO
+
+            // 2. Darle el formato bonito para mostrar (ej: 01/06/2026)
+            val formatoSalida = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val fechaBonita = formatoSalida.format(fechaNacimiento)
+
+            // 3. Calcular la edad matemática
+            val nacimiento = Calendar.getInstance().apply { time = fechaNacimiento }
+            val hoy = Calendar.getInstance()
+
+            var anios = hoy.get(Calendar.YEAR) - nacimiento.get(Calendar.YEAR)
+            var meses = hoy.get(Calendar.MONTH) - nacimiento.get(Calendar.MONTH)
+            var dias = hoy.get(Calendar.DAY_OF_MONTH) - nacimiento.get(Calendar.DAY_OF_MONTH)
+
+            // Ajuste matemático si los días o meses son negativos
+            if (dias < 0) {
+                meses--
+                val mesAnterior = Calendar.getInstance()
+                mesAnterior.add(Calendar.MONTH, -1)
+                dias += mesAnterior.getActualMaximum(Calendar.DAY_OF_MONTH)
+            }
+            if (meses < 0) {
+                anios--
+                meses += 12
+            }
+
+            // 4. Decidir qué texto mostrar según la edad
+            val textoEdad = when {
+                anios > 0 -> "$anios año(s)"
+                meses > 0 -> "$meses mes(es)"
+                dias > 0 -> "$dias día(s)"
+                else -> "Recién nacido"
+            }
+
+            // Retornamos la combinación perfecta
+            "$textoEdad ($fechaBonita)"
+
+        } catch (e: Exception) {
+            // Si por alguna razón la fecha llega en otro formato y falla, la mostramos tal cual
+            fechaISO
+        }
+    }
+
+    private fun generarQR(contenido: String): Bitmap {
+        val writer = QRCodeWriter()
+        val bitMatrix: BitMatrix = writer.encode(contenido, BarcodeFormat.QR_CODE, 512, 512)
+        val width = bitMatrix.width
+        val height = bitMatrix.height
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 }

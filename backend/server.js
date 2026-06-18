@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const db = require('./config/db');
-
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -31,6 +31,8 @@ app.use('/api/dispositivos', dispositivosRoutes);
 app.get('/', (req, res) => {
   res.send('¡PetKarnet API funcionando!');
 });
+
+
 
 
 const PORT = process.env.PORT || 3000;

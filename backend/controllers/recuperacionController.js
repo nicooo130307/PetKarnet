@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 const sgMail = require('@sendgrid/mail');
 
-// Configurar la API Key de SendGrid
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.solicitar = async (req, res) => {
@@ -34,10 +34,10 @@ exports.solicitar = async (req, res) => {
 
     const enlace = `https://petkarnet.onrender.com/recuperar?token=${token}`;
 
-    // Enviar correo con SendGrid
+    
     const msg = {
-      to: email,                                 // ← Destinatario real
-      from: 'petkarnet.recuperacion@gmail.com',   // ← El correo que verificaste como remitente
+      to: email,                                 
+      from: 'angelemiliorr@gmail.com',  
       subject: 'Recuperación de contraseña - PetKarnet',
       html: `
         <h2>Hola ${usuario.nombre},</h2>
@@ -60,7 +60,7 @@ exports.solicitar = async (req, res) => {
   }
 };
 
-// La función restablecer se mantiene igual
+
 exports.restablecer = async (req, res) => {
   const { token } = req.params;
   const { nueva_password } = req.body;
@@ -90,4 +90,4 @@ exports.restablecer = async (req, res) => {
     console.error('Error al restablecer contraseña:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
-};
+}; 

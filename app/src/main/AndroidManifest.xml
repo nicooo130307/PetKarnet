@@ -13,6 +13,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PetKarnet">
+
+
+        <activity
+            android:name=".RestablecerPassword"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="petkarnet.onrender.com"
+                    android:pathPrefix="/recuperar" />
+            </intent-filter>
+        </activity>
+
+
+
+        <activity
+            android:name=".RecuperarPassword"
+            android:exported="false">
+        </activity>
+
         <activity
             android:name=".Agregar_Vacuna"
             android:exported="false" />

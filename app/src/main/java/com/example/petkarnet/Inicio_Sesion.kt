@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,15 @@ class Inicio_Sesion : AppCompatActivity() {
 
         btnIngresar = findViewById<Button>(R.id.btn_ingresar)
         progressBar = findViewById<ProgressBar>(R.id.progress_bar)
+
+
+        val tvOlvidaste = findViewById<TextView>(R.id.tv_olvidaste_password)
+
+
+        tvOlvidaste.setOnClickListener {
+            val intent = Intent(this, RecuperarPassword::class.java)
+            startActivity(intent)
+        }
 
         btnIngresar.setOnClickListener {
             // Limpiar errores previos

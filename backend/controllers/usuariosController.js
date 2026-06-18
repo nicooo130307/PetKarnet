@@ -127,3 +127,83 @@ exports.listarVeterinarios = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
   }
 };
+
+
+// Actualizar perfil del usuario autenticado
+exports.actualizarPerfil = async (req, res) => {
+  const userId = req.usuario.id;
+  const { nombre, email, telefono, direccion } = req.body;
+
+  try {
+    // Verificar que el usuario existe
+    const [usuarios] = await db.promise().query(
+      'SELECT id, email FROM usuarios WHERE id = ? AND activo = TRUE',
+      [userId]
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Si se intenta cambiar el email, verificar que no exista ya
+    if (email != null && email.trim() !== '' && email !== usuarios[0].email) {
+      const [existeEmail] = await db.promise().query(
+        'SELECT id FROM usuarios WHERE email = ? AND id != ?',
+        [email.trim(), userId]
+      );
+      if (existeEmail.length > 0) {
+        return res.status(409).json({ error: 'El email ya está en uso por otro usuario' });
+      }
+    }
+
+    // Construir la consulta de actualización dinámicamente
+    const updates = [];
+    const values = [];
+
+    // Solo actualizar campos que realmente vengan en la petición y no sean null/undefined/vacíos
+    if (nombre != null && nombre.trim() !== '') {
+      updates.push('nombre = ?');
+      values.push(nombre.trim());
+    }
+
+    if (email != null && email.trim() !== '') {
+      updates.push('email = ?');
+      values.push(email.trim());
+    }
+
+    if (telefono !== undefined) {
+      updates.push('telefono = ?');
+      values.push(telefono != null && telefono.trim() !== '' ? telefono.trim() : null);
+    }
+
+    if (direccion !== undefined) {
+      updates.push('direccion = ?');
+      values.push(direccion != null && direccion.trim() !== '' ? direccion.trim() : null);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'No se proporcionaron datos para actualizar' });
+    }
+
+    values.push(userId);
+
+    await db.promise().query(
+      `UPDATE usuarios SET ${updates.join(', ')} WHERE id = ?`,
+      values
+    );
+
+    // Obtener los datos actualizados para devolverlos
+    const [usuarioActualizado] = await db.promise().query(
+      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado, activo, fecha_registro FROM usuarios WHERE id = ?',
+      [userId]
+    );
+
+    res.json({
+      mensaje: 'Perfil actualizado exitosamente',
+      usuario: usuarioActualizado[0]
+    });
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

@@ -78,4 +78,18 @@ interface ApiService {
 
     @GET("api/resenas/{idVeterinario}")
     suspend fun listarResenas(@Path("idVeterinario") idVeterinario: Int): Response<List<Resena>>
+
+    @POST("api/usuarios/recuperar")
+    suspend fun solicitarRecuperacion(@Body body: RecuperarRequest): Response<MensajeResponse>
+
+    @POST("api/usuarios/recuperar/{token}")
+    suspend fun restablecerPassword(
+        @Path("token") token: String,
+        @Body body: RestablecerRequest
+    ): Response<MensajeResponse>
+
+    @PUT("api/usuarios/perfil")
+    suspend fun actualizarPerfil(@Body body: ActualizarPerfilRequest): Response<MensajeResponse>
+
+
 }

@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import com.example.petkarnet.util.CloudinaryManager
 import java.io.File
 import com.cloudinary.android.callback.ErrorInfo
+import com.example.petkarnet.data.model.ActualizarPerfilRequest
 import java.util.UUID
 
 
@@ -79,9 +80,7 @@ class RegistroMascota : AppCompatActivity() {
         val etPeso =
             findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso)
 
-        val tilNombreDueno = findViewById<TextInputLayout>(R.id.til_nombre_dueno)
-        val etNombreDueno =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_dueno)
+
 
         val tilTelefono = findViewById<TextInputLayout>(R.id.til_telefono_dueno)
         val etTelefono =
@@ -133,7 +132,6 @@ class RegistroMascota : AppCompatActivity() {
             tilColor.error = null
             tilEdad.error = null
             tilPeso.error = null
-            tilNombreDueno.error = null
             tilTelefono.error = null
             tilDireccion.error = null
 
@@ -143,7 +141,6 @@ class RegistroMascota : AppCompatActivity() {
             val color = etColor.text.toString().trim()
             val edad = etEdad.text.toString().trim()
             val peso = etPeso.text.toString().trim()
-            val nombreDueno = etNombreDueno.text.toString().trim()
             val telefono = etTelefono.text.toString().trim()
             val direccion = etDireccion.text.toString().trim()
 
@@ -175,10 +172,7 @@ class RegistroMascota : AppCompatActivity() {
                 formularioValido = false
             }
 
-            if (nombreDueno.isEmpty()) {
-                tilNombreDueno.error = "Ingresa el nombre del responsable"
-                formularioValido = false
-            }
+
 
             if (telefono.isEmpty() || telefono.length < 10) {
                 tilTelefono.error = "Ingresa un número válido de 10 dígitos"
@@ -206,16 +200,16 @@ class RegistroMascota : AppCompatActivity() {
                 // Determinar especie
                 val rgEspecie = findViewById<RadioGroup>(R.id.rg_especie)
                 val especie = when (rgEspecie.checkedRadioButtonId) {
-                    R.id.rb_perro -> "perro"
-                    R.id.rb_gato -> "gato"
-                    else -> "otro"
+                    R.id.rb_perro -> "Perro"
+                    R.id.rb_gato -> "Gato"
+                    else -> "Otro"
                 }
 
                 if (uriFotoSeleccionada != null) {
-                    subirFotoYGuardar(uriFotoSeleccionada!!, nombre, especie, raza, edad, sexo, peso)
+                    subirFotoYGuardar(uriFotoSeleccionada!!, nombre, especie, raza, edad, sexo, peso, telefono, direccion)
                 } else {
                     // Si no hay foto, guardar directamente con foto = null (o vacío)
-                    guardarMascotaConFoto(nombre, especie, raza, edad, null, sexo, peso)
+                    guardarMascotaConFoto(nombre, especie, raza, edad, null, sexo, peso, telefono, direccion)
                 }
 
                 // Llamar al backend
@@ -289,16 +283,20 @@ class RegistroMascota : AppCompatActivity() {
         edad: String,
         urlFoto: String?,
         sexo : String,
-        peso : String
+        peso : String,
+        telefono: String,    // ← Nuevo
+        direccion: String    // ← Nuevo
     ) {
         val request = MascotaRequest(
             nombre = nombre,
             especie = especie,
             raza = raza,
-            fecha_nacimiento = edad, // Estás usando el campo edad como fecha de nacimiento
+            fecha_nacimiento = edad,
             foto = urlFoto,
             sexo = sexo,
-            peso = peso
+            peso = peso,
+
+
         )
 
         lifecycleScope.launch {
@@ -309,6 +307,7 @@ class RegistroMascota : AppCompatActivity() {
                 mostrarCarga(false)
 
                 if (respuesta.isSuccessful) {
+                    actualizarPerfilDueno(telefono, direccion)
                     Toast.makeText(
                         this@RegistroMascota,
                         "¡Mascota registrada exitosamente!",
@@ -324,6 +323,27 @@ class RegistroMascota : AppCompatActivity() {
             } catch (e: Exception) {
                 mostrarCarga(false)
                 mostrarError("Error de conexión: ${e.message}")
+            }
+        }
+    }
+
+    private fun actualizarPerfilDueno(telefono: String, direccion: String) {
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.create(this@RegistroMascota)
+                val request = ActualizarPerfilRequest(
+                    telefono = telefono.ifBlank { null },
+                    direccion = direccion.ifBlank { null }
+                )
+                val respuesta = api.actualizarPerfil(request)
+
+                if (!respuesta.isSuccessful) {
+                    // No detenemos el flujo, solo registramos el error
+                    val errorBody = respuesta.errorBody()?.string()
+                    android.util.Log.e("RegistroMascota", "Error al actualizar perfil: $errorBody")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("RegistroMascota", "Excepción al actualizar perfil: ${e.message}")
             }
         }
     }
@@ -351,7 +371,9 @@ class RegistroMascota : AppCompatActivity() {
         raza: String,
         edad: String,
         sexo : String,
-        peso : String
+        peso : String,
+        telefono: String,    // ← Nuevo
+        direccion: String    // ← Nuevo
     ) {
 
         val imageFile = CloudinaryManager.getFileFromUri(this, uri)
@@ -368,7 +390,7 @@ class RegistroMascota : AppCompatActivity() {
             mostrarCarga(false) // ocultar la carga cuando termine (éxito o error)
             if (url != null) {
                 // Se obtuvo la URL de la foto, ahora guardar la mascota con esa URL
-                guardarMascotaConFoto(nombre, especie, raza, edad, url, sexo , peso)
+                guardarMascotaConFoto(nombre, especie, raza, edad, url, sexo, peso, telefono, direccion)
             } else {
                 mostrarError("Error al subir la foto")
             }

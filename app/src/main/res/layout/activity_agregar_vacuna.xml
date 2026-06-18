@@ -59,7 +59,8 @@
                         android:hint="Selecciona una vacuna"
                         android:inputType="none"
                         android:padding="16dp"
-                        android:textColor="@color/negrito"/>
+                        android:textColor="@color/negrito"
+                        android:popupBackground="@android:color/white"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <EditText

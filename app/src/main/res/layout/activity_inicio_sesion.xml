@@ -60,7 +60,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="20dp"
             android:hint="Contraseña"
             android:fontFamily="@font/roboto"
             app:passwordToggleEnabled="true"
@@ -74,6 +74,18 @@
                 android:inputType="textPassword"
                 android:fontFamily="@font/roboto" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_olvidaste_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Olvidaste tu contraseña? Pica aquí."
+            android:textSize="12sp"
+            android:textColor="#787878"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="20dp"
+            android:textAlignment="center"/>
 
         <!-- Botón de Inicio de Sesión -->
         <com.google.android.material.button.MaterialButton

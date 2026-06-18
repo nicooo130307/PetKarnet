@@ -55,8 +55,7 @@ class registro_mascota_vet : AppCompatActivity() {
         val rgEspecie = findViewById<RadioGroup>(R.id.rg_especie_paciente)
 
         val tilNombre = findViewById<TextInputLayout>(R.id.til_nombre_paciente)
-        val etNombre =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_paciente)
+        val etNombre = findViewById<TextInputEditText>(R.id.et_nombre_paciente)
 
         val tilRaza = findViewById<TextInputLayout>(R.id.til_raza_paciente)
         val etRaza = findViewById<AutoCompleteTextView>(R.id.et_raza_paciente)
@@ -65,26 +64,21 @@ class registro_mascota_vet : AppCompatActivity() {
         val etSexo = findViewById<AutoCompleteTextView>(R.id.et_sexo_paciente)
 
         val tilColor = findViewById<TextInputLayout>(R.id.til_color_paciente)
-        val etColor =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_color_paciente)
+        val etColor = findViewById<TextInputEditText>(R.id.et_color_paciente)
 
         val tilPeso = findViewById<TextInputLayout>(R.id.til_peso_paciente)
-        val etPeso =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_peso_paciente)
+        val etPeso = findViewById<TextInputEditText>(R.id.et_peso_paciente)
 
         // 3. Enlazamos las vistas del Propietario
-        val tilNombrePropietario = findViewById<TextInputLayout>(R.id.til_nombre_propietario)
         val tilTelefonoPropietario = findViewById<TextInputLayout>(R.id.til_telefono_propietario)
-        val etNombrePropietario =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_nombre_propietario)
-        val etTelefonoPropietario =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_telefono_propietario)
-        val etDireccionPropietario =
-            findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_direccion_propietario)
+        val etTelefonoPropietario = findViewById<TextInputEditText>(R.id.et_telefono_propietario)
+
+        val tilDireccionPropietario = findViewById<TextInputLayout>(R.id.til_direccion_propietario)
+        val etDireccionPropietario = findViewById<TextInputEditText>(R.id.et_direccion_propietario)
 
 
-        val tilEdad = findViewById<TextInputLayout>(R.id.til_edad)
-        val etEdad = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_edad)
+        val tilEdad = findViewById<TextInputLayout>(R.id.til_edad_paciente)
+        val etEdad = findViewById<TextInputEditText>(R.id.et_edad_paciente)
 
 
         etEdad.isFocusable = false // Evita que se abra el teclado numérico
@@ -119,8 +113,7 @@ class registro_mascota_vet : AppCompatActivity() {
         etLadaTelefono.setAdapter(adapterLada)
         etLadaTelefono.setText(opcionesLada[0], false)
 
-        val btnCrearExpediente =
-            findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_crear_expediente)
+        val btnCrearExpediente = findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_crear_expediente)
 
         // ==============================================================
         // CONFIGURACIÓN DE LISTAS Y ADAPTADORES (Igual que en Dueño)
@@ -199,8 +192,8 @@ class registro_mascota_vet : AppCompatActivity() {
             tilColor.error = null
             tilEdad.error = null
             tilPeso.error = null
-            tilNombrePropietario.error = null
             tilTelefonoPropietario.error = null
+            tilDireccionPropietario.error = null
 
             // Extraemos texto
             val nombre = etNombre.text.toString().trim()
@@ -209,7 +202,6 @@ class registro_mascota_vet : AppCompatActivity() {
             val color = etColor.text.toString().trim()
             val edad = etEdad.text.toString().trim()
             val peso = etPeso.text.toString().trim()
-            val nombreDueno = etNombrePropietario.text.toString().trim()
             val telefono = etTelefonoPropietario.text.toString().trim()
 
             var formularioValido = true
@@ -249,10 +241,7 @@ class registro_mascota_vet : AppCompatActivity() {
                 tilPeso.error = "Ingresa el peso (obligatorio para el doctor)"
                 formularioValido = false
             }
-            if (nombreDueno.isEmpty()) {
-                tilNombrePropietario.error = "Ingresa el nombre del dueño"
-                formularioValido = false
-            }
+
             if (telefono.isEmpty() || telefono.length < 10) {
                 tilTelefonoPropietario.error = "Ingresa un teléfono válido de 10 dígitos"
                 formularioValido = false

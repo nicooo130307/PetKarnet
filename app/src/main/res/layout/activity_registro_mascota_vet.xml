@@ -244,24 +244,7 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_nombre_propietario"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Nombre Completo"
-                    app:startIconDrawable="@android:drawable/ic_menu_myplaces"
-                    app:startIconTint="#999999"
-                    app:boxStrokeColor="@color/Azulito"
-                    app:hintTextColor="@color/Azulito">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_nombre_propietario"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textCapWords" />
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

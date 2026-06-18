@@ -5,7 +5,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.widget.Toast
 
 class MenuDueno : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +33,7 @@ class MenuDueno : AppCompatActivity() {
                     true
                 }
                 R.id.nav_recordatorios -> {
-                    reemplazarFragmento(RecordatoriosFragment())
+                    reemplazarFragmento(CitasFragment())
                     true
                 }
 
