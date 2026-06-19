@@ -52,7 +52,7 @@ interface ApiService {
     @POST("api/historial")
     suspend fun registrarVacuna(@Body request: VacunaRequest): Response<MensajeIdResponse>
 
-    @DELETE("api/historial-vacunacion/{id}")
+    @DELETE("api/historial/{id}")
     suspend fun eliminarRegistroVacuna(@Path("id") id: Int): Response<MensajeResponse>
 
     // citas
