@@ -12,7 +12,7 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 
 object RetrofitClient {
-    private const val BASE_URL =  "https://petkarnet.onrender.com/"  //  localhost x el momentp
+    private const val BASE_URL =  "https://petkarnet-mivonvo.onrender.com"  //mivonvo
 
     fun create(context: Context): ApiService {
         val logging = HttpLoggingInterceptor().apply {

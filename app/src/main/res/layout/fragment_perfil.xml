@@ -201,6 +201,19 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+
+                <TextView
+                    android:id="@+id/opcion_terminos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📜 Términos y Condiciones"
+                    android:textSize="18sp"
+                    android:textColor="@color/negrito"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

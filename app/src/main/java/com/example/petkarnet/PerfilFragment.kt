@@ -47,6 +47,7 @@ class PerfilFragment : Fragment() {
         val opcionAcerca = view.findViewById<TextView>(R.id.opcion_acerca)
         val opcionConfig = view.findViewById<TextView>(R.id.opcion_configuracion)
         val btnCerrarSesion = view.findViewById<MaterialButton>(R.id.btn_cerrar_sesion)
+        val opcionTerminos = view.findViewById<TextView>(R.id.opcion_terminos)
 
 
         cargarDatosUsuario()
@@ -74,9 +75,13 @@ class PerfilFragment : Fragment() {
 
         }
 
-        // 4. Lógica de "Acerca de PetKarnet" (Abre ventana emergente)
+        //
         opcionAcerca.setOnClickListener {
             mostrarDialogoAcercaDe()
+        }
+        opcionTerminos.setOnClickListener {
+            val intent = Intent(requireContext(), TerminosActivity::class.java)
+            startActivity(intent)
         }
 
         // 5. Lógica de "Configuración"
