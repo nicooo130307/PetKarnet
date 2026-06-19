@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -19,9 +20,9 @@ import kotlinx.coroutines.launch
 
 class Inicio_Sesion : AppCompatActivity() {
 
-    // Declarar el ProgressBar y el botón como variables de clase
     private lateinit var progressBar: ProgressBar
     private lateinit var btnIngresar: Button
+    private lateinit var cbMantenerSesion: CheckBox // NUEVA VARIABLE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +35,11 @@ class Inicio_Sesion : AppCompatActivity() {
         val tilPassword = findViewById<TextInputLayout>(R.id.til_login_password)
         val etPassword = findViewById<TextInputEditText>(R.id.et_login_password)
 
+        cbMantenerSesion = findViewById(R.id.cb_mantener_sesion) // ENLAZAMOS EL CHECKBOX
         btnIngresar = findViewById<Button>(R.id.btn_ingresar)
         progressBar = findViewById<ProgressBar>(R.id.progress_bar)
 
-
         val tvOlvidaste = findViewById<TextView>(R.id.tv_olvidaste_password)
-
 
         tvOlvidaste.setOnClickListener {
             val intent = Intent(this, RecuperarPassword::class.java)
@@ -47,16 +47,13 @@ class Inicio_Sesion : AppCompatActivity() {
         }
 
         btnIngresar.setOnClickListener {
-            // Limpiar errores previos
             tilCorreo.error = null
             tilPassword.error = null
 
             val correo = etCorreo.text.toString().trim()
             val password = etPassword.text.toString().trim()
-
             var esValido = true
 
-            // Validar Correo
             if (correo.isEmpty()) {
                 tilCorreo.error = "Ingresa tu correo"
                 esValido = false
@@ -65,21 +62,20 @@ class Inicio_Sesion : AppCompatActivity() {
                 esValido = false
             }
 
-            // Validar Contraseña
             if (password.isEmpty()) {
                 tilPassword.error = "Ingresa tu contraseña"
                 esValido = false
             }
 
-            // Si todo está bien, llamamos al backend
             if (esValido) {
-                iniciarSesion(correo, password)
+                // Pasamos también el estado del Checkbox
+                iniciarSesion(correo, password, cbMantenerSesion.isChecked)
             }
         }
     }
 
-    private fun iniciarSesion(email: String, password: String) {
-        // Mostrar carga
+    // Actualizamos la función para recibir la decisión del Checkbox
+    private fun iniciarSesion(email: String, password: String, mantenerSesion: Boolean) {
         mostrarCarga(true)
 
         lifecycleScope.launch {
@@ -87,22 +83,25 @@ class Inicio_Sesion : AppCompatActivity() {
                 val api = RetrofitClient.create(this@Inicio_Sesion)
                 val respuesta = api.login(LoginRequest(email, password))
 
-                // Ocultar carga
                 mostrarCarga(false)
 
                 if (respuesta.isSuccessful) {
                     val body = respuesta.body()
                     if (body != null) {
-                        // Login exitoso
                         val token = body.token
                         val usuario = body.usuario
 
-                        // Guardar el token y datos del usuario en SharedPreferences
                         val prefs = getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
-                        prefs.edit().putString("jwt_token", token).apply()
-                        prefs.edit().putInt("usuario_id", usuario.id).apply()
-                        prefs.edit().putString("usuario_rol", usuario.rol).apply()
-                        prefs.edit().putString("usuario_nombre", usuario.nombre).apply()
+
+                        // Guardamos TODO en SharedPreferences, incluyendo la decisión del usuario
+                        with(prefs.edit()) {
+                            putString("jwt_token", token)
+                            putInt("usuario_id", usuario.id)
+                            putString("usuario_rol", usuario.rol)
+                            putString("usuario_nombre", usuario.nombre)
+                            putBoolean("mantener_sesion", mantenerSesion) // <-- ¡AQUÍ ESTÁ LA MAGIA!
+                            apply()
+                        }
 
                         Toast.makeText(
                             this@Inicio_Sesion,
@@ -110,11 +109,9 @@ class Inicio_Sesion : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
 
-                        // Navegar según el rol
                         navegarSegunRol(usuario.rol)
                     }
                 } else {
-                    // Error del servidor
                     when (respuesta.code()) {
                         401 -> mostrarError("Correo o contraseña incorrectos")
                         403 -> mostrarError("Cuenta desactivada. Contacta al administrador")
@@ -123,7 +120,6 @@ class Inicio_Sesion : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                // Ocultar carga incluso si hay error
                 mostrarCarga(false)
                 mostrarError("Error de conexión: ${e.message}")
             }
@@ -132,7 +128,7 @@ class Inicio_Sesion : AppCompatActivity() {
 
     private fun navegarSegunRol(rol: String) {
         val intent = when (rol) {
-            "dueño" -> Intent(this, MenuDueno::class.java)
+            "dueño" -> Intent(this, MenuDueno::class.java) // Quizás ahora quieras mandarlo a Mis_mascotas directamente
             "veterinario" -> Intent(this, MenuVeterinario::class.java)
             "admin" -> Intent(this, MenuAdmin::class.java)
             else -> {
@@ -144,16 +140,15 @@ class Inicio_Sesion : AppCompatActivity() {
         finish()
     }
 
-    // Función para mostrar u ocultar el ProgressBar y controlar el botón
     private fun mostrarCarga(mostrar: Boolean) {
         if (mostrar) {
-            progressBar.visibility = android.view.View.VISIBLE   // Mostrar círculo
-            btnIngresar.isEnabled = false                       // Deshabilitar botón
-            btnIngresar.text = "Ingresando..."                  // Cambiar texto
+            progressBar.visibility = android.view.View.VISIBLE
+            btnIngresar.isEnabled = false
+            btnIngresar.text = "Ingresando..."
         } else {
-            progressBar.visibility = android.view.View.GONE     // Ocultar círculo
-            btnIngresar.isEnabled = true                        // Habilitar botón
-            btnIngresar.text = "Ingresar"                       // Restaurar texto
+            progressBar.visibility = android.view.View.GONE
+            btnIngresar.isEnabled = true
+            btnIngresar.text = "Ingresar"
         }
     }
 
