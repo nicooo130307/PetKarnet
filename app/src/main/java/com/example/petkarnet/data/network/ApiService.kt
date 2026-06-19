@@ -16,7 +16,8 @@ interface ApiService {
     @GET("api/usuarios/perfil")
     suspend fun perfil(): Response<Usuario>
 
-
+    @PUT("api/usuarios/foto-perfil")
+    suspend fun actualizarFotoPerfil(@Body body: Map<String, String>): Response<MensajeResponse>
 
 
     @PATCH("api/usuarios/{id}/verificar")
