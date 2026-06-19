@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Blanquitote"
+    android:background="@android:color/white"
+    android:fillViewport="true"
     tools:context=".PerfilVeterinario">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="32dp"
-        android:gravity="center_horizontal">
+        android:padding="32dp">
 
         <!-- Título -->
         <TextView
@@ -35,12 +35,11 @@
             android:textSize="16sp"
             android:layout_marginBottom="32dp" />
 
-
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_foto_vet"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:background="@color/Azulito"
             android:padding="4dp"
@@ -53,36 +52,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="Sube tu foto o logo de la clínica"
             android:textColor="@color/negrito"
-            android:fontFamily="@font/roboto"
             android:textSize="14sp"
             android:layout_marginBottom="32dp" />
 
-
-
-
-
-        <!-- Campo: Nombre de la Clínica -->
+        <!-- Campos de texto (Nombre, Cédula, Teléfono, Dirección) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_nombre_clinica"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Nombre de la Clínica o Consultorio"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
-
+            android:hint="Nombre de la Clínica"
+            app:boxStrokeColor="@color/Azulito">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_nombre_clinica"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords"
-                android:fontFamily="@font/roboto" />
+                android:inputType="textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo: Cédula Profesional -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_cedula"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -90,19 +81,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Cédula Profesional"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
-
-            <!-- Le ponemos inputType="number" porque las cédulas suelen ser numéricas -->
+            app:boxStrokeColor="@color/Azulito">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_cedula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:fontFamily="@font/roboto" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo: Teléfono -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_telefono_clinica"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -110,18 +96,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Teléfono de Contacto"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
-
+            app:boxStrokeColor="@color/Azulito">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_telefono_clinica"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:fontFamily="@font/roboto" />
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo: Dirección -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_direccion_clinica"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -129,77 +111,63 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Dirección Completa"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
-
+            app:boxStrokeColor="@color/Azulito">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_direccion_clinica"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:fontFamily="@font/roboto" />
+                android:inputType="textPostalAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo: Horario -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_horario"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- SECCIÓN DE HORARIO -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:hint="Horario (Ej. L-V 9:00 a 18:00)"
-            app:boxStrokeColor="@color/Azulito"
-            app:hintTextColor="@color/negrito">
+            android:text="Horario de atención"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/negrito"
+            android:layout_marginBottom="12dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_horario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:fontFamily="@font/roboto" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_horario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="24dp" />
 
-
+        <!-- Cuadro de información -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="24dp"
-            android:gravity="center_vertical"
-            android:background="@color/Grisesito"
-            android:padding="12dp">
+            android:background="#F3F4F6"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🛡️"
-                android:textSize="24sp"
-                android:layout_marginEnd="12dp" />
-
+                android:textSize="20sp"
+                android:layout_marginEnd="8dp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Por seguridad de la comunidad, tu Cédula Profesional será verificada por nuestro equipo. Al aprobarse, recibirás tu insignia de Veterinario Verificado."
-                android:textColor="@color/negrito"
-                android:fontFamily="@font/roboto"
-                android:textSize="13sp" />
+                android:text="Tu Cédula Profesional será verificada por nuestro equipo por seguridad."
+                android:textColor="#555555"
+                android:textSize="12sp" />
         </LinearLayout>
 
-
-
-
-
-        <!-- Botón de Guardar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_guardar_clinica"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Comenzar a usar PetKarnet"
-            android:textSize="18sp"
-            android:textColor="@color/negritoBotones"
+            android:textColor="@color/negrito"
             app:cornerRadius="50dp"
             app:backgroundTint="@color/amarillo" />
 
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
