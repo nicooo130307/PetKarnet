@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
 exports.registro = async (req, res) => {
-  const { nombre, email, password, rol } = req.body;
+  const { nombre, email, password, rol, horario } = req.body;
 
   if (!nombre || !email || !password || !rol) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
@@ -23,9 +23,10 @@ exports.registro = async (req, res) => {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
+    // Añadido campo horario
     const [resultado] = await db.promise().query(
-      'INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES (?, ?, ?, ?)',
-      [nombre, email, passwordHash, rol]
+      'INSERT INTO usuarios (nombre, email, password_hash, rol, horario) VALUES (?, ?, ?, ?, ?)',
+      [nombre, email, passwordHash, rol, horario || null]
     );
 
     res.status(201).json({ mensaje: 'Usuario registrado exitosamente', id: resultado.insertId });
@@ -85,7 +86,7 @@ exports.login = async (req, res) => {
 exports.perfil = async (req, res) => {
   try {
     const [usuarios] = await db.promise().query(
-      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado, activo, fecha_registro FROM usuarios WHERE id = ?',
+      'SELECT id, nombre, email, rol, telefono, direccion, foto_perfil, verificado, activo, fecha_registro, horario FROM usuarios WHERE id = ?',
       [req.usuario.id]
     );
 
@@ -93,14 +94,13 @@ exports.perfil = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-        const usuario = usuarios[0];
+    const usuario = usuarios[0];
 
-        // Convertir explícitamente los campos TINYINT(1) a booleanos
-        usuario.verificado = usuario.verificado === 1;
-        usuario.activo = usuario.activo === 1;
+    // Convertir explícitamente los campos TINYINT(1) a booleanos
+    usuario.verificado = usuario.verificado === 1;
+    usuario.activo = usuario.activo === 1;
 
-
-    res.json(usuarios[0]);
+    res.json(usuario);
   } catch (error) {
     console.error('Error al obtener perfil:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -127,7 +127,6 @@ exports.listarVeterinarios = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
   }
 };
-
 
 // Actualizar perfil del usuario autenticado
 exports.actualizarPerfil = async (req, res) => {
@@ -229,8 +228,6 @@ exports.actualizarFotoPerfil = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
-
-
 
 exports.eliminarCuenta = async (req, res) => {
   const id = req.usuario.id;

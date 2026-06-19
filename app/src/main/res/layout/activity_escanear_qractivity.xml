@@ -12,5 +12,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="48dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:textColor="@color/amarillo" />
+        android:textColor="@color/amarillo"
+        android:exported="false"
+        android:configChanges="orientation|screenSize" />
 </FrameLayout>

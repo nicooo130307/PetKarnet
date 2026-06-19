@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
     <style name="Base.Theme.PetKarnet" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/texto_family</item>
     </style>
@@ -20,5 +21,13 @@
         <item name="colorPrimary">@color/amarillo</item>
         <item name="colorAccent">@color/Azulito</item>
         <item name="colorOnPrimary">@color/negrito</item>
+    </style>
+
+    <!-- Tu estilo para el reloj -->
+    <style name="TemaRelojPet" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/amarillo</item>
+        <item name="colorAccent">@color/Azulito</item>
+        <item name="colorOnPrimary">@color/negrito</item>
+        <item name="android:textColorPrimary">@color/negrito</item>
     </style>
 </resources>

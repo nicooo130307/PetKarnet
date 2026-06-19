@@ -14,12 +14,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import com.example.petkarnet.data.model.LoginRequest
+import com.example.petkarnet.util.LoadingManager
 
 
 class Registro : AppCompatActivity() {
 
-    // Declarar el ProgressBar como variable de clase
-    private lateinit var progressBar: ProgressBar
+
     private lateinit var btnRegistrar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,7 @@ class Registro : AppCompatActivity() {
         val rgTipoUsuario = findViewById<RadioGroup>(R.id.rg_tipo_usuario)
 
         btnRegistrar = findViewById<Button>(R.id.btn_registrar_usuario)
-        progressBar = findViewById<ProgressBar>(R.id.progress_bar)
+
 
         btnRegistrar.setOnClickListener {
             // Limpiar errores anteriores
@@ -162,16 +162,18 @@ class Registro : AppCompatActivity() {
         }
     }
 
-    // Función para mostrar u ocultar el ProgressBar y controlar el botón
     private fun mostrarCarga(mostrar: Boolean) {
         if (mostrar) {
-            progressBar.visibility = android.view.View.VISIBLE   // Mostrar círculo
-            btnRegistrar.isEnabled = false                      // Deshabilitar botón
-            btnRegistrar.text = "Registrando..."                // Cambiar texto
+
+            LoadingManager.showLoading(this, "Creando tu cuenta...")
+            btnRegistrar.isEnabled = false
+            btnRegistrar.text = "Registrando..."
         } else {
-            progressBar.visibility = android.view.View.GONE     // Ocultar círculo
-            btnRegistrar.isEnabled = true                       // Habilitar botón
-            btnRegistrar.text = "Registrar"                     // Restaurar texto
+
+            LoadingManager.hideLoading(this)
+
+            btnRegistrar.isEnabled = true
+            btnRegistrar.text = "Registrar"
         }
     }
 

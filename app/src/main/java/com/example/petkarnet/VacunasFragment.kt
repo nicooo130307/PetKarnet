@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import com.example.petkarnet.util.LoadingManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class VacunasFragment : Fragment() {
 
     private lateinit var rvVacunas: RecyclerView
-    private lateinit var progressBar: ProgressBar
+
 
     // Variables globales para que el botón las pueda usar
     private var idMascotaActual: Int = -1
@@ -44,7 +44,7 @@ class VacunasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rvVacunas = view.findViewById(R.id.rv_album_vacunas)
-        progressBar = view.findViewById(R.id.progress_bar_vacunas)
+
 
         // Reforzamos el formato de cuadrícula de 2 columnas
         rvVacunas.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -63,7 +63,8 @@ class VacunasFragment : Fragment() {
     }
 
     private fun cargarAlbumVacunas() {
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(requireActivity(), "Buscando vacunas...")
+
 
         lifecycleScope.launch {
             try {
@@ -74,7 +75,7 @@ class VacunasFragment : Fragment() {
                 especieMascotaActual = sharedPref.getString("ESPECIE_MASCOTA_ACTIVA", "Perro") ?: "Perro"
 
                 if (idMascotaActual == -1) {
-                    progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
                     Toast.makeText(requireContext(), "Por favor, selecciona una mascota primero", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
@@ -108,10 +109,10 @@ class VacunasFragment : Fragment() {
                 }
                 rvVacunas.adapter = adapter
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
 
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
                 Toast.makeText(requireContext(), "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -255,14 +256,16 @@ class VacunasFragment : Fragment() {
 
     // NUEVA FUNCIÓN: Llamada al backend para borrar de la base de datos
     private fun ejecutarEliminacionVacuna(idHistorial: Int) {
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(requireActivity(), "Borrando registro...")
+
+
 
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.create(requireContext())
                 val respuesta = api.eliminarRegistroVacuna(idHistorial)
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
 
                 if (respuesta.isSuccessful) {
                     Toast.makeText(requireContext(), "Registro eliminado correctamente", Toast.LENGTH_SHORT).show()
@@ -272,7 +275,7 @@ class VacunasFragment : Fragment() {
                     Toast.makeText(requireContext(), "No se pudo eliminar el registro", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
                 Toast.makeText(requireContext(), "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }

@@ -66,6 +66,6 @@ dependencies {
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
-
-
+    // Lottie Animation
+    implementation("com.airbnb.android:lottie:6.4.0")
 }

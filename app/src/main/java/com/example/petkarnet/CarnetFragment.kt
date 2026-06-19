@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -26,6 +25,7 @@ import android.widget.ImageView
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.common.BitMatrix
+import com.example.petkarnet.util.LoadingManager
 
 class CarnetFragment : Fragment() {
     private lateinit var ivQR: ImageView
@@ -44,7 +44,7 @@ class CarnetFragment : Fragment() {
     private lateinit var tvTelefono: TextView
     private lateinit var tvDireccion: TextView
 
-    private lateinit var progressBar: ProgressBar
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +71,7 @@ class CarnetFragment : Fragment() {
         tvDireccion = view.findViewById(R.id.tv_direccion_carnet)
 
         ivQR = view.findViewById(R.id.iv_qr_carnet)
-        progressBar = view.findViewById(R.id.progress_bar_carnet)
+
 
         val fabEditar = view.findViewById<FloatingActionButton>(R.id.fab_editar_carnet)
         fabEditar.setOnClickListener {
@@ -83,7 +83,8 @@ class CarnetFragment : Fragment() {
     }
 
     private fun cargarCarnet() {
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(requireActivity(), "Cargando el carnet médico...")
+
 
         lifecycleScope.launch {
             try {
@@ -93,7 +94,7 @@ class CarnetFragment : Fragment() {
                 // ... dentro de cargarCarnet(), justo después de obtener la lista de mascotas:
                 val respuestaMascotas = api.listarMascotas()
                 if (!respuestaMascotas.isSuccessful || respuestaMascotas.body().isNullOrEmpty()) {
-                    progressBar.visibility = View.GONE
+                   LoadingManager.hideLoading(requireActivity())
                     Toast.makeText(requireContext(), "No tienes mascotas registradas", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
@@ -104,16 +105,16 @@ class CarnetFragment : Fragment() {
                 val mascota = respuestaMascotas.body()!!.find { it.id == idMascotaActiva } ?: respuestaMascotas.body()!!.first()
 
 
-                // 2. Obtener el perfil del dueño
+
                 val respuestaPerfil = api.perfil()
                 val dueno = if (respuestaPerfil.isSuccessful) respuestaPerfil.body() else null
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
 
                 // 3. Actualizar UI de la Mascota
                 tvNombre.text = mascota.nombre ?: "Falta registrar"
 
-                // --- MAGIA DE LA FECHA AQUÍ ---
+
                 if (!mascota.fecha_nacimiento.isNullOrBlank()) {
                     tvEdad.text = calcularEdadYFormatearFecha(mascota.fecha_nacimiento)
                 } else {
@@ -160,25 +161,25 @@ class CarnetFragment : Fragment() {
 
 
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(requireActivity())
                 Toast.makeText(requireContext(), "Error de datos: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    // --- FUNCIÓN HELPER PARA LA FECHA Y EDAD ---
+
     private fun calcularEdadYFormatearFecha(fechaISO: String): String {
         return try {
-            // 1. Convertir el texto que manda Node.js a un objeto Date de Java
+
             val formatoEntrada = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
             formatoEntrada.timeZone = TimeZone.getTimeZone("UTC")
             val fechaNacimiento = formatoEntrada.parse(fechaISO) ?: return fechaISO
 
-            // 2. Darle el formato bonito para mostrar (ej: 01/06/2026)
+
             val formatoSalida = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val fechaBonita = formatoSalida.format(fechaNacimiento)
 
-            // 3. Calcular la edad matemática
+
             val nacimiento = Calendar.getInstance().apply { time = fechaNacimiento }
             val hoy = Calendar.getInstance()
 
@@ -186,7 +187,7 @@ class CarnetFragment : Fragment() {
             var meses = hoy.get(Calendar.MONTH) - nacimiento.get(Calendar.MONTH)
             var dias = hoy.get(Calendar.DAY_OF_MONTH) - nacimiento.get(Calendar.DAY_OF_MONTH)
 
-            // Ajuste matemático si los días o meses son negativos
+
             if (dias < 0) {
                 meses--
                 val mesAnterior = Calendar.getInstance()

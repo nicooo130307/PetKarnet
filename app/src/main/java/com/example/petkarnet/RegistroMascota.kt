@@ -21,8 +21,7 @@ import java.io.File
 import com.cloudinary.android.callback.ErrorInfo
 import com.example.petkarnet.data.model.ActualizarPerfilRequest
 import java.util.UUID
-
-
+import com.example.petkarnet.util.LoadingManager
 
 
 data class RazaMascota(val nombre: String, val imagenAId: Int) {
@@ -34,7 +33,6 @@ data class RazaMascota(val nombre: String, val imagenAId: Int) {
 class RegistroMascota : AppCompatActivity() {
 
     private var uriFotoSeleccionada: Uri? = null
-    private lateinit var progressBar: ProgressBar
     private lateinit var btnGuardar: com.google.android.material.button.MaterialButton
 
     private val abrirGaleria =
@@ -58,7 +56,6 @@ class RegistroMascota : AppCompatActivity() {
             abrirGaleria.launch("image/*")
         }
 
-        progressBar = findViewById(R.id.progress_bar)
         btnGuardar = findViewById(R.id.btn_guardar_mascota)
 
         val tilNombre = findViewById<TextInputLayout>(R.id.til_nombre_mascota)
@@ -350,11 +347,11 @@ class RegistroMascota : AppCompatActivity() {
 
     private fun mostrarCarga(mostrar: Boolean) {
         if (mostrar) {
-            progressBar.visibility = android.view.View.VISIBLE
+            LoadingManager.showLoading(this, "Guardando mascota...")
             btnGuardar.isEnabled = false
             btnGuardar.text = "Guardando..."
         } else {
-            progressBar.visibility = android.view.View.GONE
+            LoadingManager.hideLoading(this)
             btnGuardar.isEnabled = true
             btnGuardar.text = "Crear Perfil"
         }
@@ -387,11 +384,11 @@ class RegistroMascota : AppCompatActivity() {
 
         // subir la imagen con cloudinary
         CloudinaryManager.uploadImage(imageFile) { url ->
-            mostrarCarga(false) // ocultar la carga cuando termine (éxito o error)
             if (url != null) {
                 // Se obtuvo la URL de la foto, ahora guardar la mascota con esa URL
                 guardarMascotaConFoto(nombre, especie, raza, edad, url, sexo, peso, telefono, direccion)
             } else {
+                mostrarCarga(false)
                 mostrarError("Error al subir la foto")
             }
         }

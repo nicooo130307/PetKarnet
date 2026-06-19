@@ -4,11 +4,34 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.button.MaterialButton
-import com.google.zxing.integration.android.IntentIntegrator
-import com.google.zxing.integration.android.IntentResult
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 class EscanearQRActivity : AppCompatActivity() {
+
+    private val requestCameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                iniciarEscaneo()
+            } else {
+                Toast.makeText(this, "Se necesita permiso de cámara para escanear QR", Toast.LENGTH_LONG).show()
+                finish()
+            }
+        }
+
+    private val scanLauncher = registerForActivityResult(ScanContract()) { result ->
+        if (result.contents == null) {
+            Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_LONG).show()
+            finish()
+        } else {
+            procesarQR(result.contents)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,56 +42,43 @@ class EscanearQRActivity : AppCompatActivity() {
             finish()
         }
 
-        val integrator = IntentIntegrator(this)
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        integrator.setPrompt("Escanea el código QR del paciente")
-        integrator.setCameraId(0)
-        integrator.setBeepEnabled(false)
-        integrator.setBarcodeImageEnabled(false)
-        integrator.initiateScan()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        } else {
+            iniciarEscaneo()
+        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val result: IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_LONG).show()
-                finish()
-            } else {
-                val contenidoQR = result.contents
-                procesarQR(contenidoQR)
-            }
+    private fun iniciarEscaneo() {
+        val options = ScanOptions().apply {
+            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            setPrompt("Escanea el código QR del paciente")
+            setBeepEnabled(false)
+            setOrientationLocked(false)
+            setTimeout(0)
         }
+        scanLauncher.launch(options)
     }
 
     private fun procesarQR(contenido: String) {
         var idMascota: Int? = null
 
-
         if (contenido.startsWith("mascota:")) {
             idMascota = contenido.removePrefix("mascota:").toIntOrNull()
-        }
-
-        else if (contenido.toIntOrNull() != null) {
+        } else if (contenido.toIntOrNull() != null) {
             idMascota = contenido.toInt()
-        }
-
-        else if (contenido.contains("/api/mascotas/")) {
+        } else if (contenido.contains("/api/mascotas/")) {
             val patron = Regex("/api/mascotas/(\\d+)")
             val match = patron.find(contenido)
             if (match != null) {
                 idMascota = match.groupValues[1].toIntOrNull()
             }
-        }
-
-        else if (contenido.contains("\"id_mascota\"")) {
+        } else if (contenido.contains("\"id_mascota\"")) {
             try {
                 val json = org.json.JSONObject(contenido)
                 idMascota = json.optInt("id_mascota", -1).takeIf { it != -1 }
-            } catch (e: Exception) {
-
-            }
+            } catch (e: Exception) { }
         }
 
         if (idMascota != null) {

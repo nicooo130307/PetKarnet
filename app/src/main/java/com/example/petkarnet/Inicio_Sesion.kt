@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,10 +16,11 @@ import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
+import com.example.petkarnet.util.LoadingManager
 
 class Inicio_Sesion : AppCompatActivity() {
 
-    private lateinit var progressBar: ProgressBar
+
     private lateinit var btnIngresar: Button
     private lateinit var cbMantenerSesion: CheckBox // NUEVA VARIABLE
 
@@ -37,7 +37,7 @@ class Inicio_Sesion : AppCompatActivity() {
 
         cbMantenerSesion = findViewById(R.id.cb_mantener_sesion) // ENLAZAMOS EL CHECKBOX
         btnIngresar = findViewById<Button>(R.id.btn_ingresar)
-        progressBar = findViewById<ProgressBar>(R.id.progress_bar)
+
 
         val tvOlvidaste = findViewById<TextView>(R.id.tv_olvidaste_password)
 
@@ -142,11 +142,15 @@ class Inicio_Sesion : AppCompatActivity() {
 
     private fun mostrarCarga(mostrar: Boolean) {
         if (mostrar) {
-            progressBar.visibility = android.view.View.VISIBLE
+
+            LoadingManager.showLoading(this, "Iniciando sesión...")
+
             btnIngresar.isEnabled = false
             btnIngresar.text = "Ingresando..."
         } else {
-            progressBar.visibility = android.view.View.GONE
+
+            LoadingManager.hideLoading(this)
+
             btnIngresar.isEnabled = true
             btnIngresar.text = "Ingresar"
         }
