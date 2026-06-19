@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="#D1D5DB"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tv_bs_nombre_vacuna"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vacuna: Rabia"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/Azulito"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_bs_estado_vacuna"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estado: Aplicada"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:background="#E8F5E9"
+        android:layout_marginBottom="20dp"/>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_bs_fecha_aplicacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📅 Fecha de aplicación: 15/06/2026"
+        android:textSize="16sp"
+        android:textColor="@color/negrito"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_bs_proxima_dosis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⏳ Próxima dosis: 15/06/2027"
+        android:textSize="16sp"
+        android:textColor="@color/negrito"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_bs_notas_vacuna"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📝 Notas: Sin reacciones alérgicas observadas."
+        android:textSize="16sp"
+        android:textColor="@color/negrito"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tv_bs_label_comprobante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📷 Comprobante adjunto:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/negrito"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_bs_contenedor_foto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp">
+
+        <ImageView
+            android:id="@+id/iv_bs_comprobante_vacuna"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="#F3F4F6"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_bs_eliminar_vacuna"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:text="Eliminar Registro"
+        android:textColor="#D32F2F"
+        app:backgroundTint="#FFEBEE"
+        app:strokeColor="#D32F2F"
+        app:strokeWidth="1dp"
+        app:cornerRadius="50dp"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_bs_cerrar_vacuna"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:text="Entendido"
+        android:textSize="16sp"
+        android:textColor="@color/negrito"
+        app:backgroundTint="@color/amarillo"
+        app:cornerRadius="50dp"/>
+
+</LinearLayout>

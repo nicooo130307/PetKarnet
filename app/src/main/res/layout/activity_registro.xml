@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/Blanquitote"
     tools:context=".Registro">
 
     <LinearLayout
@@ -121,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="¿Qué tipo de usuario eres?"
-            android:textColor="#333333"
+            android:textColor="@color/negrito"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -158,7 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Registrarse"
-            android:textColor="@color/negrito"
+            android:textColor="@color/negritoBotones"
             android:textSize="20sp"
             app:cornerRadius="50dp"
             app:backgroundTint="@color/amarillo" />

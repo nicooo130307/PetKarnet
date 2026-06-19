@@ -261,7 +261,7 @@ exports.infoPublica = async (req, res) => {
       <div class="popup-icon">📱</div>
       <h2>¡Descarga PetKarnet!</h2>
       <p>Para ver el historial completo, agendar citas y recibir recordatorios, descarga nuestra app.</p>
-      <a href="https://play.google.com/store/apps/details?id=com.example.petkarnet" class="popup-btn" onclick="cerrarPopup()">
+      <a href="https://github.com/nicooo130307/PetKarnet/releases/tag/v1.0.0-beta" class="popup-btn" onclick="cerrarPopup()">
         📲 Descargar App
       </a>
     </div>

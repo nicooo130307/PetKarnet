@@ -98,6 +98,47 @@ class PerfilFragment : Fragment() {
     }
 
     private fun cargarDatosUsuario() {
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.create(requireContext())
+                val respuesta = api.perfil()
+
+                if (respuesta.isSuccessful) {
+                    val usuario = respuesta.body()
+                    usuario?.let {
+                        tvNombreUsuario.text = it.nombre
+                        tvRolUsuario.text = when (it.rol) {
+                            "veterinario" -> "Veterinario"
+                            "admin" -> "Administrador"
+                            else -> "Dueño Propietario"
+                        }
+
+                        // Cargar foto de perfil desde la API
+                        if (!it.foto_perfil.isNullOrBlank()) {
+                            Glide.with(requireContext())
+                                .load(it.foto_perfil)
+                                .placeholder(R.drawable.ic_menu_camera)
+                                .error(R.drawable.ic_menu_camera)
+                                .into(ivFotoPerfil)
+                        } else {
+                            ivFotoPerfil.setImageResource(R.drawable.ic_menu_camera)
+                        }
+
+                        // Actualizar SharedPreferences con los datos más recientes
+                        val prefs = requireContext().getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
+                        prefs.edit().putString("usuario_nombre", it.nombre).apply()
+                        prefs.edit().putString("usuario_rol", it.rol).apply()
+                        prefs.edit().putString("usuario_foto", it.foto_perfil ?: "").apply()
+                    }
+                }
+            } catch (e: Exception) {
+                // Si falla la API, cargar desde SharedPreferences como respaldo
+                cargarDesdeSharedPreferences()
+            }
+        }
+    }
+
+    private fun cargarDesdeSharedPreferences() {
         val prefs = requireContext().getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
         val nombre = prefs.getString("usuario_nombre", "Usuario") ?: "Usuario"
         val rol = prefs.getString("usuario_rol", "dueño") ?: "dueño"
@@ -110,7 +151,6 @@ class PerfilFragment : Fragment() {
             else -> "Dueño Propietario"
         }
 
-        // Cargar foto de perfil con Glide
         if (!fotoUrl.isNullOrBlank()) {
             Glide.with(requireContext())
                 .load(fotoUrl)
