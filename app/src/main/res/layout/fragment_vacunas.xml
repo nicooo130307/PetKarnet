@@ -46,15 +46,7 @@
         app:spanCount="2"
         tools:listitem="@layout/item_vacuna_album" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar_vacunas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_agregar_vacuna"
@@ -66,5 +58,5 @@
         app:tint="@color/negrito"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
+    <include layout="@layout/layout_loading_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

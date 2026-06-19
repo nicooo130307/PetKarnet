@@ -111,14 +111,6 @@
             android:textColor="@color/negritoBotones"
             app:backgroundTint="@color/amarillo" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:indeterminate="true"
-            android:layout_marginTop="16dp"/>
 
         <ImageView
             android:layout_marginTop="25dp"
@@ -127,6 +119,6 @@
             android:layout_height="300dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/pelusino" />
-
+        <include layout="@layout/layout_loading_screen" />
     </LinearLayout>
 </ScrollView>

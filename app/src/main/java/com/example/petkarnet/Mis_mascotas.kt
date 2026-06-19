@@ -7,7 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
+
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -21,11 +21,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
+import com.example.petkarnet.util.LoadingManager
+
 
 class Mis_mascotas : AppCompatActivity() {
 
     private lateinit var rvMascotas: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var tvSinMascotas: TextView
     private lateinit var adapter: MascotaAdapter
 
@@ -35,7 +36,6 @@ class Mis_mascotas : AppCompatActivity() {
         setContentView(R.layout.activity_mis_mascotas)
 
         rvMascotas = findViewById(R.id.rv_mis_mascotas)
-        progressBar = findViewById(R.id.progress_bar_mascotas)
         tvSinMascotas = findViewById(R.id.tv_sin_mascotas)
         val fabAgregar = findViewById<FloatingActionButton>(R.id.fab_agregar_mascota)
 
@@ -55,7 +55,7 @@ class Mis_mascotas : AppCompatActivity() {
     }
 
     private fun cargarMascotasReales() {
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(this, "Buscando tus mascotas...")
         tvSinMascotas.visibility = View.GONE
         rvMascotas.visibility = View.GONE
 
@@ -64,7 +64,7 @@ class Mis_mascotas : AppCompatActivity() {
                 val api = RetrofitClient.create(this@Mis_mascotas)
                 val respuesta = api.listarMascotas()
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@Mis_mascotas)
 
                 if (respuesta.isSuccessful && respuesta.body() != null) {
                     val listaMutable = respuesta.body()!!.toMutableList()
@@ -101,7 +101,7 @@ class Mis_mascotas : AppCompatActivity() {
                     Toast.makeText(this@Mis_mascotas, "Error al cargar mascotas", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@Mis_mascotas)
                 Toast.makeText(this@Mis_mascotas, "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -187,14 +187,14 @@ class Mis_mascotas : AppCompatActivity() {
     }
 
     private fun eliminarMascotaDelServidor(idMascota: Int, position: Int) {
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(this, "Eliminando mascota...")
 
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.create(this@Mis_mascotas)
                 val respuesta = api.eliminarMascota(idMascota)
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@Mis_mascotas)
 
                 if (respuesta.isSuccessful) {
                     Toast.makeText(this@Mis_mascotas, "Mascota eliminada correctamente", Toast.LENGTH_SHORT).show()
@@ -210,7 +210,7 @@ class Mis_mascotas : AppCompatActivity() {
                     adapter.notifyItemChanged(position)
                 }
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@Mis_mascotas)
                 Toast.makeText(this@Mis_mascotas, "Error de conexión: ${e.message}", Toast.LENGTH_SHORT).show()
                 adapter.notifyItemChanged(position)
             }

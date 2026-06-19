@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -15,10 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlinx.coroutines.launch
+import com.example.petkarnet.util.LoadingManager
 
 class Configuracion : AppCompatActivity() {
-
-    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +30,6 @@ class Configuracion : AppCompatActivity() {
         val btnIdioma = findViewById<LinearLayout>(R.id.btn_idioma)
         val btnPrivacidad = findViewById<TextView>(R.id.btn_privacidad)
         val btnEliminarCuenta = findViewById<TextView>(R.id.btn_eliminar_cuenta)
-
-        // ProgressBar (debe existir en el XML, si no lo has agregado aún, añádelo)
-        progressBar = findViewById(R.id.progress_bar_configuracion)
 
         // 2. Lógica de los Switches
         switchModoOscuro.setOnCheckedChangeListener { _, isChecked ->
@@ -80,14 +75,13 @@ class Configuracion : AppCompatActivity() {
     }
 
     private fun eliminarCuenta() {
-        progressBar.visibility = View.VISIBLE
-
+        LoadingManager.showLoading(this, "Eliminando cuenta...")
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.create(this@Configuracion)
                 val respuesta = api.eliminarCuenta()
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@Configuracion)
 
                 if (respuesta.isSuccessful) {
                     Toast.makeText(this@Configuracion, "Cuenta eliminada exitosamente", Toast.LENGTH_LONG).show()
@@ -106,7 +100,7 @@ class Configuracion : AppCompatActivity() {
                     Toast.makeText(this@Configuracion, "Error: $errorBody", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@Configuracion)
                 Toast.makeText(this@Configuracion, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }

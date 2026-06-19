@@ -191,15 +191,6 @@
             android:textColor="@color/negritoBotones"
             android:layout_marginBottom="35dp"/>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:indeterminate="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"/>
-
+        <include layout="@layout/layout_loading_screen" />
     </LinearLayout>
 </ScrollView>

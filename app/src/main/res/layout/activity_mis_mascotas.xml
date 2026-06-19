@@ -21,13 +21,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"/>
 
-        <ProgressBar
-            android:id="@+id/progress_bar_mascotas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_mis_mascotas"
@@ -59,5 +53,6 @@
         app:tint="@color/negritoBotones"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <include layout="@layout/layout_loading_screen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

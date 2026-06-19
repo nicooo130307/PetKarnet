@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import com.example.petkarnet.util.LoadingManager
 
 class EditarCarnet : AppCompatActivity() {
 
@@ -46,7 +47,7 @@ class EditarCarnet : AppCompatActivity() {
     private lateinit var etTelefono: TextInputEditText
     private lateinit var etDireccion: TextInputEditText
     private lateinit var btnGuardar: MaterialButton
-    private lateinit var progressBar: ProgressBar
+
 
     private var mascotaId: Int = 0
     private var uriFotoSeleccionada: Uri? = null
@@ -112,7 +113,7 @@ class EditarCarnet : AppCompatActivity() {
         etTelefono = findViewById(R.id.et_telefono_editar)
         etDireccion = findViewById(R.id.et_direccion_editar)
         btnGuardar = findViewById(R.id.btn_guardar_cambios_carnet)
-        progressBar = findViewById(R.id.progress_bar_carnet)
+
 
         // Configurar Sexo Dropdown
         val opcionesSexo = arrayOf("Macho", "Hembra")
@@ -165,7 +166,7 @@ class EditarCarnet : AppCompatActivity() {
     }
 
     private fun cargarDatosMascota() {
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(this, "Cargando datos...")
 
         lifecycleScope.launch {
             try {
@@ -207,10 +208,9 @@ class EditarCarnet : AppCompatActivity() {
                     etTelefono.setText(usuario?.telefono ?: "")
                     etDireccion.setText(usuario?.direccion ?: "")
                 }
-
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@EditarCarnet)
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@EditarCarnet)
                 Toast.makeText(this@EditarCarnet, "Error de conexión: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -232,7 +232,7 @@ class EditarCarnet : AppCompatActivity() {
             return
         }
 
-        progressBar.visibility = View.VISIBLE
+        LoadingManager.showLoading(this, "Guardando cambios...")
         btnGuardar.isEnabled = false
 
         if (fotoCambiada && uriFotoSeleccionada != null) {
@@ -245,7 +245,7 @@ class EditarCarnet : AppCompatActivity() {
     private fun subirFotoYGuardar(uri: Uri, nombre: String, especie: String, raza: String, sexo: String, peso: String, edad: String, telefono: String, direccion: String) {
         val imageFile = CloudinaryManager.getFileFromUri(this, uri)
         if (imageFile == null) {
-            progressBar.visibility = View.GONE
+            LoadingManager.hideLoading(this)
             btnGuardar.isEnabled = true
             Toast.makeText(this, "No se pudo acceder a la imagen", Toast.LENGTH_SHORT).show()
             return
@@ -255,7 +255,7 @@ class EditarCarnet : AppCompatActivity() {
             if (url != null) {
                 guardarTodo(nombre, especie, raza, sexo, peso, edad, url, telefono, direccion)
             } else {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this)
                 btnGuardar.isEnabled = true
                 Toast.makeText(this, "Error al subir la foto", Toast.LENGTH_SHORT).show()
             }
@@ -276,7 +276,7 @@ class EditarCarnet : AppCompatActivity() {
 
                 val respuestaMascota = api.actualizarMascota(mascotaId, requestMascota)
                 if (!respuestaMascota.isSuccessful) {
-                    progressBar.visibility = View.GONE
+                    LoadingManager.hideLoading(this@EditarCarnet)
                     btnGuardar.isEnabled = true
                     Toast.makeText(this@EditarCarnet, "Error al guardar mascota", Toast.LENGTH_SHORT).show()
                     return@launch
@@ -285,7 +285,7 @@ class EditarCarnet : AppCompatActivity() {
                 val requestPerfil = ActualizarPerfilRequest(telefono = telefono.ifBlank { null }, direccion = direccion.ifBlank { null })
                 val respuestaPerfil = api.actualizarPerfil(requestPerfil)
 
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@EditarCarnet)
                 btnGuardar.isEnabled = true
 
                 if (respuestaPerfil.isSuccessful) {
@@ -295,7 +295,7 @@ class EditarCarnet : AppCompatActivity() {
                     Toast.makeText(this@EditarCarnet, "Error al guardar contacto", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                LoadingManager.hideLoading(this@EditarCarnet)
                 btnGuardar.isEnabled = true
                 Toast.makeText(this@EditarCarnet, "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
             }
