@@ -12,18 +12,39 @@
         android:padding="24dp"
         android:gravity="center_horizontal">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_foto_perfil"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="#E0E0E0"
-            android:padding="4dp"
-            android:src="@android:drawable/ic_menu_camera"
-            android:scaleType="centerInside"
-            app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
-            app:strokeColor="@color/Azulito"
-            app:strokeWidth="4dp"
-            android:layout_marginTop="52dp"/>
+        <!-- NUEVO: FrameLayout para encimar el botón sobre la foto -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_foto_perfil"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="#E0E0E0"
+                android:padding="4dp"
+                android:src="@android:drawable/ic_menu_camera"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
+                app:strokeColor="@color/Azulito"
+                app:strokeWidth="4dp" />
+
+            <!-- El lapicito de editar -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_editar_foto_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@android:drawable/ic_menu_edit"
+                app:fabCustomSize="36dp"
+                app:tint="@color/negrito"
+                app:backgroundTint="@color/amarillo"
+                app:elevation="2dp"
+                android:layout_marginEnd="-4dp"
+                android:layout_marginBottom="-4dp"/>
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/tv_nombre_usuario"

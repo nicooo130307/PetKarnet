@@ -11,6 +11,8 @@
     <style name="EstiloFotoCircular">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+        <item name="strokeColor">@color/negrito</item>
+        <item name="strokeWidth">4dp</item>
     </style>
 
     <style name="TemaMenuInferior" parent="">
