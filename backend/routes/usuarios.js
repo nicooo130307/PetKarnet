@@ -11,7 +11,7 @@ router.put('/perfil', auth, usuariosController.actualizarPerfil);
 router.post('/recuperar', recuperacionController.solicitar);
 router.get('/recuperar/:token', recuperacionController.restablecer);
 router.get('/veterinarios', usuariosController.listarVeterinarios);
-
+router.delete('/', auth, usuariosController.eliminarCuenta);
 router.get('/veterinarios', usuariosController.listarVeterinarios);
 
 module.exports = router;
