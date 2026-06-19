@@ -1,27 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PetKarnet" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:fontFamily">@font/texto_family</item>
-    </style>
+        <item name="android:fontFamily">@font/texto_family_dark</item>
 
-    <style name="Theme.PetKarnet" parent="Base.Theme.PetKarnet" />
-
-    <style name="EstiloFotoCircular">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-        <item name="strokeColor">@color/negrito</item>
-        <item name="strokeWidth">4dp</item>
-    </style>
-
-    <style name="TemaMenuInferior" parent="">
-        <item name="colorSecondaryContainer">@color/AzulitoClaro</item>
-    </style>
-
-    <style name="TemaCalendarioPet" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimary">@color/amarillo</item>
-        <item name="colorAccent">@color/Azulito</item>
-        <item name="colorOnPrimary">@color/negrito</item>
     </style>
 </resources>

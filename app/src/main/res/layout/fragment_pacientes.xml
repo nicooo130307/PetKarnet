@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6">
+    android:background="@color/Blanquitote">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 app:startIconDrawable="@android:drawable/ic_menu_search"
                 app:startIconTint="@color/Azulito"
                 app:boxStrokeColor="@color/Azulito"
-                app:boxBackgroundColor="@android:color/white"
+                app:boxBackgroundColor="@color/Blanquito"
                 app:boxCornerRadiusTopStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusBottomStart="12dp"
@@ -112,7 +112,7 @@
                 android:id="@+id/card_paciente_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="@color/Blanquito"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 android:layout_marginBottom="16dp"
@@ -195,7 +195,7 @@
                 android:id="@+id/card_paciente_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="@color/Blanquito"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 android:layout_marginBottom="16dp"

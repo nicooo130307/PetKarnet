@@ -17,7 +17,6 @@ class EditarInformacion : AppCompatActivity() {
 
     private lateinit var etNombre: EditText
     private lateinit var etCorreo: EditText
-    private lateinit var etContrasena: EditText
     private lateinit var btnGuardar: MaterialButton
     private lateinit var progressBar: ProgressBar
     private var telefonoActual: String? = null
@@ -30,7 +29,6 @@ class EditarInformacion : AppCompatActivity() {
 
         etNombre = findViewById(R.id.et_nombre_edit)
         etCorreo = findViewById(R.id.et_correo_edit)
-        etContrasena = findViewById(R.id.et_contrasena_edit)
         btnGuardar = findViewById(R.id.btn_guardar_cambios)
         progressBar = findViewById(R.id.progress_bar)
 
@@ -70,7 +68,6 @@ class EditarInformacion : AppCompatActivity() {
                     usuario?.let {
                         etNombre.setText(it.nombre)
                         etCorreo.setText(it.email)
-                        etContrasena.setText("••••••••••••") // Nunca mostramos la contraseña real
                         telefonoActual = it.telefono
                         direccionActual = it.direccion
                     }

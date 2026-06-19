@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6"
+    android:background="@color/Blanquitote"
     android:fitsSystemWindows="true"
     android:clipToPadding="false"
     android:paddingBottom="40dp"
@@ -38,7 +38,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/Blanquito"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
             android:layout_marginBottom="24dp">
@@ -224,7 +224,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/Blanquito"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
             android:layout_marginBottom="32dp">
@@ -268,7 +268,7 @@
                             android:inputType="none"
                             android:paddingStart="8dp"
                             android:paddingEnd="4dp"
-                            android:popupBackground="@android:color/white"/>
+                            android:popupBackground="@color/Blanquito"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout

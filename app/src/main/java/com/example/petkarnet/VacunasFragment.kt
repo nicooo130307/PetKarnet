@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -100,8 +101,10 @@ class VacunasFragment : Fragment() {
                     SelloVacuna(nombreIdeal, registroEncontrado)
                 }
 
-                // 5. Se lo pasamos a nuestro Adapter para que lo dibuje
-                val adapter = VacunaAdapter(listaSellos)
+                // 5. Se lo pasamos a nuestro Adapter incluyendo la acción del clic
+                val adapter = VacunaAdapter(listaSellos) { selloSeleccionado ->
+                    mostrarBottomSheetDetalle(selloSeleccionado)
+                }
                 rvVacunas.adapter = adapter
 
                 progressBar.visibility = View.GONE
@@ -112,4 +115,73 @@ class VacunasFragment : Fragment() {
             }
         }
     }
+    private fun mostrarBottomSheetDetalle(sello: SelloVacuna) {
+        val bottomSheetDialog = com.google.android.material.bottomsheet.BottomSheetDialog(requireContext())
+        val vistaBS = layoutInflater.inflate(R.layout.bottom_sheet_detalle_vacuna, null)
+
+        val tvNombre = vistaBS.findViewById<TextView>(R.id.tv_bs_nombre_vacuna)
+        val tvEstado = vistaBS.findViewById<TextView>(R.id.tv_bs_estado_vacuna)
+        val tvFechaAplicacion = vistaBS.findViewById<TextView>(R.id.tv_bs_fecha_aplicacion)
+        val tvProximaDosis = vistaBS.findViewById<TextView>(R.id.tv_bs_proxima_dosis)
+        val tvNotas = vistaBS.findViewById<TextView>(R.id.tv_bs_notas_vacuna)
+        val btnCerrar = vistaBS.findViewById<View>(R.id.btn_bs_cerrar_vacuna)
+
+        tvNombre.text = "Vacuna: ${sello.nombreIdeal}"
+
+        val historial = sello.registroReal
+
+        if (historial != null) {
+            // Caso 1: La vacuna SÍ está aplicada
+            tvEstado.text = "Estado: Aplicada ✓"
+            tvEstado.setTextColor(android.graphics.Color.parseColor("#2E7D32"))
+            tvEstado.setBackgroundColor(android.graphics.Color.parseColor("#E8F5E9"))
+
+            // Formateamos las fechas de YYYY-MM-DD (Base de datos) a DD/MM/YYYY para el usuario
+            tvFechaAplicacion.text = "📅 Fecha de aplicación: ${formatearFechaAMostrar(historial.fecha_aplicacion)}"
+
+            if (!historial.proxima_dosis.isNullOrBlank()) {
+                tvProximaDosis.text = "⏳ Próxima dosis: ${formatearFechaAMostrar(historial.proxima_dosis)}"
+            } else {
+                tvProximaDosis.text = "⏳ Próxima dosis: No requerida"
+            }
+
+            tvNotas.text = "📝 Notas: ${historial.notas ?: "Sin anotaciones adicionales."}"
+        } else {
+            // Caso 2: La vacuna ESTÁ PENDIENTE
+            tvEstado.text = "Estado: Pendiente ⏳"
+            tvEstado.setTextColor(android.graphics.Color.parseColor("#C62828"))
+            tvEstado.setBackgroundColor(android.graphics.Color.parseColor("#FFEBEE"))
+
+            tvFechaAplicacion.text = "📅 Fecha de aplicación: Pendiente de registrar"
+            tvProximaDosis.text = "⏳ Próxima dosis: —"
+            tvNotas.text = "📝 Notas: Esta inmunización aún no ha sido administrada por tu veterinario."
+        }
+
+        btnCerrar.setOnClickListener { bottomSheetDialog.dismiss() }
+
+        bottomSheetDialog.setContentView(vistaBS)
+        bottomSheetDialog.show()
+    }
+
+    // Función helper rápida para poner las fechas bonitas en el panel
+    private fun formatearFechaAMostrar(fechaSQL: String?): String {
+        if (fechaSQL.isNullOrBlank()) return "—"
+        return try {
+            // Si viene con formato ISO completo de Node.js o solo fecha
+            val formatoEntrada = if (fechaSQL.contains("T")) {
+                java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.getDefault()).apply {
+                    timeZone = java.util.TimeZone.getTimeZone("UTC")
+                }
+            } else {
+                java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            }
+
+            val date = formatoEntrada.parse(fechaSQL)
+            val formatoSalida = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+            formatoSalida.format(date!!)
+        } catch (e: Exception) {
+            fechaSQL // Respaldo por si viene con otro formato
+        }
+    }
+
 }

@@ -1,8 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.PetKarnet" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:fontFamily">@font/texto_family</item>
     </style>
 
@@ -19,7 +16,7 @@
         <item name="colorSecondaryContainer">@color/AzulitoClaro</item>
     </style>
 
-    <style name="TemaCalendarioPet" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="TemaCalendarioPet" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="colorPrimary">@color/amarillo</item>
         <item name="colorAccent">@color/Azulito</item>
         <item name="colorOnPrimary">@color/negrito</item>

@@ -17,7 +17,8 @@ data class SelloVacuna(
 
 // 2. El Adaptador
 class VacunaAdapter(
-    private val listaSellos: List<SelloVacuna>
+    private val listaSellos: List<SelloVacuna>,
+    private val onSelloClick: (SelloVacuna) -> Unit
 ) : RecyclerView.Adapter<VacunaAdapter.VacunaViewHolder>() {
 
     class VacunaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -53,6 +54,10 @@ class VacunaAdapter(
             holder.tvFecha.setTextColor(Color.parseColor("#999999")) // Grisáceo
             holder.ivSello.alpha = 0.25f // Opacidad baja para dar efecto de estampa "vacía" o bloqueada
         }
+        holder.itemView.setOnClickListener {
+            onSelloClick(sello)
+        }
+
     }
 
     override fun getItemCount(): Int = listaSellos.size
