@@ -66,6 +66,48 @@
         android:textColor="@color/negrito"
         android:layout_marginBottom="24dp"/>
 
+    <TextView
+        android:id="@+id/tv_bs_label_comprobante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📷 Comprobante adjunto:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/negrito"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_bs_contenedor_foto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp">
+
+        <ImageView
+            android:id="@+id/iv_bs_comprobante_vacuna"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="#F3F4F6"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_bs_eliminar_vacuna"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:text="Eliminar Registro"
+        android:textColor="#D32F2F"
+        app:backgroundTint="#FFEBEE"
+        app:strokeColor="#D32F2F"
+        app:strokeWidth="1dp"
+        app:cornerRadius="50dp"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone"/>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_bs_cerrar_vacuna"
         android:layout_width="match_parent"

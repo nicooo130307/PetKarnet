@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.petkarnet.data.network.RetrofitClient
+import android.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
@@ -124,19 +125,23 @@ class VacunasFragment : Fragment() {
         val tvFechaAplicacion = vistaBS.findViewById<TextView>(R.id.tv_bs_fecha_aplicacion)
         val tvProximaDosis = vistaBS.findViewById<TextView>(R.id.tv_bs_proxima_dosis)
         val tvNotas = vistaBS.findViewById<TextView>(R.id.tv_bs_notas_vacuna)
+
+        // NUEVAS VISTAS PARA LA FOTO
+        val tvLabelComprobante = vistaBS.findViewById<TextView>(R.id.tv_bs_label_comprobante)
+        val cvContenedorFoto = vistaBS.findViewById<View>(R.id.cv_bs_contenedor_foto)
+        val ivComprobante = vistaBS.findViewById<ImageView>(R.id.iv_bs_comprobante_vacuna)
+        val btnEliminar = vistaBS.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_bs_eliminar_vacuna)
         val btnCerrar = vistaBS.findViewById<View>(R.id.btn_bs_cerrar_vacuna)
 
         tvNombre.text = "Vacuna: ${sello.nombreIdeal}"
 
-        val historial = sello.registroReal
+        val historial = sello.registroReal // O registroEncontrado, según como lo hayas dejado
 
         if (historial != null) {
-            // Caso 1: La vacuna SÍ está aplicada
             tvEstado.text = "Estado: Aplicada ✓"
             tvEstado.setTextColor(android.graphics.Color.parseColor("#2E7D32"))
             tvEstado.setBackgroundColor(android.graphics.Color.parseColor("#E8F5E9"))
 
-            // Formateamos las fechas de YYYY-MM-DD (Base de datos) a DD/MM/YYYY para el usuario
             tvFechaAplicacion.text = "📅 Fecha de aplicación: ${formatearFechaAMostrar(historial.fecha_aplicacion)}"
 
             if (!historial.proxima_dosis.isNullOrBlank()) {
@@ -146,8 +151,33 @@ class VacunasFragment : Fragment() {
             }
 
             tvNotas.text = "📝 Notas: ${historial.notas ?: "Sin anotaciones adicionales."}"
+
+            // ✨ MAGIA DE LA FOTO AQUÍ ✨
+            if (!historial.foto_comprobante.isNullOrBlank()) {
+                tvLabelComprobante.visibility = View.VISIBLE
+                cvContenedorFoto.visibility = View.VISIBLE
+
+                // Usamos Glide para cargar la foto desde Cloudinary
+                com.bumptech.glide.Glide.with(requireContext())
+                    .load(historial.foto_comprobante)
+                    .placeholder(android.R.drawable.ic_menu_gallery) // Icono temporal mientras carga
+                    .into(ivComprobante)
+                ivComprobante.setOnClickListener {
+                    mostrarImagenAmpliada(historial.foto_comprobante)
+                }
+                btnEliminar.visibility = View.VISIBLE
+                btnEliminar.setOnClickListener {
+                    bottomSheetDialog.dismiss() // Cerramos el panel primero
+                    mostrarConfirmacionEliminarVacuna(historial.id, sello.nombreIdeal)
+                }
+
+            } else {
+                // Si no hay foto, nos aseguramos de que siga oculto
+                tvLabelComprobante.visibility = View.GONE
+                cvContenedorFoto.visibility = View.GONE
+            }
+
         } else {
-            // Caso 2: La vacuna ESTÁ PENDIENTE
             tvEstado.text = "Estado: Pendiente ⏳"
             tvEstado.setTextColor(android.graphics.Color.parseColor("#C62828"))
             tvEstado.setBackgroundColor(android.graphics.Color.parseColor("#FFEBEE"))
@@ -155,6 +185,10 @@ class VacunasFragment : Fragment() {
             tvFechaAplicacion.text = "📅 Fecha de aplicación: Pendiente de registrar"
             tvProximaDosis.text = "⏳ Próxima dosis: —"
             tvNotas.text = "📝 Notas: Esta inmunización aún no ha sido administrada por tu veterinario."
+
+            // Ocultar foto si está pendiente
+            tvLabelComprobante.visibility = View.GONE
+            cvContenedorFoto.visibility = View.GONE
         }
 
         btnCerrar.setOnClickListener { bottomSheetDialog.dismiss() }
@@ -183,5 +217,61 @@ class VacunasFragment : Fragment() {
             fechaSQL // Respaldo por si viene con otro formato
         }
     }
+    private fun mostrarImagenAmpliada(urlImagen: String) {
+        // Creamos un diálogo que use el estilo de pantalla completa de Android
+        val dialog = android.app.Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.setContentView(R.layout.dialog_imagen_completa)
 
+        val ivAmpliada = dialog.findViewById<ImageView>(R.id.iv_imagen_ampliada)
+        val btnCerrar = dialog.findViewById<ImageButton>(R.id.btn_cerrar_imagen)
+
+        // Volvemos a usar Glide para cargar la imagen en tamaño grande
+        com.bumptech.glide.Glide.with(requireContext())
+            .load(urlImagen)
+            .into(ivAmpliada)
+
+        // Si el usuario toca la "X" o el botón de atrás de su celular, se cierra
+        btnCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun mostrarConfirmacionEliminarVacuna(idHistorial: Int, nombreVacuna: String) {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.TemaCalendarioPet)
+            .setTitle("¿Eliminar registro?")
+            .setMessage("¿Estás seguro de que deseas borrar la vacuna de $nombreVacuna del historial? Esta acción no se puede deshacer.")
+            .setCancelable(false)
+            .setPositiveButton("Sí, eliminar") { _, _ ->
+                ejecutarEliminacionVacuna(idHistorial)
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    // NUEVA FUNCIÓN: Llamada al backend para borrar de la base de datos
+    private fun ejecutarEliminacionVacuna(idHistorial: Int) {
+        progressBar.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.create(requireContext())
+                val respuesta = api.eliminarRegistroVacuna(idHistorial)
+
+                progressBar.visibility = View.GONE
+
+                if (respuesta.isSuccessful) {
+                    Toast.makeText(requireContext(), "Registro eliminado correctamente", Toast.LENGTH_SHORT).show()
+                    // Refrescamos automáticamente el álbum para que la huellita vuelva a ponerse gris
+                    cargarAlbumVacunas()
+                } else {
+                    Toast.makeText(requireContext(), "No se pudo eliminar el registro", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressBar.visibility = View.GONE
+                Toast.makeText(requireContext(), "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }

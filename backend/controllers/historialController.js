@@ -58,3 +58,39 @@ exports.obtenerHistorial = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+// Eliminar un registro de vacunación
+exports.eliminarVacuna = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.usuario.id;
+  const rol = req.usuario.rol;
+
+  try {
+    // Obtener el registro
+    const [registros] = await db.promise().query(
+      'SELECT h.*, m.id_usuario as dueno_id FROM historial_vacunacion h JOIN mascotas m ON h.id_mascota = m.id WHERE h.id = ?',
+      [id]
+    );
+
+    if (registros.length === 0) {
+      return res.status(404).json({ error: 'Registro no encontrado' });
+    }
+
+    const registro = registros[0];
+
+    // Solo el veterinario que lo creó o el dueño de la mascota pueden eliminarlo
+    if (rol === 'veterinario' && registro.id_veterinario !== userId) {
+      return res.status(403).json({ error: 'No tienes permiso para eliminar este registro' });
+    }
+    if (rol === 'dueño' && registro.dueno_id !== userId) {
+      return res.status(403).json({ error: 'No tienes permiso para eliminar este registro' });
+    }
+
+    await db.promise().query('DELETE FROM historial_vacunacion WHERE id = ?', [id]);
+
+    res.json({ mensaje: 'Registro de vacunación eliminado exitosamente' });
+  } catch (error) {
+    console.error('Error al eliminar vacuna:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

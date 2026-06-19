@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 router.post('/', auth, historialController.agregarVacuna);
 
 router.get('/:idMascota', historialController.obtenerHistorial);
+router.delete('/:id', auth, historialController.eliminarVacuna);
 
 // ver historial de una mascota router.get('/:id_mascota', auth, historialController.obtenerHistorial);
 
