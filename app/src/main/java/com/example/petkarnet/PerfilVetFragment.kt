@@ -1,5 +1,6 @@
 package com.example.petkarnet
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -54,23 +55,27 @@ class PerfilVetFragment : Fragment() {
 
         // 4. Lógica de Cerrar Sesión con confirmación
         btnCerrarSesion.setOnClickListener {
-            mostrarAlertaCerrarSesion()
+            mostrarDialogoCerrarSesion()
         }
     }
 
-    private fun mostrarAlertaCerrarSesion() {
+    private fun mostrarDialogoCerrarSesion() {
+        val prefs = requireContext().getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
+        val nombre = prefs.getString("usuario_nombre", "Usuario") ?: "Usuario"
+
         AlertDialog.Builder(requireContext())
             .setTitle("Cerrar Sesión")
-            .setMessage("¿Estás seguro de que deseas salir de tu cuenta de veterinario?")
-            .setPositiveButton("Sí, salir") { _, _ ->
+            .setMessage("¿Estás seguro de que deseas salir de tu cuenta, $nombre?")
+            .setPositiveButton("Sí, salir") { dialog, _ ->
+                prefs.edit().clear().apply()
+
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-                Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
                 requireActivity().finish()
+                Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancelar") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 

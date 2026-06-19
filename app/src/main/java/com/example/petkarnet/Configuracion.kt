@@ -54,7 +54,8 @@ class Configuracion : AppCompatActivity() {
         }
 
         btnPrivacidad.setOnClickListener {
-            // Aquí conectarás con la justificación de tu tesis (LFPDPPP)
+            val intent = Intent(this, TerminosActivity::class.java)
+            startActivity(intent)
             Toast.makeText(this, "Abriendo Aviso de Privacidad...", Toast.LENGTH_SHORT).show()
         }
 

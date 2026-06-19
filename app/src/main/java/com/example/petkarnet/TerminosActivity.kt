@@ -2,18 +2,20 @@ package com.example.petkarnet
 
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 
 class TerminosActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_terminos)
 
         val tvTerminos = findViewById<TextView>(R.id.tv_terminos)
         val btnVolver = findViewById<MaterialButton>(R.id.btn_volver_terminos)
 
-        tvTerminos.text = "tvTerminos.text = \"\"\"\n" +
+        tvTerminos.text = "PETKARNET\n" +
                 "TÉRMINOS Y CONDICIONES DE USO – PETKARNET\n" +
                 "\n" +
                 "Última actualización: 18 de junio de 2026\n" +

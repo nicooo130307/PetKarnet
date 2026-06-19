@@ -24,9 +24,7 @@ class PerfilFragment : Fragment() {
 
     private lateinit var tvNombreUsuario: TextView
     private lateinit var tvRolUsuario: TextView
-    private lateinit var tvContadorMascotas: TextView
-    private lateinit var tvContadorVacunas: TextView
-    private lateinit var tvContadorCitas: TextView
+
 
     private lateinit var ivFotoPerfil: ShapeableImageView
     private var uriFotoSeleccionada: Uri? = null

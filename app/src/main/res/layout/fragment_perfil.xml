@@ -113,18 +113,7 @@
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
 
-                <TextView
-                    android:id="@+id/opcion_configuracion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="⚙️ Configuración"
-                    android:textSize="18sp"
-                    android:textColor="@color/negrito"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground"/>
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+
 
                 <TextView
                     android:id="@+id/opcion_terminos"
@@ -137,6 +126,19 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground"/>
+
+                <TextView
+                    android:id="@+id/opcion_configuracion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="⚙️ Configuración"
+                    android:textSize="18sp"
+                    android:textColor="@color/negrito"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
