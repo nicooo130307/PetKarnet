@@ -47,7 +47,7 @@
             android:name=".RegistroMascota"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MenuDueno"
             android:exported="false" />
         <activity
             android:name=".Configuracion"
@@ -83,7 +83,7 @@
             android:name=".Registro"
             android:exported="false" />
         <activity
-            android:name=".MenuDueno"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

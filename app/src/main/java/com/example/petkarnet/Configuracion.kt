@@ -1,15 +1,24 @@
 package com.example.petkarnet
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.petkarnet.data.network.RetrofitClient
 import com.google.android.material.switchmaterial.SwitchMaterial
+import kotlinx.coroutines.launch
 
 class Configuracion : AppCompatActivity() {
+
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +28,13 @@ class Configuracion : AppCompatActivity() {
         // 1. Enlazamos las vistas
         val switchModoOscuro = findViewById<SwitchMaterial>(R.id.switch_modo_oscuro)
         val switchRecordatorios = findViewById<SwitchMaterial>(R.id.switch_recordatorios)
-        val switchPromociones = findViewById<SwitchMaterial>(R.id.switch_promociones)
 
         val btnIdioma = findViewById<LinearLayout>(R.id.btn_idioma)
         val btnPrivacidad = findViewById<TextView>(R.id.btn_privacidad)
         val btnEliminarCuenta = findViewById<TextView>(R.id.btn_eliminar_cuenta)
+
+        // ProgressBar (debe existir en el XML, si no lo has agregado aún, añádelo)
+        progressBar = findViewById(R.id.progress_bar_configuracion)
 
         // 2. Lógica de los Switches
         switchModoOscuro.setOnCheckedChangeListener { _, isChecked ->
@@ -35,11 +46,6 @@ class Configuracion : AppCompatActivity() {
             if (!isChecked) {
                 Toast.makeText(this, "¡Cuidado! Podrías olvidar vacunas importantes.", Toast.LENGTH_LONG).show()
             }
-        }
-
-        switchPromociones.setOnCheckedChangeListener { _, isChecked ->
-            val estado = if (isChecked) "activadas" else "desactivadas"
-            Toast.makeText(this, "Alertas de tienda $estado", Toast.LENGTH_SHORT).show()
         }
 
         // 3. Lógica de Botones
@@ -61,14 +67,47 @@ class Configuracion : AppCompatActivity() {
     private fun mostrarAlertaEliminarCuenta() {
         AlertDialog.Builder(this)
             .setTitle("⚠️ Eliminar Cuenta")
-            .setMessage("¿Estás seguro de que deseas eliminar tu cuenta de PetKarnet?\n\nSe borrará todo el historial de vacunas y citas de tus mascotas. Esta acción no se puede deshacer.")
-            .setPositiveButton("Eliminar") { _, _ ->
-                Toast.makeText(this, "Cuenta eliminada. Cerrando sesión...", Toast.LENGTH_SHORT).show()
-                // En el futuro, aquí borras de MySQL y mandas al Login
+            .setMessage("¿Estás seguro de que deseas eliminar tu cuenta de PetKarnet?\n\nSe desactivará tu cuenta y ya no podrás acceder a ella. Tus datos permanecerán almacenados por seguridad.")
+            .setPositiveButton("Eliminar") { dialog, _ ->
+                dialog.dismiss()
+                eliminarCuenta()
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun eliminarCuenta() {
+        progressBar.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.create(this@Configuracion)
+                val respuesta = api.eliminarCuenta()
+
+                progressBar.visibility = View.GONE
+
+                if (respuesta.isSuccessful) {
+                    Toast.makeText(this@Configuracion, "Cuenta eliminada exitosamente", Toast.LENGTH_LONG).show()
+
+                    // Limpiar SharedPreferences (token y datos del usuario)
+                    val prefs = getSharedPreferences("petkarnet_prefs", Context.MODE_PRIVATE)
+                    prefs.edit().clear().apply()
+
+                    // Redirigir al inicio (MainActivity) y cerrar todas las actividades anteriores
+                    val intent = Intent(this@Configuracion, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val errorBody = respuesta.errorBody()?.string()
+                    Toast.makeText(this@Configuracion, "Error: $errorBody", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                progressBar.visibility = View.GONE
+                Toast.makeText(this@Configuracion, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

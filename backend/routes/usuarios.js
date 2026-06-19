@@ -8,10 +8,11 @@ router.post('/registro', usuariosController.registro);
 router.post('/login', usuariosController.login);
 router.get('/perfil', auth, usuariosController.perfil);
 router.put('/perfil', auth, usuariosController.actualizarPerfil);
+router.put('/foto-perfil', auth, usuariosController.actualizarFotoPerfil);
 router.post('/recuperar', recuperacionController.solicitar);
 router.get('/recuperar/:token', recuperacionController.restablecer);
 router.get('/veterinarios', usuariosController.listarVeterinarios);
-
+router.delete('/', auth, usuariosController.eliminarCuenta);
 router.get('/veterinarios', usuariosController.listarVeterinarios);
 
 module.exports = router;

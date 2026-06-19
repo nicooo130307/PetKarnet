@@ -207,3 +207,39 @@ exports.actualizarPerfil = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+// Actualizar foto de perfil del usuario autenticado
+exports.actualizarFotoPerfil = async (req, res) => {
+  const userId = req.usuario.id;
+  const { foto_perfil } = req.body;
+
+  if (!foto_perfil) {
+    return res.status(400).json({ error: 'La URL de la foto es obligatoria' });
+  }
+
+  try {
+    await db.promise().query(
+      'UPDATE usuarios SET foto_perfil = ? WHERE id = ?',
+      [foto_perfil, userId]
+    );
+
+    res.json({ mensaje: 'Foto de perfil actualizada exitosamente', foto_perfil });
+  } catch (error) {
+    console.error('Error al actualizar foto de perfil:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+
+
+exports.eliminarCuenta = async (req, res) => {
+  const id = req.usuario.id;
+
+  try {
+    await db.promise().query('UPDATE usuarios SET activo = FALSE WHERE id = ?', [id]);
+    res.json({ mensaje: 'Cuenta desactivada exitosamente' });
+  } catch (error) {
+    console.error('Error al desactivar cuenta:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

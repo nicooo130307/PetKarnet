@@ -201,27 +201,73 @@ exports.infoPublica = async (req, res) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PetKarnet - ${mascota.nombre}</title>
   <style>
-   * { margin: 0; padding: 0; box-sizing: border-box; }
-   body { font-family: Arial, sans-serif; background: #F3F4F6; padding: 20px; }
-   .card { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-   .header { background: #2196F3; padding: 30px 20px 20px; text-align: center; border-radius: 0 0 20px 20px; }
-   .header h1 { color: white; font-size: 28px; margin-bottom: 10px; }
-   .header .paw { font-size: 40px; }
-   .content { padding: 20px; }
-   .foto { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #FFC107; margin: 0 auto 20px; display: block; background: white; object-fit: cover; }
-   h2 { color: #333; margin-bottom: 16px; }
-   .info { margin-bottom: 20px; }
-   .info p { margin: 8px 0; color: #555; font-size: 16px; }
-   .info strong { color: #333; }
-   table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-   th { background: #2196F3; color: white; padding: 10px; text-align: left; }
-   td { padding: 10px; border-bottom: 1px solid #ddd; }
-   .dueno { background: #FFF9C4; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-   .footer { text-align: center; color: #999; font-size: 14px; padding: 20px; }
-   .footer img { height: 30px; vertical-align: middle; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #F3F4F6; padding: 20px; }
+
+    /* --- POP-UP --- */
+    .popup-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); display: flex; justify-content: center;
+      align-items: center; z-index: 1000; animation: fadeIn 0.3s ease;
+    }
+    .popup {
+      background: white; border-radius: 16px; padding: 24px; max-width: 350px;
+      width: 90%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      position: relative; animation: slideUp 0.3s ease;
+    }
+    .popup-close {
+      position: absolute; top: 12px; right: 12px; background: none; border: none;
+      font-size: 24px; cursor: pointer; color: #999;
+    }
+    .popup-close:hover { color: #333; }
+    .popup-icon { font-size: 50px; margin-bottom: 16px; }
+    .popup h2 { color: #2196F3; margin-bottom: 12px; font-size: 20px; }
+    .popup p { color: #555; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
+    .popup-btn {
+      background: #FFC107; color: #333; border: none; padding: 12px 24px;
+      border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer;
+      text-decoration: none; display: inline-block; transition: transform 0.2s;
+    }
+    .popup-btn:hover { transform: scale(1.05); }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* --- CONTENIDO PRINCIPAL --- */
+    .card { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .header { background: #2196F3; padding: 30px 20px 20px; text-align: center; border-radius: 0 0 20px 20px; }
+    .header h1 { color: white; font-size: 28px; margin-bottom: 10px; }
+    .header .paw { font-size: 40px; }
+    .content { padding: 20px; }
+    .foto { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #FFC107; margin: 0 auto 20px; display: block; background: white; object-fit: cover; }
+    h2 { color: #333; margin-bottom: 16px; }
+    .info { margin-bottom: 20px; }
+    .info p { margin: 8px 0; color: #555; font-size: 16px; }
+    .info strong { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th { background: #2196F3; color: white; padding: 10px; text-align: left; }
+    td { padding: 10px; border-bottom: 1px solid #ddd; }
+    .dueno { background: #FFF9C4; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+    .footer { text-align: center; color: #999; font-size: 14px; padding: 20px; }
+    .footer img { height: 30px; vertical-align: middle; }
   </style>
 </head>
 <body>
+
+  <!-- POP-UP -->
+  <div class="popup-overlay" id="popup">
+    <div class="popup">
+      <button class="popup-close" onclick="cerrarPopup()">✕</button>
+      <div class="popup-icon">📱</div>
+      <h2>¡Descarga PetKarnet!</h2>
+      <p>Para ver el historial completo, agendar citas y recibir recordatorios, descarga nuestra app.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.example.petkarnet" class="popup-btn" onclick="cerrarPopup()">
+        📲 Descargar App
+      </a>
+    </div>
+  </div>
+
+  <!-- TARJETA PRINCIPAL -->
   <div class="card">
     <div class="header">
       <div class="paw">🐾</div>
@@ -254,6 +300,12 @@ exports.infoPublica = async (req, res) => {
       <p>Carnet digital de vacunación</p>
     </div>
   </div>
+
+  <script>
+    function cerrarPopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
 </body>
 </html>`;
 

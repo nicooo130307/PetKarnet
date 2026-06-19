@@ -13,6 +13,7 @@
         android:gravity="center_horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_foto_perfil"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:background="#E0E0E0"
@@ -22,7 +23,7 @@
             app:shapeAppearanceOverlay="@style/EstiloFotoCircular"
             app:strokeColor="@color/Azulito"
             app:strokeWidth="4dp"
-            android:layout_marginTop="32dp"/>
+            android:layout_marginTop="52dp"/>
 
         <TextView
             android:id="@+id/tv_nombre_usuario"
@@ -43,84 +44,6 @@
             android:textColor="#666666"
             android:layout_marginBottom="24dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="32dp">
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_contador_mascotas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1" android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/Azulito"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mascota"
-                    android:textSize="14sp"
-                    android:textColor="#666666"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_contador_vacunas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/Azulito"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Vacunas" android:textSize="14sp"
-                    android:textColor="#666666"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_contador_citas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0" android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/Azulito"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Citas Hoy"
-                    android:textSize="14sp"
-                    android:textColor="#666666"/>
-
-            </LinearLayout>
-        </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
