@@ -6,5 +6,5 @@
     <color name="negrito">#424242</color>
     <color name="Blanquito">#FCFDFD</color>
     <color name="AzulOscuro">#162456</color>
-    <color name="AzulitoClaro">#E1F5FE</color> <!-- Es un tono azul muy tenue -->
+    <color name="AzulitoClaro">#E1F5FE</color>
 </resources>

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import android.content.Intent
 
 class inicio_veterinario : Fragment() {
 
@@ -28,8 +29,8 @@ class inicio_veterinario : Fragment() {
 
         // 2. Lógica del Botón QR
         btnEscanearQR.setOnClickListener {
-            // Aquí en el futuro abriremos la cámara usando la librería de ZXing o ML Kit de Google
-            Toast.makeText(requireContext(), "Iniciando cámara para escanear QR...", Toast.LENGTH_LONG).show()
+            val intent = Intent(requireContext(), EscanearQRActivity::class.java)
+            startActivity(intent)
         }
 
         // 3. Lógica del Buscador (simulamos que presiona buscar)
