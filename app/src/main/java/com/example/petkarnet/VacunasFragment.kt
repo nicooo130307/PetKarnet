@@ -165,16 +165,19 @@ class VacunasFragment : Fragment() {
                 ivComprobante.setOnClickListener {
                     mostrarImagenAmpliada(historial.foto_comprobante)
                 }
-                btnEliminar.visibility = View.VISIBLE
-                btnEliminar.setOnClickListener {
-                    bottomSheetDialog.dismiss() // Cerramos el panel primero
-                    mostrarConfirmacionEliminarVacuna(historial.id, sello.nombreIdeal)
-                }
+
+
 
             } else {
                 // Si no hay foto, nos aseguramos de que siga oculto
                 tvLabelComprobante.visibility = View.GONE
                 cvContenedorFoto.visibility = View.GONE
+            }
+
+            btnEliminar.visibility = View.VISIBLE
+            btnEliminar.setOnClickListener {
+                bottomSheetDialog.dismiss() // Cerramos el panel primero
+                mostrarConfirmacionEliminarVacuna(historial.id, sello.nombreIdeal)
             }
 
         } else {
